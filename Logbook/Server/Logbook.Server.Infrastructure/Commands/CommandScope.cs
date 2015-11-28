@@ -6,12 +6,15 @@ using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Shared.Results;
+using Metrics;
 
 namespace Logbook.Server.Infrastructure.Commands
 {
     public class CommandScope : ICommandScope
     {
         #region Fields
+        private readonly Counter _commandsCounter = Metric.Counter("Concurrent Commands", Unit.Calls);
+
         private readonly IWindsorContainer _container;
         #endregion
 
@@ -37,12 +40,18 @@ namespace Logbook.Server.Infrastructure.Commands
         public Task<Result<TResult>> Execute<TResult>(ICommand<TResult> command)
         {
             Guard.AgainstNullArgument("command", command);
+
+            this._commandsCounter.Increment();
             
             Type handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
             object actualCommandHandler = this._container.Resolve(handlerType);
 
             var method = actualCommandHandler.GetType().GetMethod(nameof(ICommandHandler<ICommand<object>, object>.Execute));
-            return (Task<Result<TResult>>)method.Invoke(actualCommandHandler, new object[] {command, this});
+            var result = (Task<Result<TResult>>)method.Invoke(actualCommandHandler, new object[] {command, this});
+
+            this._commandsCounter.Decrement();
+
+            return result;
         }
         #endregion
     }
