@@ -56,8 +56,12 @@
     <Compile Include="Configuration\StringSetting.cs" />
     <Compile Include="Configuration\TimeSpanSetting.cs" />
     <Compile Include="Configuration\UriListSetting.cs" />
+    <Compile Include="Entities\AggregateRoot.cs" />
+    <Compile Include="Entities\Authentication\AuthenticationData.cs" />
+    <Compile Include="Entities\Authentication\User.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
+    <Compile Include="Models\RegisterData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\Result.cs" />
     <Compile Include="Results\ResultState.cs" />
