@@ -7,6 +7,7 @@ using Castle.Windsor.Installer;
 using Logbook.Server.Infrastructure.Api.Configuration;
 using Logbook.Server.Infrastructure.Api.MessageHandlers;
 using Logbook.Server.Infrastructure.Windsor;
+using Metrics;
 using Microsoft.AspNet.WebApi.MessageHandlers.Compression;
 using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Compressors;
 using Microsoft.Owin.Cors;
@@ -19,17 +20,29 @@ namespace Logbook.Server.Infrastructure
     {
         #region Methods
         /// <summary>
-        /// Configurations the OWIN webservice host.
+        /// Configures the OWIN webservice host.
         /// </summary>
         /// <param name="app">The application builder.</param>
         public void Configuration(IAppBuilder app)
         {
             this.UseCors(app);
             this.UseWebApi(app);
+
+            this.ConfigureDefaultMetrics();
         }
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Configures the default metrics.
+        /// </summary>
+        private void ConfigureDefaultMetrics()
+        {
+            if (Config.EnableDefaultMetrics)
+            {
+                Metric.Config.WithAllCounters();
+            }
+        }
         /// <summary>
         /// Makes the app use cors.
         /// </summary>
