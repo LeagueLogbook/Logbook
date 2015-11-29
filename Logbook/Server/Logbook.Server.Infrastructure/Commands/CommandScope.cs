@@ -5,6 +5,7 @@ using Castle.Windsor;
 using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
+using Logbook.Shared.Extensions;
 using Logbook.Shared.Results;
 using Metrics;
 
@@ -37,7 +38,7 @@ namespace Logbook.Server.Infrastructure.Commands
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="command">The command.</param>
-        public Task<Result<TResult>> Execute<TResult>(ICommand<TResult> command)
+        public async Task<Result<TResult>> Execute<TResult>(ICommand<TResult> command)
         {
             Guard.AgainstNullArgument("command", command);
 
@@ -47,7 +48,7 @@ namespace Logbook.Server.Infrastructure.Commands
             object actualCommandHandler = this._container.Resolve(handlerType);
 
             var method = actualCommandHandler.GetType().GetMethod(nameof(ICommandHandler<ICommand<object>, object>.Execute));
-            var result = (Task<Result<TResult>>)method.Invoke(actualCommandHandler, new object[] {command, this});
+            var result = await ((Task<Result<TResult>>)method.Invoke(actualCommandHandler, new object[] {command, this})).WithCurrentCulture();
 
             this._commandsCounter.Decrement();
 
