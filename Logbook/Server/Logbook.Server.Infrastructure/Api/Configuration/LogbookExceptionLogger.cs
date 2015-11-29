@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Web.Http.ExceptionHandling;
 using Anotar.NLog;
 
@@ -11,6 +12,9 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
         /// <param name="context">The exception logger context.</param>
         public override void Log(ExceptionLoggerContext context)
         {
+            if (Debugger.IsAttached)
+                Debugger.Break();
+
             LogTo.ErrorException($"Unhandled exception. Returning 501 Internal Server Error. Catch block: {context.CatchBlock}", context.Exception);
         }
     }
