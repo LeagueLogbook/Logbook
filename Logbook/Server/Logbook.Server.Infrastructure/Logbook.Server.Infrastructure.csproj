@@ -133,6 +133,7 @@
     <Compile Include="Api\Configuration\LogbookAssembliesResolver.cs" />
     <Compile Include="Api\Configuration\LogbookExceptionHandler.cs" />
     <Compile Include="Api\Configuration\LogbookExceptionLogger.cs" />
+    <Compile Include="Api\Controllers\AdminController.cs" />
     <Compile Include="Api\Controllers\AuthenticationController.cs" />
     <Compile Include="Api\Controllers\BaseController.cs" />
     <Compile Include="Api\Controllers\MetricsController.cs" />
@@ -141,6 +142,8 @@
     <Compile Include="Api\MessageHandlers\LocalizationMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\LoggingMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\RequestExecutionTimeMessageHandler.cs" />
+    <Compile Include="Commands\Admin\CreateIndexesCommandHandler.cs" />
+    <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />

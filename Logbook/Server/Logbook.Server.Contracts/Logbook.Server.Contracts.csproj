@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Admin\CreateIndexesCommand.cs" />
+    <Compile Include="Commands\Admin\ResetIndexesCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
