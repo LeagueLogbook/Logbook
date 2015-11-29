@@ -154,6 +154,8 @@
     <Compile Include="Raven\Indexes\Users_ByEmailAddress.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Windsor\CommandInstaller.cs" />
+    <Compile Include="Windsor\ContainerInstaller.cs" />
+    <Compile Include="Windsor\ControllerInstaller.cs" />
     <Compile Include="Windsor\RavenInstaller.cs" />
     <Compile Include="Windsor\ServiceInstaller.cs" />
     <Compile Include="Windsor\WindsorDependencyScope.cs" />

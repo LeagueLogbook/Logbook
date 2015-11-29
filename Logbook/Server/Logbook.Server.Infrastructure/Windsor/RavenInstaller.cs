@@ -26,7 +26,7 @@ namespace Logbook.Server.Infrastructure.Windsor
 
         private RavenDbServer CreateRavenDbServer()
         {
-            var config = new InMemoryRavenConfiguration
+            var config = new RavenConfiguration
             {
                 Port = Config.RavenHttpServerPort,
                 MaxSecondsForTaskToWaitForDatabaseToLoad = Config.MaxSecondsToWaitForDatabaseToLoad,

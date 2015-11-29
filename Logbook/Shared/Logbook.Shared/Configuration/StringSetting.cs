@@ -23,6 +23,12 @@
         /// <param name="value">The value.</param>
         protected override bool TryParse(string stringValue, out string value)
         {
+            if (string.IsNullOrWhiteSpace(stringValue))
+            {
+                value = null; 
+                return false;
+            }
+
             value = stringValue;
 
             return true;
