@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Admin;
+using Logbook.Server.Infrastructure.Api.Filter;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Extensions;
 
@@ -19,6 +20,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
         [HttpPost]
         [Route("Indexes")]
+        [OnlyLocal]
         public async Task<HttpResponseMessage> CreateIndexes()
         {
             var result = await this.CommandExecutor
@@ -30,6 +32,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
         [HttpPatch]
         [Route("Indexes")]
+        [OnlyLocal]
         public async Task<HttpResponseMessage> ResetIndexes()
         {
             var result = await this.CommandExecutor

@@ -68,5 +68,14 @@ namespace Logbook.Localization.Server {
                 return ResourceManager.GetString("InternalServerError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This endpoint is only available from localhost..
+        /// </summary>
+        public static string OnlyLocal {
+            get {
+                return ResourceManager.GetString("OnlyLocal", resourceCulture);
+            }
+        }
     }
 }

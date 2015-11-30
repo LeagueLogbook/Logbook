@@ -120,4 +120,7 @@
   <data name="InternalServerError" xml:space="preserve">
     <value>An unexpected error occured in the server.</value>
   </data>
+  <data name="OnlyLocal" xml:space="preserve">
+    <value>This endpoint is only available from localhost.</value>
+  </data>
 </root>

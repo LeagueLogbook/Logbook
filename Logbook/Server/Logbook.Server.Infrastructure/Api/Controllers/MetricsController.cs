@@ -42,6 +42,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         /// </summary>
         [HttpGet]
         [Route("Metrics")]
+        [OnlyLocal]
         public HttpResponseMessage GetMetricsAsync()
         {
             string json = JsonBuilderV2.BuildJson(_dataProvider.CurrentMetricsData);

@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Filters;
-using Logbook.Server.Contracts.Commands;
-using Logbook.Server.Contracts.Commands.Authentication;
-using Logbook.Server.Infrastructure.Extensions;
-using Logbook.Shared.Extensions;
+using Logbook.Localization.Server;
 
 namespace Logbook.Server.Infrastructure.Api.Filter
 {
-    public class LogbookAuthenticationAttribute : Attribute, IAuthenticationFilter
+    public class OnlyLocalAttribute : Attribute, IAuthenticationFilter
     {
         #region Properties
         /// <summary>
@@ -26,22 +23,14 @@ namespace Logbook.Server.Infrastructure.Api.Filter
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
+        public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
-            var commandExecutor = context.ActionContext.ControllerContext.Configuration.DependencyResolver.GetService<ICommandExecutor>();
-
-            var isAuthenticated = await commandExecutor
-                .Execute(new AuthenticateCommand(context.Request.GetOwinContext()))
-                .WithCurrentCulture();
-
-            if (isAuthenticated.IsSuccess)
+            if (context.ActionContext.RequestContext.IsLocal == false)
             {
-                context.Principal = new GenericPrincipal(new GenericIdentity(isAuthenticated.Data), new string[0]);
+                context.ErrorResult = new AuthenticationFailureResult(ServerMessages.OnlyLocal, context.Request);
             }
-            else
-            {
-                context.ErrorResult = new AuthenticationFailureResult(isAuthenticated.Message, context.Request);
-            }
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Returns a challenge to the client application.
