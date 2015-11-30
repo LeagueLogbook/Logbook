@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LiteGuard;
+using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
@@ -58,16 +59,21 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 .WithCurrentCulture();
 
             if (user == null)
-                return Result.AsError("No user found");
+                return Result.AsError(string.Format(CommandMessages.NoUserFound, command.EmailAddress));
 
             var authenticationData = await this._documentSession
                 .LoadAsync<AuthenticationData>(AuthenticationData.CreateId(user.Id))
                 .WithCurrentCulture();
 
-            var computedHash = this._saltCombiner.Combine(authenticationData.Salt, authenticationData.IterationCount, command.PasswordSHA256Hash);
+            var authentication = authenticationData.Authentications.OfType<LogbookAuthenticationKind>().FirstOrDefault();
 
-            if (computedHash.SequenceEqual(authenticationData.Hash) == false)
-                return Result.AsError("Incorrect password");
+            if (authentication == null)
+                return Result.AsError(string.Format(CommandMessages.CannotLoginWithPassword, command.EmailAddress));
+
+            var computedHash = this._saltCombiner.Combine(authentication.Salt, authentication.IterationCount, command.PasswordSHA256Hash);
+
+            if (computedHash.SequenceEqual(authentication.Hash) == false)
+                return Result.AsError(CommandMessages.IncorrectPassword);
 
             var token = this._jsonWebTokenService.Generate(user.Id);
             return Result.AsSuccess(token);

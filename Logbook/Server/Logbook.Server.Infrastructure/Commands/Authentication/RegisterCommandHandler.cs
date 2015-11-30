@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LiteGuard;
@@ -68,13 +69,20 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             await this._documentSession.StoreAsync(user).WithCurrentCulture();
 
+            var salt = this._secretGenerator.Generate();
             var authenticationData = new AuthenticationData
             {
                 ForUserId = user.Id,
-                Salt = this._secretGenerator.Generate(),
-                IterationCount = Config.IterationCountForPasswordHashing,
+                Authentications =
+                {
+                    new LogbookAuthenticationKind
+                    {
+                        Salt = salt,
+                        IterationCount = Config.IterationCountForPasswordHashing,
+                        Hash = this._saltCombiner.Combine(salt, Config.IterationCountForPasswordHashing, command.PasswordSHA256Hash)
+                    }
+                }
             };
-            authenticationData.Hash = this._saltCombiner.Combine(authenticationData.Salt, authenticationData.IterationCount, command.PasswordSHA256Hash);
 
             await this._documentSession.StoreAsync(authenticationData).WithCurrentCulture();
 

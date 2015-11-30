@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Logbook.Shared.Entities.Authentication
 {
@@ -11,21 +12,20 @@ namespace Logbook.Shared.Entities.Authentication
         public static string CreateId(string forUserId) => $"{forUserId}/AuthenticationData";
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationData" /> class.
+        /// </summary>
+        public AuthenticationData()
+        {
+            this.Authentications = new List<AuthenticationKind>();
+        }
+
+        /// <summary>
         /// Gets or sets for user identifier.
         /// </summary>
         public string ForUserId { get; set; }
-
         /// <summary>
-        /// Gets or sets the salt used for hashing the password.
+        /// Gets or sets the authentications.
         /// </summary>
-        public byte[] Salt { get; set; }
-        /// <summary>
-        /// Gets or sets the iteration count for the hash algorithm.
-        /// </summary>
-        public int IterationCount { get; set; }
-        /// <summary>
-        /// Gets or sets the resulting hash.
-        /// </summary>
-        public byte[] Hash { get; set; }
+        public List<AuthenticationKind> Authentications { get; set; }
     }
 }

@@ -123,4 +123,13 @@
   <data name="NoAuthenticationTokenGiven" xml:space="preserve">
     <value>No session information were given.</value>
   </data>
+  <data name="NoUserFound" xml:space="preserve">
+    <value>No user exists with the email address "{0}".</value>
+  </data>
+  <data name="CannotLoginWithPassword" xml:space="preserve">
+    <value>Cannot login with a password for the email address "{0}".</value>
+  </data>
+  <data name="IncorrectPassword" xml:space="preserve">
+    <value>Incorrect password.</value>
+  </data>
 </root>

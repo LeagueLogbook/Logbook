@@ -57,7 +57,10 @@
     <Compile Include="Configuration\TimeSpanSetting.cs" />
     <Compile Include="Configuration\UriListSetting.cs" />
     <Compile Include="Entities\AggregateRoot.cs" />
+    <Compile Include="Entities\Authentication\AuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\AuthenticationData.cs" />
+    <Compile Include="Entities\Authentication\LiveAuthenticationKind.cs" />
+    <Compile Include="Entities\Authentication\LogbookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\User.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
