@@ -1,7 +1,8 @@
 ﻿namespace Logbook.Shared.Entities.Authentication
 {
-    public abstract class AuthenticationKind
+    public enum AuthenticationKind
     {
-        
+        Logbook,
+        Live
     }
 }

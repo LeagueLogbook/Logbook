@@ -16,7 +16,7 @@ namespace Logbook.Shared.Entities.Authentication
         /// </summary>
         public AuthenticationData()
         {
-            this.Authentications = new List<AuthenticationKind>();
+            this.Authentications = new List<AuthenticationKindBase>();
         }
 
         /// <summary>
@@ -26,6 +26,6 @@ namespace Logbook.Shared.Entities.Authentication
         /// <summary>
         /// Gets or sets the authentications.
         /// </summary>
-        public List<AuthenticationKind> Authentications { get; set; }
+        public List<AuthenticationKindBase> Authentications { get; set; }
     }
 }

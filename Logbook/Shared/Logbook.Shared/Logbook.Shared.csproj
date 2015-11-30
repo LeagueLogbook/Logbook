@@ -58,6 +58,7 @@
     <Compile Include="Configuration\UriListSetting.cs" />
     <Compile Include="Entities\AggregateRoot.cs" />
     <Compile Include="Entities\Authentication\AuthenticationKind.cs" />
+    <Compile Include="Entities\Authentication\AuthenticationKindBase.cs" />
     <Compile Include="Entities\Authentication\AuthenticationData.cs" />
     <Compile Include="Entities\Authentication\LiveAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\LogbookAuthenticationKind.cs" />

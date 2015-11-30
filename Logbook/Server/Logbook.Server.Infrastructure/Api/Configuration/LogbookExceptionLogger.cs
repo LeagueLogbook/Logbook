@@ -7,7 +7,7 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
     public class LogbookExceptionLogger : ExceptionLogger
     {
         /// <summary>
-        /// When overridden in a derived class, logs the exception synchronously.
+        /// When overridden in a derived class, logs the exception synchronously.   
         /// </summary>
         /// <param name="context">The exception logger context.</param>
         public override void Log(ExceptionLoggerContext context)

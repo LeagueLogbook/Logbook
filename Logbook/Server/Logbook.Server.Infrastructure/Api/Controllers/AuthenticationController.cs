@@ -34,7 +34,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         }
 
         [HttpPost]
-        [Route("Login")]
+        [Route("Login/Logbook")]
         public async Task<HttpResponseMessage> LoginAsync(LoginData data)
         {
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
@@ -42,6 +42,20 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
             var result = await this.CommandExecutor
                 .Execute(new LoginCommand(data.EmailAddress, data.PasswordSHA256Hash))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);
+        }
+
+        [HttpPost]
+        [Route("Login/Live")]
+        public async Task<HttpResponseMessage> LoginLiveAsync(LiveLoginData data)
+        {
+            if (data?.Code == null || data?.RedirectUrl == null)
+                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
+
+            var result = await this.CommandExecutor
+                .Execute(new LiveLoginCommand(data.Code, data.RedirectUrl))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);
