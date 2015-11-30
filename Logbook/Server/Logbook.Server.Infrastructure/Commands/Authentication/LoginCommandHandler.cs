@@ -16,10 +16,19 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
     public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
     {
+        #region Fields
         private readonly IAsyncDocumentSession _documentSession;
         private readonly ISaltCombiner _saltCombiner;
         private readonly IJsonWebTokenService _jsonWebTokenService;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginCommandHandler"/> class.
+        /// </summary>
+        /// <param name="documentSession">The document session.</param>
+        /// <param name="saltCombiner">The salt combiner.</param>
+        /// <param name="jsonWebTokenService">The json web token service.</param>
         public LoginCommandHandler([NotNull]IAsyncDocumentSession documentSession, [NotNull] ISaltCombiner saltCombiner, [NotNull]IJsonWebTokenService jsonWebTokenService)
         {
             Guard.AgainstNullArgument(nameof(documentSession), documentSession);
@@ -30,7 +39,14 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             this._saltCombiner = saltCombiner;
             this._jsonWebTokenService = jsonWebTokenService;
         }
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Executes the specified <paramref name="command"/>.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="scope">The scope.</param>
         public async Task<Result<string>> Execute(LoginCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
@@ -56,5 +72,6 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var token = this._jsonWebTokenService.Generate(user.Id);
             return Result.AsSuccess(token);
         }
+        #endregion
     }
 }

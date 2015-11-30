@@ -79,7 +79,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         /// <param name="commandExecutor">The command executor.</param>
         protected BaseController(ICommandExecutor commandExecutor)
         {
-            Guard.AgainstNullArgument("commandExecutor", commandExecutor);
+            Guard.AgainstNullArgument(nameof(commandExecutor), commandExecutor);
 
             this.CommandExecutor = commandExecutor;
         }

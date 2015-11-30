@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Infrastructure.Extensions;
@@ -23,7 +24,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> RegisterAsync(RegisterData data)
         {
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
-                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, "Required data are missing.");
+                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
             var result = await this.CommandExecutor
                 .Execute(new RegisterCommand(data.EmailAddress, data.PasswordSHA256Hash, data.PreferredLanguage))
@@ -37,7 +38,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> LoginAsync(LoginData data)
         {
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
-                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, "Required data are missing.");
+                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
             var result = await this.CommandExecutor
                 .Execute(new LoginCommand(data.EmailAddress, data.PasswordSHA256Hash))

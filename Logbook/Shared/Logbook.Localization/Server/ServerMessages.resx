@@ -123,4 +123,7 @@
   <data name="OnlyLocal" xml:space="preserve">
     <value>This endpoint is only available from localhost.</value>
   </data>
+  <data name="DataMissing" xml:space="preserve">
+    <value>Required data are missing.</value>
+  </data>
 </root>

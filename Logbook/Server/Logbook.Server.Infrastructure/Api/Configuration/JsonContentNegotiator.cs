@@ -20,7 +20,7 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
         /// <param name="formatter">The formatter.</param>
         public JsonContentNegotiator(JsonMediaTypeFormatter formatter)
         {
-            Guard.AgainstNullArgument("formatter", formatter);
+            Guard.AgainstNullArgument(nameof(formatter), formatter);
 
             this._formatter = formatter;
         }

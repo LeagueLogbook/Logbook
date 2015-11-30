@@ -13,15 +13,29 @@ namespace Logbook.Server.Infrastructure.Commands.Admin
 {
     public class ResetIndexesCommandHandler : ICommandHandler<ResetIndexesCommand, object>
     {
+        #region Fields
         private readonly IDocumentStore _documentStore;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResetIndexesCommandHandler"/> class.
+        /// </summary>
+        /// <param name="documentStore">The document store.</param>
         public ResetIndexesCommandHandler([NotNull]IDocumentStore documentStore)
         {
             Guard.AgainstNullArgument(nameof(documentStore), documentStore);
 
             this._documentStore = documentStore;
         }
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Executes the specified <paramref name="command" />.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="scope">The scope.</param>
         public Task<Result<object>> Execute(ResetIndexesCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
@@ -38,5 +52,6 @@ namespace Logbook.Server.Infrastructure.Commands.Admin
                 return new object();
             });
         }
+        #endregion
     }
 }

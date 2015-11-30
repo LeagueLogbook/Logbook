@@ -18,10 +18,19 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
     public class RegisterCommandHandler : ICommandHandler<RegisterCommand, User>
     {
+        #region Fields
         private readonly IAsyncDocumentSession _documentSession;
         private readonly ISecretGenerator _secretGenerator;
         private readonly ISaltCombiner _saltCombiner;
+        #endregion
 
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterCommandHandler"/> class.
+        /// </summary>
+        /// <param name="documentSession">The document session.</param>
+        /// <param name="secretGenerator">The secret generator.</param>
+        /// <param name="saltCombiner">The salt combiner.</param>
         public RegisterCommandHandler([NotNull]IAsyncDocumentSession documentSession, [NotNull]ISecretGenerator secretGenerator, [NotNull]ISaltCombiner saltCombiner)
         {
             Guard.AgainstNullArgument(nameof(documentSession), documentSession);
@@ -32,7 +41,14 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             this._secretGenerator = secretGenerator;
             this._saltCombiner = saltCombiner;
         }
+        #endregion
 
+        #region Methods
+        /// <summary>
+        /// Executes the specified <paramref name="command" />.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="scope">The scope.</param>
         public async Task<Result<User>> Execute(RegisterCommand command, ICommandScope scope)
         {
             var emailAddressAlreadyInUse = await this._documentSession
@@ -64,5 +80,6 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             return Result.AsSuccess(user);
         }
+        #endregion
     }
 }

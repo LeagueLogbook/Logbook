@@ -9,7 +9,7 @@ namespace Logbook.Server.Infrastructure.Commands
         where TCommand : ICommand<TResult>
     {
         /// <summary>
-        /// Executes the specified command.
+        /// Executes the specified <paramref name="command"/>.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>

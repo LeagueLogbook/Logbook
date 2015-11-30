@@ -37,7 +37,7 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
             /// <param name="request">The request.</param>
             public ExceptionResult(HttpRequestMessage request)
             {
-                Guard.AgainstNullArgument("request", request);
+                Guard.AgainstNullArgument(nameof(request), request);
 
                 this._request = request;
             }

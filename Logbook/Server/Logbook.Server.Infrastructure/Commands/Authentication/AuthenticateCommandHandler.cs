@@ -38,7 +38,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         #region Methods
         /// <summary>
-        /// Executes this command.
+        /// Executes the specified <paramref name="command"/>.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>

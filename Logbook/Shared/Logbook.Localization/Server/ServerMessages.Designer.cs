@@ -61,6 +61,15 @@ namespace Logbook.Localization.Server {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Required data are missing..
+        /// </summary>
+        public static string DataMissing {
+            get {
+                return ResourceManager.GetString("DataMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An unexpected error occured in the server..
         /// </summary>
         public static string InternalServerError {
