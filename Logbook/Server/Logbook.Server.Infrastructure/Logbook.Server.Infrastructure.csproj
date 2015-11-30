@@ -48,6 +48,10 @@
       <HintPath>..\..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JWT, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JWT.1.3.4\lib\3.5\JWT.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LiteGuard, Version=0.11.0.0, Culture=neutral, PublicKeyToken=d38e0b7ae24b08a1, processorArchitecture=MSIL">
       <HintPath>..\..\packages\LiteGuard.0.11.0\lib\net35\LiteGuard.dll</HintPath>
       <Private>True</Private>
@@ -144,13 +148,16 @@
     <Compile Include="Api\MessageHandlers\RequestExecutionTimeMessageHandler.cs" />
     <Compile Include="Commands\Admin\CreateIndexesCommandHandler.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\LoginCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Encryption\JsonWebTokenService.cs" />
     <Compile Include="Encryption\SaltCombiner.cs" />
     <Compile Include="Encryption\SecretGenerator.cs" />
+    <Compile Include="Extensions\SaltCombinerExtensions.cs" />
     <Compile Include="Extensions\CommandExecutorExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

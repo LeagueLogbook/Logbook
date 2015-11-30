@@ -50,10 +50,12 @@
   <ItemGroup>
     <Compile Include="Commands\Admin\CreateIndexesCommand.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommand.cs" />
+    <Compile Include="Commands\Authentication\LoginCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
+    <Compile Include="Encryption\IJsonWebTokenService.cs" />
     <Compile Include="Encryption\ISaltCombiner.cs" />
     <Compile Include="Encryption\ISecretGenerator.cs" />
     <Compile Include="IService.cs" />

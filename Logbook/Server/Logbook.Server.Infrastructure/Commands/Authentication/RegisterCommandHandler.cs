@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Localization.Server;
+using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
@@ -57,7 +58,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 Salt = this._secretGenerator.Generate(),
                 IterationCount = Config.IterationCountForPasswordHashing,
             };
-            authenticationData.Hash = this._saltCombiner.Combine(authenticationData.Salt, authenticationData.IterationCount, BitConverter.ToString(command.PasswordMD5Hash));
+            authenticationData.Hash = this._saltCombiner.Combine(authenticationData.Salt, authenticationData.IterationCount, command.PasswordSHA256Hash);
 
             await this._documentSession.StoreAsync(authenticationData).WithCurrentCulture();
 

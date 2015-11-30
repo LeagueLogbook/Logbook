@@ -22,14 +22,28 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         [Route("Register")]
         public async Task<HttpResponseMessage> RegisterAsync(RegisterData data)
         {
-            if (data?.EmailAddress == null || data?.PasswordMD5Hash == null)
+            if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, string.Empty);
 
             var result = await this.CommandExecutor
-                .Execute(new RegisterCommand(data.EmailAddress, data.PasswordMD5Hash, data.PreferredLanguage))
+                .Execute(new RegisterCommand(data.EmailAddress, data.PasswordSHA256Hash, data.PreferredLanguage))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithResult(HttpStatusCode.Created, HttpStatusCode.InternalServerError, result);
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<HttpResponseMessage> LoginAsync(LoginData data)
+        {
+            if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
+                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, string.Empty);
+
+            var result = await this.CommandExecutor
+                .Execute(new LoginCommand(data.EmailAddress, data.PasswordSHA256Hash))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);
         }
     }
 }
