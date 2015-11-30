@@ -120,4 +120,7 @@
   <data name="EmailIsNotAvailable" xml:space="preserve">
     <value>Diese E-Mail-Adresse wird bereits benutzt.</value>
   </data>
+  <data name="NoAuthenticationTokenGiven" xml:space="preserve">
+    <value>Keine Sitzungsinformationen vorhanden.</value>
+  </data>
 </root>

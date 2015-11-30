@@ -68,5 +68,14 @@ namespace Logbook.Localization.Server {
                 return ResourceManager.GetString("EmailIsNotAvailable", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No session information were given..
+        /// </summary>
+        public static string NoAuthenticationTokenGiven {
+            get {
+                return ResourceManager.GetString("NoAuthenticationTokenGiven", resourceCulture);
+            }
+        }
     }
 }

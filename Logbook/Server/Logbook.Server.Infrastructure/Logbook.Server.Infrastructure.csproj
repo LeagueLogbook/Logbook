@@ -142,12 +142,14 @@
     <Compile Include="Api\Controllers\BaseController.cs" />
     <Compile Include="Api\Controllers\MetricsController.cs" />
     <Compile Include="Api\Data\PagingInfo.cs" />
+    <Compile Include="Api\Filter\LogbookAuthenticationAttribute.cs" />
     <Compile Include="Api\MessageHandlers\ConcurrentRequestCountMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\LocalizationMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\LoggingMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\RequestExecutionTimeMessageHandler.cs" />
     <Compile Include="Commands\Admin\CreateIndexesCommandHandler.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\AuthenticateCommandHandler.cs" />
     <Compile Include="Commands\Authentication\LoginCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="Encryption\JsonWebTokenService.cs" />
     <Compile Include="Encryption\SaltCombiner.cs" />
     <Compile Include="Encryption\SecretGenerator.cs" />
+    <Compile Include="Extensions\IDependencyResolverExtensions.cs" />
     <Compile Include="Extensions\SaltCombinerExtensions.cs" />
     <Compile Include="Extensions\CommandExecutorExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />

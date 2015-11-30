@@ -27,12 +27,16 @@ namespace Logbook.Server.Infrastructure.Encryption
             {
                 var decodedTokenAsJsonString = JsonWebToken.Decode(jsonWebToken, Config.AuthenticationKeyPhrase, verify: true);
                 dynamic json = JObject.Parse(decodedTokenAsJsonString);
-                
-                return Result.AsSuccess(json.userId);
+
+                return Result.AsSuccess((string)json.userId);
             }
             catch (SignatureVerificationException)
             {
-                return Result.AsError("Token timed out.");
+                return Result.AsError("Session timed out.");
+            }
+            catch (Exception)
+            {
+                return Result.AsError("Invalid session.");
             }
         }
     }
