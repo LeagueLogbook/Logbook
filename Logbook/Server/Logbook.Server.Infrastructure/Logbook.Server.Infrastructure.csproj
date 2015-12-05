@@ -152,7 +152,7 @@
     <Compile Include="Commands\Admin\CreateIndexesCommandHandler.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommandHandler.cs" />
-    <Compile Include="Commands\Authentication\LiveLoginCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\MicrosoftLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\LoginCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />
@@ -169,7 +169,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raven\Indexes\AuthenticationData_ByAllFields.cs" />
     <Compile Include="Raven\Indexes\Users_ByEmailAddress.cs" />
-    <Compile Include="Social\LiveService.cs" />
+    <Compile Include="Social\MicrosoftService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Windsor\CommandInstaller.cs" />
     <Compile Include="Windsor\ContainerInstaller.cs" />

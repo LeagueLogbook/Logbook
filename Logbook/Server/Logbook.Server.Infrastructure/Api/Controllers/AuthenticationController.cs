@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -27,7 +28,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
             var result = await this.CommandExecutor
-                .Execute(new RegisterCommand(data.EmailAddress, data.PasswordSHA256Hash, data.PreferredLanguage))
+                .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithResult(HttpStatusCode.Created, HttpStatusCode.InternalServerError, result);
@@ -41,21 +42,21 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
             var result = await this.CommandExecutor
-                .Execute(new LoginCommand(data.EmailAddress, data.PasswordSHA256Hash))
+                .Execute(new LoginCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash)))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);
         }
 
         [HttpPost]
-        [Route("Login/Live")]
-        public async Task<HttpResponseMessage> LoginLiveAsync(LiveLoginData data)
+        [Route("Login/Microsoft")]
+        public async Task<HttpResponseMessage> LoginLiveAsync(MicrosoftLoginData data)
         {
             if (data?.Code == null || data?.RedirectUrl == null)
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
             var result = await this.CommandExecutor
-                .Execute(new LiveLoginCommand(data.Code, data.RedirectUrl))
+                .Execute(new MicrosoftLoginCommand(data.Code, data.RedirectUrl))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);

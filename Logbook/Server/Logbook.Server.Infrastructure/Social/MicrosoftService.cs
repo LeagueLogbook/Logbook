@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Logbook.Server.Infrastructure.Social
 {
-    public class LiveService : ILiveService
+    public class MicrosoftService : IMicrosoftService
     {
         public async Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code)
         {
@@ -37,7 +37,7 @@ namespace Logbook.Server.Infrastructure.Social
             return responseJson.Value<string>("access_token");
         }
 
-        public async Task<LiveUser> GetMeAsync(string token)
+        public async Task<MicrosoftUser> GetMeAsync(string token)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -50,7 +50,7 @@ namespace Logbook.Server.Infrastructure.Social
             var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
             var responseJson = JObject.Parse(responseJsonString);
 
-            return new LiveUser
+            return new MicrosoftUser
             {
                 Id = responseJson.Value<string>("id"),
                 EmailAddress = responseJson.Value<JObject>("emails").Value<string>("preferred"),

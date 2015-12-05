@@ -3,6 +3,6 @@
     public enum AuthenticationKind
     {
         Logbook,
-        Live
+        Microsoft,
     }
 }

@@ -12,10 +12,17 @@ namespace Logbook.Server.Hosts.Service
 
         public void Start()
         {
-            var options = new StartOptions();
-            options.Urls.AddRange(Config.Addresses.GetValue().Select(f => f.ToString()));
+            try
+            {
+                var options = new StartOptions();
+                options.Urls.AddRange(Config.Addresses.GetValue().Select(f => f.ToString()));
 
-            this._webApp = WebApp.Start<Startup>(options);
+                this._webApp = WebApp.Start<Startup>(options);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public void Stop()

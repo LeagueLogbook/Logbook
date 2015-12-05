@@ -2,10 +2,10 @@
 
 namespace Logbook.Server.Contracts.Social
 {
-    public interface ILiveService : IService
+    public interface IMicrosoftService : IService
     {
         Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code);
 
-        Task<LiveUser> GetMeAsync(string token);
+        Task<MicrosoftUser> GetMeAsync(string token);
     }
 }

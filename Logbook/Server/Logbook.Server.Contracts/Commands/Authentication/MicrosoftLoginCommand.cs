@@ -3,9 +3,9 @@ using LiteGuard;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class LiveLoginCommand : ICommand<string>
+    public class MicrosoftLoginCommand : ICommand<string>
     {
-        public LiveLoginCommand([NotNull]string code, [NotNull]string redirectUrl)
+        public MicrosoftLoginCommand([NotNull]string code, [NotNull]string redirectUrl)
         {
             Guard.AgainstNullArgument(nameof(code), code);
             Guard.AgainstNullArgument(nameof(redirectUrl), redirectUrl);

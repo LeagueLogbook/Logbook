@@ -1,6 +1,6 @@
 ﻿namespace Logbook.Server.Contracts.Social
 {
-    public class LiveUser
+    public class MicrosoftUser
     {
         public string Id { get; set; }
         public string EmailAddress { get; set; }

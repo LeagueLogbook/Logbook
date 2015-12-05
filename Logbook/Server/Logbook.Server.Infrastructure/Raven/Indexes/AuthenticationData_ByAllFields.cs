@@ -10,22 +10,22 @@ namespace Logbook.Server.Infrastructure.Raven.Indexes
         public class Result
         {
             public string ForUserId { get; set; }
-            public string LiveUserId { get; set; }
+            public string MicrosoftUserId { get; set; }
         }
 
         public AuthenticationData_ByAllFields()
         {
             this.Map = datas =>
                 from data in datas
-                let liveLogin = (LiveAuthenticationKind)data.Authentications.FirstOrDefault(f => f.Kind == AuthenticationKind.Live)
+                let microsoftLogin = (MicrosoftAuthenticationKind)data.Authentications.FirstOrDefault(f => f.Kind == AuthenticationKind.Microsoft)
                 select new Result
                 {
                     ForUserId = data.ForUserId,
-                    LiveUserId = liveLogin.LiveUserId
+                    MicrosoftUserId = microsoftLogin.MicrosoftUserId
                 };
 
             this.Index(f => f.ForUserId, FieldIndexing.NotAnalyzed);
-            this.Index(f => f.LiveUserId, FieldIndexing.NotAnalyzed);
+            this.Index(f => f.MicrosoftUserId, FieldIndexing.NotAnalyzed);
         }
     }
 }

@@ -17,34 +17,34 @@ using Raven.Client.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class LiveLoginCommandHandler : ICommandHandler<LiveLoginCommand, string>
+    public class MicrosoftLoginCommandHandler : ICommandHandler<MicrosoftLoginCommand, string>
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly IJsonWebTokenService _jsonWebTokenService;
-        private readonly ILiveService _liveService;
+        private readonly IMicrosoftService _microsoftService;
 
-        public LiveLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, ILiveService liveService)
+        public MicrosoftLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, IMicrosoftService microsoftService)
         {
             this._documentSession = documentSession;
             this._jsonWebTokenService = jsonWebTokenService;
-            this._liveService = liveService;
+            this._microsoftService = microsoftService;
         }
 
-        public async Task<Result<string>> Execute(LiveLoginCommand command, ICommandScope scope)
+        public async Task<Result<string>> Execute(MicrosoftLoginCommand command, ICommandScope scope)
         {
-            string liveToken = await this._liveService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
+            string liveToken = await this._microsoftService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
 
             if (string.IsNullOrWhiteSpace(liveToken))
                 return Result.AsError(ServerMessages.InternalServerError);
 
-            var liveUser = await this._liveService.GetMeAsync(liveToken).WithCurrentCulture();
+            var liveUser = await this._microsoftService.GetMeAsync(liveToken).WithCurrentCulture();
 
             if (liveUser == null)
                 return Result.AsError(ServerMessages.InternalServerError);
 
-            IList<Func<LiveUser, Task<string>>> casesToCheck = new List<Func<LiveUser, Task<string>>>
+            IList<Func<MicrosoftUser, Task<string>>> casesToCheck = new List<Func<MicrosoftUser, Task<string>>>
             {
-                this.FindUserIdByLiveUserId,
+                this.FindUserIdByMicrosoftUserId,
                 this.FindUserIdByEmailAddress,
                 this.CreateNewUser
             };
@@ -62,10 +62,10 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             return Result.AsError(ServerMessages.InternalServerError);
         }
 
-        private async Task<string> FindUserIdByLiveUserId(LiveUser liveUser)
+        private async Task<string> FindUserIdByMicrosoftUserId(MicrosoftUser microsoftUser)
         {
             var authenticationData = await this._documentSession.Query<AuthenticationData_ByAllFields.Result, AuthenticationData_ByAllFields>()
-                .Where(f => f.LiveUserId == liveUser.Id)
+                .Where(f => f.MicrosoftUserId == microsoftUser.Id)
                 .OfType<AuthenticationData>()
                 .FirstOrDefaultAsync()
                 .WithCurrentCulture();
@@ -73,10 +73,10 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             return authenticationData?.ForUserId;
         }
 
-        private async Task<string> FindUserIdByEmailAddress(LiveUser liveUser)
+        private async Task<string> FindUserIdByEmailAddress(MicrosoftUser microsoftUser)
         {
             var user = await this._documentSession.Query<User, Users_ByEmailAddress>()
-                .Where(f => f.EmailAddress == liveUser.EmailAddress)
+                .Where(f => f.EmailAddress == microsoftUser.EmailAddress)
                 .FirstOrDefaultAsync()
                 .WithCurrentCulture();
 
@@ -87,20 +87,20 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 .LoadAsync<AuthenticationData>(AuthenticationData.CreateId(user.Id))
                 .WithCurrentCulture();
 
-            authenticationData.Authentications.Add(new LiveAuthenticationKind
+            authenticationData.Authentications.Add(new MicrosoftAuthenticationKind
             {
-                LiveUserId = liveUser.Id
+                MicrosoftUserId = microsoftUser.Id
             });
 
             return user.Id;
         }
 
-        private async Task<string> CreateNewUser(LiveUser liveUser)
+        private async Task<string> CreateNewUser(MicrosoftUser microsoftUser)
         {
             var user = new User
             {
-                EmailAddress = liveUser.EmailAddress,
-                PreferredLanguage = new CultureInfo(liveUser.Locale).Parent.TwoLetterISOLanguageName
+                EmailAddress = microsoftUser.EmailAddress,
+                PreferredLanguage = new CultureInfo(microsoftUser.Locale).Parent.TwoLetterISOLanguageName
             };
 
             await this._documentSession.StoreAsync(user).WithCurrentCulture();
@@ -110,9 +110,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 ForUserId = user.Id,
                 Authentications =
                 {
-                    new LiveAuthenticationKind
+                    new MicrosoftAuthenticationKind
                     {
-                        LiveUserId = liveUser.Id
+                        MicrosoftUserId = microsoftUser.Id
                     }
                 }
             };

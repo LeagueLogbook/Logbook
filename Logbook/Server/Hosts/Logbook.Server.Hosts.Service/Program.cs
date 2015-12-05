@@ -11,22 +11,29 @@ namespace Logbook.Server.Hosts.Service
     {
         static void Main(string[] args)
         {
-            HostFactory.Run(f =>
+            try
             {
-                f.Service<LogbookService>(d =>
+                HostFactory.Run(f =>
                 {
-                    d.ConstructUsing(_ => new LogbookService());
-                    d.WhenStarted(x => x.Start());
-                    d.WhenStopped(x => x.Stop());
+                    f.Service<LogbookService>(d =>
+                    {
+                        d.ConstructUsing(_ => new LogbookService());
+                        d.WhenStarted(x => x.Start());
+                        d.WhenStopped(x => x.Stop());
+                    });
+
+                    f.RunAsLocalSystem();
+                    f.StartAutomatically();
+
+                    f.SetDescription("The Logbook HTTP Api.");
+                    f.SetDisplayName("Logbook HTTP Api");
+                    f.SetServiceName("LogbookHTTPApi");
                 });
-
-                f.RunAsLocalSystem();
-                f.StartAutomatically();
-
-                f.SetDescription("The Logbook HTTP Api.");
-                f.SetDisplayName("Logbook HTTP Api");
-                f.SetServiceName("LogbookHTTPApi");
-            });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }
