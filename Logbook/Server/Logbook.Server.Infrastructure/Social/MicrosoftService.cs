@@ -15,9 +15,9 @@ namespace Logbook.Server.Infrastructure.Social
         {
             var data = new Dictionary<string, string>
             {
-                ["client_id"] = Config.LiveClientId,
+                ["client_id"] = Config.MicrosoftClientId,
                 ["redirect_uri"] = redirectUrl,
-                ["client_secret"] = Config.LiveClientSecret,
+                ["client_secret"] = Config.MicrosoftClientSecret,
                 ["code"] = code,
                 ["grant_type"] = "authorization_code",
             };

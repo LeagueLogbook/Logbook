@@ -20,8 +20,8 @@ namespace Logbook.Server.Infrastructure
             Addresses = new UriListSetting("Logbook/Addresses", new List<Uri> { new Uri("http://localhost") }, "|");
             AuthenticationKeyPhrase = new StringSetting("Logbook/AuthenticationKeyPhrase", string.Empty);
             LoginIsValidForDuration = new TimeSpanSetting("Logbook/LoginIsValidForDuration", TimeSpan.FromHours(8));
-            LiveClientId = new StringSetting("Logbook/LiveClientId", string.Empty);
-            LiveClientSecret = new StringSetting("Logbook/LiveClientSecret", string.Empty);
+            MicrosoftClientId = new StringSetting("Logbook/MicrosoftClientId", string.Empty);
+            MicrosoftClientSecret = new StringSetting("Logbook/MicrosoftClientSecret", string.Empty);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -36,8 +36,8 @@ namespace Logbook.Server.Infrastructure
         public static UriListSetting Addresses { get; }
         public static StringSetting AuthenticationKeyPhrase { get; }
         public static TimeSpanSetting LoginIsValidForDuration { get; }
-        public static StringSetting LiveClientId { get; }
-        public static StringSetting LiveClientSecret { get; }
+        public static StringSetting MicrosoftClientId { get; }
+        public static StringSetting MicrosoftClientSecret { get; }
 
     }
 }
