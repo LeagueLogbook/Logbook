@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Logbook.Server.Contracts.Commands;
-using Logbook.Shared.Results;
 
 namespace Logbook.Server.Infrastructure.Commands
 {
@@ -14,6 +13,6 @@ namespace Logbook.Server.Infrastructure.Commands
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
         [NotNull]
-        Task<Result<TResult>> Execute([NotNull]TCommand command, [NotNull]ICommandScope scope);
+        Task<TResult> Execute([NotNull]TCommand command, [NotNull]ICommandScope scope);
     }
 }

@@ -27,11 +27,11 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
-            var result = await this.CommandExecutor
+            var user = await this.CommandExecutor
                 .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage))
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithResult(HttpStatusCode.Created, HttpStatusCode.InternalServerError, result);
+            return this.Request.GetMessageWithObject(HttpStatusCode.Created, user);
         }
 
         [HttpPost]
@@ -41,11 +41,11 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
-            var result = await this.CommandExecutor
+            var token = await this.CommandExecutor
                 .Execute(new LoginCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash)))
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
 
         [HttpPost]
@@ -55,11 +55,11 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (data?.Code == null || data?.RedirectUrl == null)
                 return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
 
-            var result = await this.CommandExecutor
+            var token = await this.CommandExecutor
                 .Execute(new MicrosoftLoginCommand(data.Code, data.RedirectUrl))
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result);
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
     }
 }

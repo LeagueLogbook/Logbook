@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmailIsNotAvailable" xml:space="preserve">
+    <value>Diese E-Mail-Adresse wird bereits benutzt.</value>
+  </data>
   <data name="InternalServerError" xml:space="preserve">
     <value>Auf dem Server ist ein unerwarteter Fehler aufgetreten.</value>
+  </data>
+  <data name="NoAuthenticationTokenGiven" xml:space="preserve">
+    <value>Keine Sitzungsinformationen vorhanden.</value>
   </data>
   <data name="OnlyLocal" xml:space="preserve">
     <value>Dieser Endpunkt ist nur von Localhost erreichbar.</value>

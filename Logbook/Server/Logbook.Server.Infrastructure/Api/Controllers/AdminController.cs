@@ -23,11 +23,11 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         [OnlyLocal]
         public async Task<HttpResponseMessage> CreateIndexes()
         {
-            var result = await this.CommandExecutor
+            await this.CommandExecutor
                 .Execute(new CreateIndexesCommand())
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithResult(HttpStatusCode.Created, HttpStatusCode.InternalServerError, result, ignoreData: true);
+            return this.Request.GetMessage(HttpStatusCode.Created);
         }
 
         [HttpPatch]
@@ -35,11 +35,11 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         [OnlyLocal]
         public async Task<HttpResponseMessage> ResetIndexes()
         {
-            var result = await this.CommandExecutor
+            await this.CommandExecutor
                 .Execute(new ResetIndexesCommand())
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithResult(HttpStatusCode.OK, HttpStatusCode.InternalServerError, result, ignoreData: true);
+            return this.Request.GetMessage(HttpStatusCode.OK);
         }
     }
 }

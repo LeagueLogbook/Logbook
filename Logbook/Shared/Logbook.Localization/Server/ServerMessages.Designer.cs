@@ -61,6 +61,15 @@ namespace Logbook.Localization.Server {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot login with a password for the email address &quot;{0}&quot;..
+        /// </summary>
+        public static string CannotLoginWithPassword {
+            get {
+                return ResourceManager.GetString("CannotLoginWithPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required data are missing..
         /// </summary>
         public static string DataMissing {
@@ -70,11 +79,47 @@ namespace Logbook.Localization.Server {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This email address is already in use..
+        /// </summary>
+        public static string EmailIsNotAvailable {
+            get {
+                return ResourceManager.GetString("EmailIsNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incorrect password..
+        /// </summary>
+        public static string IncorrectPassword {
+            get {
+                return ResourceManager.GetString("IncorrectPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An unexpected error occured in the server..
         /// </summary>
         public static string InternalServerError {
             get {
                 return ResourceManager.GetString("InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No session information were given..
+        /// </summary>
+        public static string NoAuthenticationTokenGiven {
+            get {
+                return ResourceManager.GetString("NoAuthenticationTokenGiven", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No user exists with the email address &quot;{0}&quot;..
+        /// </summary>
+        public static string NoUserFound {
+            get {
+                return ResourceManager.GetString("NoUserFound", resourceCulture);
             }
         }
         

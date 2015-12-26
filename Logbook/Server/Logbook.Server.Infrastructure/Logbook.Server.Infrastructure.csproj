@@ -162,6 +162,15 @@
     <Compile Include="Encryption\JsonWebTokenService.cs" />
     <Compile Include="Encryption\SaltCombiner.cs" />
     <Compile Include="Encryption\SecretGenerator.cs" />
+    <Compile Include="Exceptions\JsonWebTokenTimedOutException.cs" />
+    <Compile Include="Exceptions\LogbookException.cs" />
+    <Compile Include="Exceptions\CannotLoginWithPasswordException.cs" />
+    <Compile Include="Exceptions\EmailIsNotAvailableException.cs" />
+    <Compile Include="Exceptions\IncorrectPasswordException.cs" />
+    <Compile Include="Exceptions\InternalServerErrorException.cs" />
+    <Compile Include="Exceptions\InvalidJsonWebTokenException.cs" />
+    <Compile Include="Exceptions\UnauthorizedException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Extensions\IDependencyResolverExtensions.cs" />
     <Compile Include="Extensions\SaltCombinerExtensions.cs" />
     <Compile Include="Extensions\CommandExecutorExtensions.cs" />

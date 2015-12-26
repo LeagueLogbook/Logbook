@@ -1,7 +1,7 @@
 ﻿using System;
 using JWT;
 using Logbook.Server.Contracts.Encryption;
-using Logbook.Shared.Results;
+using Logbook.Server.Infrastructure.Exceptions;
 using Metrics.Utils;
 using Newtonsoft.Json.Linq;
 
@@ -21,22 +21,24 @@ namespace Logbook.Server.Infrastructure.Encryption
             return JsonWebToken.Encode(payload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
         }
 
-        public Result<string> ValidateAndDecode(string jsonWebToken)
+        public string ValidateAndDecode(string jsonWebToken)
         {
             try
             {
                 var decodedTokenAsJsonString = JsonWebToken.Decode(jsonWebToken, Config.AuthenticationKeyPhrase, verify: true);
-                dynamic json = JObject.Parse(decodedTokenAsJsonString);
+                JObject json = JObject.Parse(decodedTokenAsJsonString);
 
-                return Result.AsSuccess((string)json.userId);
+                string userId = json.Value<string>("userId");
+
+                return userId;
             }
             catch (SignatureVerificationException)
             {
-                return Result.AsError("Session timed out.");
+                throw new JsonWebTokenTimedOutException();
             }
             catch (Exception)
             {
-                return Result.AsError("Invalid session.");
+                throw new InvalidJsonWebTokenException();
             }
         }
     }

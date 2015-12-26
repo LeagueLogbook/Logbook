@@ -3,7 +3,6 @@ using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Admin;
-using Logbook.Shared.Results;
 using Raven.Client;
 using Raven.Client.Indexes;
 
@@ -34,16 +33,13 @@ namespace Logbook.Server.Infrastructure.Commands.Admin
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public Task<Result<object>> Execute(CreateIndexesCommand command, ICommandScope scope)
+        public async Task<object> Execute(CreateIndexesCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);
 
-            return Result.CreateAsync(async () =>
-            {
-                await IndexCreation.CreateIndexesAsync(this.GetType().Assembly, this._documentStore);
-                return new object();
-            });
+            await IndexCreation.CreateIndexesAsync(this.GetType().Assembly, this._documentStore);
+            return new object();
         }
         #endregion
     }

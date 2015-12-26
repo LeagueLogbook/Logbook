@@ -8,7 +8,7 @@ using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
-using Logbook.Shared.Results;
+using Logbook.Server.Infrastructure.Exceptions;
 using Microsoft.Owin;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
@@ -42,17 +42,17 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public async Task<Result<string>> Execute(AuthenticateCommand command, ICommandScope scope)
+        public async Task<string> Execute(AuthenticateCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);
 
-            Result<string> tokenResult = this.GetToken(command.Context);
+            string token = this.GetToken(command.Context);
 
-            if (tokenResult.IsError)
-                return tokenResult;
+            if (token == null)
+                throw new UnauthorizedException();
 
-            return this._jsonWebTokenService.ValidateAndDecode(tokenResult.Data);
+            return this._jsonWebTokenService.ValidateAndDecode(token);
         }
         #endregion
 
@@ -61,53 +61,50 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// Tries to extract the JWT from the request.
         /// </summary>
         /// <param name="requestContext">The request context.</param>
-        private Result<string> GetToken(IOwinContext requestContext)
+        private string GetToken(IOwinContext requestContext)
         {
-            Result<string> tokenFromUri = this.GetTokenFromUri(requestContext);
+            string tokenFromUri = this.GetTokenFromUri(requestContext);
 
-            if (tokenFromUri.IsSuccess)
+            if (tokenFromUri != null)
                 return tokenFromUri;
 
-            Result<string> tokenFromHeader = this.GetTokenFromHeader(requestContext);
+            string tokenFromHeader = this.GetTokenFromHeader(requestContext);
 
-            if (tokenFromHeader.IsSuccess)
+            if (tokenFromHeader != null)
                 return tokenFromHeader;
 
-            return Result.AsError(CommandMessages.NoAuthenticationTokenGiven);
+            return null;
         }
         /// <summary>
         /// Tries to extract the JWT from the request query parameters.
         /// </summary>
         /// <param name="requestContext">The request context.</param>
-        private Result<string> GetTokenFromUri(IOwinContext requestContext)
+        private string GetTokenFromUri(IOwinContext requestContext)
         {
             IList<string> values = requestContext.Request.Query.GetValues("token");
 
             if (values != null && values.Any())
-                return Result.AsSuccess(values.First());
+                return values.First();
 
-            return Result.AsError(CommandMessages.NoAuthenticationTokenGiven);
+            return null;
         }
         /// <summary>
         /// Tries to extract the JWT from the request headers.
         /// </summary>
         /// <param name="requestContext">The request context.</param>
-        private Result<string> GetTokenFromHeader(IOwinContext requestContext)
+        private string GetTokenFromHeader(IOwinContext requestContext)
         {
             string authorizationHeader = requestContext.Request.Headers.Get("Authorization");
 
-            if (authorizationHeader == null)
-                return Result.AsError(CommandMessages.NoAuthenticationTokenGiven);
+            string[] parts = authorizationHeader?.Split(' ');
 
-            string[] parts = authorizationHeader.Split(' ');
-
-            if (parts.Length != 2)
-                return Result.AsError(CommandMessages.NoAuthenticationTokenGiven);
+            if (parts?.Length != 2)
+                return null;
 
             if (parts[0].Equals(AuthenticationMechanism, StringComparison.InvariantCultureIgnoreCase) == false)
-                return Result.AsError(CommandMessages.NoAuthenticationTokenGiven);
+                return null;
 
-            return Result.AsSuccess(parts[1]);
+            return parts[1];
         }
         #endregion
     }

@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Admin;
-using Logbook.Shared.Results;
 using Raven.Client;
 using Raven.Client.Indexes;
 
@@ -36,21 +35,18 @@ namespace Logbook.Server.Infrastructure.Commands.Admin
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public Task<Result<object>> Execute(ResetIndexesCommand command, ICommandScope scope)
+        public async Task<object> Execute(ResetIndexesCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);
-
-            return Result.CreateAsync(async () =>
+            
+            var container = new CompositionContainer(new AssemblyCatalog(this.GetType().Assembly));
+            foreach (var index in container.GetExportedValues<AbstractIndexCreationTask>())
             {
-                var container = new CompositionContainer(new AssemblyCatalog(this.GetType().Assembly));
-                foreach (var index in container.GetExportedValues<AbstractIndexCreationTask>())
-                {
-                    await this._documentStore.AsyncDatabaseCommands.ResetIndexAsync(index.IndexName);
-                }
+                await this._documentStore.AsyncDatabaseCommands.ResetIndexAsync(index.IndexName);
+            }
 
-                return new object();
-            });
+            return new object();
         }
         #endregion
     }

@@ -8,10 +8,10 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
-using Logbook.Shared.Results;
 using Raven.Client;
 using Raven.Client.Linq;
 
@@ -30,17 +30,17 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             this._microsoftService = microsoftService;
         }
 
-        public async Task<Result<string>> Execute(MicrosoftLoginCommand command, ICommandScope scope)
+        public async Task<string> Execute(MicrosoftLoginCommand command, ICommandScope scope)
         {
             string liveToken = await this._microsoftService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
 
             if (string.IsNullOrWhiteSpace(liveToken))
-                return Result.AsError(ServerMessages.InternalServerError);
+                throw new InternalServerErrorException();
 
             var liveUser = await this._microsoftService.GetMeAsync(liveToken).WithCurrentCulture();
 
             if (liveUser == null)
-                return Result.AsError(ServerMessages.InternalServerError);
+                throw new InternalServerErrorException();
 
             IList<Func<MicrosoftUser, Task<string>>> casesToCheck = new List<Func<MicrosoftUser, Task<string>>>
             {
@@ -54,12 +54,11 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 var userId = await caseToCheck(liveUser).WithCurrentCulture();
                 if (userId != null)
                 {
-                    var jsonWebToken = this._jsonWebTokenService.Generate(userId);
-                    return Result.AsSuccess(jsonWebToken);
+                    return this._jsonWebTokenService.Generate(userId);
                 }
             }
 
-            return Result.AsError(ServerMessages.InternalServerError);
+            throw new InternalServerErrorException();
         }
 
         private async Task<string> FindUserIdByMicrosoftUserId(MicrosoftUser microsoftUser)

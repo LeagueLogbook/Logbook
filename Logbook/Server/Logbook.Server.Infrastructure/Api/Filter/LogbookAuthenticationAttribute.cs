@@ -4,8 +4,10 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
+using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Extensions;
 
@@ -30,17 +32,17 @@ namespace Logbook.Server.Infrastructure.Api.Filter
         {
             var commandExecutor = context.ActionContext.ControllerContext.Configuration.DependencyResolver.GetService<ICommandExecutor>();
 
-            var isAuthenticated = await commandExecutor
+            var userId = await commandExecutor
                 .Execute(new AuthenticateCommand(context.Request.GetOwinContext()))
                 .WithCurrentCulture();
 
-            if (isAuthenticated.IsSuccess)
+            if (userId != null)
             {
-                context.Principal = new GenericPrincipal(new GenericIdentity(isAuthenticated.Data), new string[0]);
+                context.Principal = new GenericPrincipal(new GenericIdentity(userId), new string[0]);
             }
             else
             {
-                context.ErrorResult = new AuthenticationFailureResult(isAuthenticated.Message, context.Request);
+                throw new InternalServerErrorException();
             }
         }
         /// <summary>

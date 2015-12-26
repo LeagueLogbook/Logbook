@@ -8,10 +8,10 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
-using Logbook.Shared.Results;
 using Raven.Client;
 using Raven.Client.Linq;
 
@@ -50,7 +50,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public async Task<Result<User>> Execute(RegisterCommand command, ICommandScope scope)
+        public async Task<User> Execute(RegisterCommand command, ICommandScope scope)
         {
             var emailAddressAlreadyInUse = await this._documentSession
                 .Query<User, Users_ByEmailAddress>()
@@ -59,7 +59,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 .WithCurrentCulture();
 
             if (emailAddressAlreadyInUse)
-                return Result.AsError(CommandMessages.EmailIsNotAvailable);
+                throw new EmailIsNotAvailableException();
 
             var user = new User
             {
@@ -86,7 +86,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             await this._documentSession.StoreAsync(authenticationData).WithCurrentCulture();
 
-            return Result.AsSuccess(user);
+            return user;
         }
         #endregion
     }
