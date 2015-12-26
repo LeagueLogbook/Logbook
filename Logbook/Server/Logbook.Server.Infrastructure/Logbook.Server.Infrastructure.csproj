@@ -137,6 +137,7 @@
     <Compile Include="Api\Configuration\LogbookAssembliesResolver.cs" />
     <Compile Include="Api\Configuration\LogbookExceptionHandler.cs" />
     <Compile Include="Api\Configuration\LogbookExceptionLogger.cs" />
+    <Compile Include="Api\Configuration\LogbookExceptionToStatusCodeMapping.cs" />
     <Compile Include="Api\Controllers\AdminController.cs" />
     <Compile Include="Api\Controllers\AuthenticationController.cs" />
     <Compile Include="Api\Controllers\BaseController.cs" />
