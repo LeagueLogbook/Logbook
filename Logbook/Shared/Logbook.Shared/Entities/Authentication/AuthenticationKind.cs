@@ -4,5 +4,6 @@
     {
         Logbook,
         Microsoft,
+        Facebook,
     }
 }

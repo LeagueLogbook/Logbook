@@ -61,6 +61,7 @@
     <Compile Include="Entities\Authentication\AuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\AuthenticationKindBase.cs" />
     <Compile Include="Entities\Authentication\AuthenticationData.cs" />
+    <Compile Include="Entities\Authentication\FacebookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\MicrosoftAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\LogbookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\User.cs" />

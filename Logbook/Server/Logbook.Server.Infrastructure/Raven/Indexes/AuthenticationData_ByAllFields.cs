@@ -11,6 +11,7 @@ namespace Logbook.Server.Infrastructure.Raven.Indexes
         {
             public string ForUserId { get; set; }
             public string MicrosoftUserId { get; set; }
+            public string FacebookUserId { get; set; }
         }
 
         public AuthenticationData_ByAllFields()
@@ -18,14 +19,17 @@ namespace Logbook.Server.Infrastructure.Raven.Indexes
             this.Map = datas =>
                 from data in datas
                 let microsoftLogin = (MicrosoftAuthenticationKind)data.Authentications.FirstOrDefault(f => f.Kind == AuthenticationKind.Microsoft)
+                let facebookLogin = (FacebookAuthenticationKind)data.Authentications.FirstOrDefault(f => f.Kind == AuthenticationKind.Facebook)
                 select new Result
                 {
                     ForUserId = data.ForUserId,
-                    MicrosoftUserId = microsoftLogin.MicrosoftUserId
+                    MicrosoftUserId = microsoftLogin.MicrosoftUserId,
+                    FacebookUserId = facebookLogin.FacebookUserId
                 };
 
             this.Index(f => f.ForUserId, FieldIndexing.NotAnalyzed);
             this.Index(f => f.MicrosoftUserId, FieldIndexing.NotAnalyzed);
+            this.Index(f => f.FacebookUserId, FieldIndexing.NotAnalyzed);
         }
     }
 }

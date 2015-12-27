@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
@@ -12,24 +11,24 @@ using Raven.Client;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class MicrosoftLoginCommandHandler : SocialLoginCommandHandler<MicrosoftLoginCommand>
+    public class FacebookLoginCommandHandler : SocialLoginCommandHandler<FacebookLoginCommand>
     {
-        private readonly IMicrosoftService _microsoftService;
+        private readonly IFacebookService _facebookService;
 
-        public MicrosoftLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, IMicrosoftService microsoftService)
+        public FacebookLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, IFacebookService facebookService)
             : base(documentSession, jsonWebTokenService)
         {
-            this._microsoftService = microsoftService;
+            this._facebookService = facebookService;
         }
 
-        protected override Task<string> ExchangeCodeForTokenAsync(MicrosoftLoginCommand command)
+        protected override Task<string> ExchangeCodeForTokenAsync(FacebookLoginCommand command)
         {
-            return this._microsoftService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
+            return this._facebookService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
         }
 
         protected override async Task<SocialLoginUser> GetMeAsync(string token)
         {
-            var user = await this._microsoftService.GetMeAsync(token).WithCurrentCulture();
+            var user = await this._facebookService.GetMeAsync(token).WithCurrentCulture();
 
             if (user == null)
                 return null;
@@ -38,20 +37,20 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             {
                 Id = user.Id,
                 Locale = user.Locale,
-                EmailAddress = user.EmailAddress
+                EmailAddress = user.Email
             };
         }
 
         protected override Expression<Func<AuthenticationData_ByAllFields.Result, bool>> GetExpressionForSocialUserId(SocialLoginUser user)
         {
-            return f => f.MicrosoftUserId == user.Id;
+            return f => f.FacebookUserId == user.Id;
         }
 
         protected override AuthenticationKindBase CreateAuthentication(SocialLoginUser user)
         {
-            return new MicrosoftAuthenticationKind
+            return new FacebookAuthenticationKind
             {
-                MicrosoftUserId = user.Id
+                FacebookUserId = user.Id
             };
         }
     }
