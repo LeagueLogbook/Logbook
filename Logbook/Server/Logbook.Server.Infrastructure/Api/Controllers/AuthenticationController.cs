@@ -61,5 +61,19 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
+
+        [HttpPost]
+        [Route("Login/Facebook")]
+        public async Task<HttpResponseMessage> LoginFacebookAsync(FacebookLoginData data)
+        {
+            if (data?.Code == null || data?.RedirectUrl == null)
+                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
+
+            var token = await this.CommandExecutor
+                .Execute(new FacebookLoginCommand(data.Code, data.RedirectUrl))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
+        }
     }
 }

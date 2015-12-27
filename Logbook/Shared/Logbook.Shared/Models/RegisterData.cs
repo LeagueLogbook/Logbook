@@ -18,4 +18,10 @@
         public string Code { get; set; }
         public string RedirectUrl { get; set; }
     }
+
+    public class FacebookLoginData
+    {
+        public string Code { get; set; }
+        public string RedirectUrl { get; set; }
+    }
 }
