@@ -172,6 +172,7 @@
     <Compile Include="Exceptions\InvalidJsonWebTokenException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\IDependencyResolverExtensions.cs" />
     <Compile Include="Extensions\SaltCombinerExtensions.cs" />
     <Compile Include="Extensions\CommandExecutorExtensions.cs" />

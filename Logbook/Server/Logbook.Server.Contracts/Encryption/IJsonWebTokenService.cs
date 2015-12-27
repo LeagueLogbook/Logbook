@@ -1,10 +1,11 @@
 ﻿using Logbook.Shared;
+using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Encryption
 {
     public interface IJsonWebTokenService : IService
     {
-        string Generate(string userId);
+        AuthenticationToken Generate(string userId);
         string ValidateAndDecode(string jsonWebToken);
     }
 }

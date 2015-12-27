@@ -11,11 +11,12 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
+using Logbook.Shared.Models;
 using Raven.Client;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class LoginCommandHandler : ICommandHandler<LoginCommand, string>
+    public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationToken>
     {
         #region Fields
         private readonly IAsyncDocumentSession _documentSession;
@@ -48,7 +49,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public async Task<string> Execute(LoginCommand command, ICommandScope scope)
+        public async Task<AuthenticationToken> Execute(LoginCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);

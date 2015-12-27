@@ -12,12 +12,13 @@ using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
+using Logbook.Shared.Models;
 using Raven.Client;
 using Raven.Client.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class MicrosoftLoginCommandHandler : ICommandHandler<MicrosoftLoginCommand, string>
+    public class MicrosoftLoginCommandHandler : ICommandHandler<MicrosoftLoginCommand, AuthenticationToken>
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly IJsonWebTokenService _jsonWebTokenService;
@@ -30,7 +31,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             this._microsoftService = microsoftService;
         }
 
-        public async Task<string> Execute(MicrosoftLoginCommand command, ICommandScope scope)
+        public async Task<AuthenticationToken> Execute(MicrosoftLoginCommand command, ICommandScope scope)
         {
             string liveToken = await this._microsoftService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
 

@@ -2,6 +2,8 @@
 using JWT;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared.Models;
 using Metrics.Utils;
 using Newtonsoft.Json.Linq;
 
@@ -9,16 +11,24 @@ namespace Logbook.Server.Infrastructure.Encryption
 {
     public class JsonWebTokenService : IJsonWebTokenService
     {
-        public string Generate(string userId)
+        public AuthenticationToken Generate(string userId)
         {
+            var expiresAt = DateTime.UtcNow.Add(Config.LoginIsValidForDuration).StripEverythingAfterSeconds();
+
             var payload = new
             {
                 userId = userId,
                 iss = "Logbook",
-                exp = DateTime.UtcNow.Add(Config.LoginIsValidForDuration).ToUnixTime()
+                exp = expiresAt.ToUnixTime()
             };
 
-            return JsonWebToken.Encode(payload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
+            var token = JsonWebToken.Encode(payload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
+
+            return new AuthenticationToken
+            {
+                ExpiresAt = expiresAt,
+                Token = token
+            };
         }
 
         public string ValidateAndDecode(string jsonWebToken)

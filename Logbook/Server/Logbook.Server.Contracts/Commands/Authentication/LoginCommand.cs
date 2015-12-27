@@ -1,10 +1,11 @@
 ﻿using System;
 using JetBrains.Annotations;
 using LiteGuard;
+using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class LoginCommand : ICommand<string>
+    public class LoginCommand : ICommand<AuthenticationToken>
     {
         public LoginCommand([NotNull]string emailAddress, [NotNull]byte[] passwordSha256Hash)
         {

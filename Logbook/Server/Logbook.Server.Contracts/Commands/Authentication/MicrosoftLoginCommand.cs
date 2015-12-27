@@ -1,9 +1,10 @@
 ﻿using JetBrains.Annotations;
 using LiteGuard;
+using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class MicrosoftLoginCommand : ICommand<string>
+    public class MicrosoftLoginCommand : ICommand<AuthenticationToken>
     {
         public MicrosoftLoginCommand([NotNull]string code, [NotNull]string redirectUrl)
         {
