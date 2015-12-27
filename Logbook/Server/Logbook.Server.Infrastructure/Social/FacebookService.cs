@@ -39,10 +39,14 @@ namespace Logbook.Server.Infrastructure.Social
             var responseJsonString = await response.Content.ReadAsStringAsync();
             var json = JObject.Parse(responseJsonString);
 
-            return json
+            var actualScopes = json
                 .Value<JObject>("data")
                 .Value<JArray>("scopes")
-                .Any(f => f.Value<string>() == Constants.Authentication.FacebookRequiredScope);
+                .Select(f => f.Value<string>())
+                .ToList();
+
+            return Constants.Authentication.FacebookRequiredScopes
+                .All(f => actualScopes.Contains(f));
         }
 
         public async Task<FacebookUser> GetMeAsync(string token)

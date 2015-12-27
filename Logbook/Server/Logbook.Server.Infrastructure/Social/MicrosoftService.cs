@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -32,7 +33,9 @@ namespace Logbook.Server.Infrastructure.Social
             var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
             var responseJson = JObject.Parse(responseJsonString);
 
-            if (responseJson.Value<string>("scope").Contains(Constants.Authentication.MicrosoftRequiredScope) == false)
+            var actualScopes = responseJson.Value<string>("scope").Split(' ');
+
+            if (Constants.Authentication.MicrosoftRequiredScopes.All(f => actualScopes.Contains(f)) == false)
                 return null;
 
             return responseJson.Value<string>("access_token");

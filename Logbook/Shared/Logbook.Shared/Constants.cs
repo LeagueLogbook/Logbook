@@ -12,8 +12,8 @@
             public static readonly string AuthorizationHeaderType = "Bearer";
             public static readonly string AuthorizationQueryPart = "token";
             public static readonly string JWTIssuer = "Logbook";
-            public static readonly string MicrosoftRequiredScope = "wl.emails";
-            public static readonly string FacebookRequiredScope = "email";
+            public static readonly string[] MicrosoftRequiredScopes = { "wl.basic", "wl.emails" };
+            public static readonly string[] FacebookRequiredScopes = { "email", "public_profile" };
         }
     }
 }
