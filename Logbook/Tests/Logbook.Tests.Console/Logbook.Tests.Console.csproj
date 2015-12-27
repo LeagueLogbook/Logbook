@@ -147,6 +147,24 @@
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Server\Logbook.Server.Contracts\Logbook.Server.Contracts.csproj">
+      <Project>{3481b019-5905-4247-8d3d-3cd9b0b39fc0}</Project>
+      <Name>Logbook.Server.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\Logbook.Server.Infrastructure\Logbook.Server.Infrastructure.csproj">
+      <Project>{9E3581CC-A81C-4959-AD91-7656AD7DE7AD}</Project>
+      <Name>Logbook.Server.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\Logbook.Localization\Logbook.Localization.csproj">
+      <Project>{67586854-b26a-4e66-9bfd-aafdb5417d39}</Project>
+      <Name>Logbook.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\Logbook.Shared\Logbook.Shared.csproj">
+      <Project>{5f503260-9e39-4c39-9e08-f3c883229b1c}</Project>
+      <Name>Logbook.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

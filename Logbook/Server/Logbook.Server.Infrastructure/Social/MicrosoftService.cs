@@ -32,7 +32,7 @@ namespace Logbook.Server.Infrastructure.Social
             var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
             var responseJson = JObject.Parse(responseJsonString);
 
-            if (responseJson.Value<string>("scope").Contains(Constants.MicrosoftLogin.RequiredScope) == false)
+            if (responseJson.Value<string>("scope").Contains(Constants.Authentication.MicrosoftRequiredScope) == false)
                 return null;
 
             return responseJson.Value<string>("access_token");

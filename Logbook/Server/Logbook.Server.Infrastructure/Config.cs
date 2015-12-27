@@ -22,6 +22,8 @@ namespace Logbook.Server.Infrastructure
             LoginIsValidForDuration = new TimeSpanSetting("Logbook/LoginIsValidForDuration", TimeSpan.FromHours(8));
             MicrosoftClientId = new StringSetting("Logbook/MicrosoftClientId", string.Empty);
             MicrosoftClientSecret = new StringSetting("Logbook/MicrosoftClientSecret", string.Empty);
+            FacebookAppId = new StringSetting("Logbook/FacebookAppId", string.Empty);
+            FacebookAppSecret = new StringSetting("Logbook/FacebookAppSecret", string.Empty);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -38,6 +40,8 @@ namespace Logbook.Server.Infrastructure
         public static TimeSpanSetting LoginIsValidForDuration { get; }
         public static StringSetting MicrosoftClientId { get; }
         public static StringSetting MicrosoftClientSecret { get; }
+        public static StringSetting FacebookAppId { get; }
+        public static StringSetting FacebookAppSecret { get; }
 
     }
 }
