@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Filters;
 using Logbook.Localization.Server;
+using Logbook.Server.Infrastructure.Exceptions;
 
 namespace Logbook.Server.Infrastructure.Api.Filter
 {
@@ -27,7 +28,7 @@ namespace Logbook.Server.Infrastructure.Api.Filter
         {
             if (context.ActionContext.RequestContext.IsLocal == false)
             {
-                context.ErrorResult = new AuthenticationFailureResult(ServerMessages.OnlyLocal, context.Request);
+                throw new OnlyLocalException();
             }
 
             return Task.CompletedTask;

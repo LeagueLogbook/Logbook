@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Social;
+using Logbook.Shared;
 using Logbook.Shared.Extensions;
 using Newtonsoft.Json.Linq;
 
@@ -31,7 +32,7 @@ namespace Logbook.Server.Infrastructure.Social
             var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
             var responseJson = JObject.Parse(responseJsonString);
 
-            if (responseJson.Value<string>("scope").Contains("wl.emails") == false)
+            if (responseJson.Value<string>("scope").Contains(Constants.MicrosoftLogin.RequiredScope) == false)
                 return null;
 
             return responseJson.Value<string>("access_token");

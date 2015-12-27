@@ -17,7 +17,7 @@ namespace Logbook.Server.Infrastructure.Commands
 
         public CommandExecutor([NotNull]IWindsorContainer container)
         {
-            Guard.AgainstNullArgument("container", container);
+            Guard.AgainstNullArgument(nameof(container), container);
 
             this._container = container;
         }

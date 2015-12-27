@@ -3,6 +3,7 @@ using JWT;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Models;
 using Metrics.Utils;
 using Newtonsoft.Json.Linq;
@@ -18,7 +19,7 @@ namespace Logbook.Server.Infrastructure.Encryption
             var payload = new
             {
                 userId = userId,
-                iss = "Logbook",
+                iss = Constants.Authentication.JWTIssuer,
                 exp = expiresAt.ToUnixTime()
             };
 

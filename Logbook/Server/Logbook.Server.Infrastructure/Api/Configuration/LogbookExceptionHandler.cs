@@ -31,7 +31,7 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
             private readonly ExceptionHandlerContext _context;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="UnexpectedExceptionResult"/> class.
+            /// Initializes a new instance of the <see cref="ExceptionResult"/> class.
             /// </summary>
             /// <param name="context">The exception handler context.</param>
             public ExceptionResult(ExceptionHandlerContext context)

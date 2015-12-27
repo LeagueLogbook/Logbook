@@ -142,8 +142,6 @@
     <Compile Include="Api\Controllers\AuthenticationController.cs" />
     <Compile Include="Api\Controllers\BaseController.cs" />
     <Compile Include="Api\Controllers\MetricsController.cs" />
-    <Compile Include="Api\Data\PagingInfo.cs" />
-    <Compile Include="Api\Filter\AuthenticationFailureResult.cs" />
     <Compile Include="Api\Filter\LogbookAuthenticationAttribute.cs" />
     <Compile Include="Api\Filter\OnlyLocalAttribute.cs" />
     <Compile Include="Api\MessageHandlers\ConcurrentRequestCountMessageHandler.cs" />
@@ -170,6 +168,7 @@
     <Compile Include="Exceptions\IncorrectPasswordException.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Exceptions\InvalidJsonWebTokenException.cs" />
+    <Compile Include="Exceptions\OnlyLocalException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
@@ -212,6 +211,7 @@
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Api\Data\" />
     <Folder Include="Commands\Users\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,16 +9,13 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared;
 using Microsoft.Owin;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
     public class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, string>
     {
-        #region Constants
-        public const string AuthenticationMechanism = "Bearer";
-        #endregion
-
         #region Fields
         private readonly IJsonWebTokenService _jsonWebTokenService;
         #endregion
@@ -101,7 +98,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             if (parts?.Length != 2)
                 return null;
 
-            if (parts[0].Equals(AuthenticationMechanism, StringComparison.InvariantCultureIgnoreCase) == false)
+            if (parts[0].Equals(Constants.Authentication.AuthorizationHeaderType, StringComparison.InvariantCultureIgnoreCase) == false)
                 return null;
 
             return parts[1];

@@ -16,7 +16,8 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
             [typeof(InvalidJsonWebTokenException)] = HttpStatusCode.BadRequest,
             [typeof(JsonWebTokenTimedOutException)] = HttpStatusCode.Unauthorized,
             [typeof(UnauthorizedException)] = HttpStatusCode.Unauthorized,
-            [typeof(UserNotFoundException)] = HttpStatusCode.NotFound
+            [typeof(UserNotFoundException)] = HttpStatusCode.NotFound,
+            [typeof(OnlyLocalException)] = HttpStatusCode.Unauthorized,
         };
 
         public static HttpStatusCode GetStatusCode(LogbookException exception)

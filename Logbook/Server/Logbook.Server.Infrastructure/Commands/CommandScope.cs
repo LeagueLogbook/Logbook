@@ -25,7 +25,7 @@ namespace Logbook.Server.Infrastructure.Commands
         /// <param name="container">The container.</param>
         public CommandScope([NotNull]IWindsorContainer container)
         {
-            Guard.AgainstNullArgument("container", container);
+            Guard.AgainstNullArgument(nameof(container), container);
 
             this._container = container;
         }
@@ -39,7 +39,7 @@ namespace Logbook.Server.Infrastructure.Commands
         /// <param name="command">The command.</param>
         public async Task<TResult> Execute<TResult>(ICommand<TResult> command)
         {
-            Guard.AgainstNullArgument("command", command);
+            Guard.AgainstNullArgument(nameof(command), command);
 
             this._commandsCounter.Increment();
             

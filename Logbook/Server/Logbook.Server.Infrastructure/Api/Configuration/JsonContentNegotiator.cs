@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using LiteGuard;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Api.Configuration
 {
@@ -35,7 +36,7 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
         /// <param name="formatters">The set of <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter" /> objects from which to choose.</param>
         public ContentNegotiationResult Negotiate(Type type, HttpRequestMessage request, IEnumerable<MediaTypeFormatter> formatters)
         {
-            var result = new ContentNegotiationResult(this._formatter, new MediaTypeHeaderValue("application/json"));
+            var result = new ContentNegotiationResult(this._formatter, new MediaTypeHeaderValue(Constants.HttpApi.ContentType));
             return result;
         }
         #endregion
