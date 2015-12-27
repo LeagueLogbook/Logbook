@@ -78,12 +78,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="requestContext">The request context.</param>
         private string GetTokenFromUri(IOwinContext requestContext)
         {
-            IList<string> values = requestContext.Request.Query.GetValues("token");
-
-            if (values != null && values.Any())
-                return values.First();
-
-            return null;
+            IList<string> values = requestContext.Request.Query.GetValues(Constants.Authentication.AuthorizationQueryPart);
+            return values?.FirstOrDefault();
         }
         /// <summary>
         /// Tries to extract the JWT from the request headers.

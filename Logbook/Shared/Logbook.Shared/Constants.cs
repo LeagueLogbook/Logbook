@@ -10,6 +10,7 @@
         public static class Authentication
         {
             public static readonly string AuthorizationHeaderType = "Bearer";
+            public static readonly string AuthorizationQueryPart = "token";
             public static readonly string JWTIssuer = "Logbook";
         }
 
