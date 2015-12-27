@@ -6,6 +6,7 @@ using System.Web.Http;
 using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
@@ -25,7 +26,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> RegisterAsync(RegisterData data)
         {
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
-                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
+                throw new DataMissingException();
 
             var user = await this.CommandExecutor
                 .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage))
@@ -39,7 +40,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> LoginAsync(LoginData data)
         {
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
-                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
+                throw new DataMissingException();
 
             var token = await this.CommandExecutor
                 .Execute(new LoginCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash)))
@@ -53,7 +54,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> LoginLiveAsync(MicrosoftLoginData data)
         {
             if (data?.Code == null || data?.RedirectUrl == null)
-                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
+                throw new DataMissingException();
 
             var token = await this.CommandExecutor
                 .Execute(new MicrosoftLoginCommand(data.Code, data.RedirectUrl))
@@ -67,7 +68,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> LoginFacebookAsync(FacebookLoginData data)
         {
             if (data?.Code == null || data?.RedirectUrl == null)
-                return this.Request.GetMessageWithError(HttpStatusCode.BadRequest, ServerMessages.DataMissing);
+                throw new DataMissingException();
 
             var token = await this.CommandExecutor
                 .Execute(new FacebookLoginCommand(data.Code, data.RedirectUrl))

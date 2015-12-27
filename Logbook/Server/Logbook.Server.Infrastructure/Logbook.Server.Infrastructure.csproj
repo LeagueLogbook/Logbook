@@ -164,6 +164,7 @@
     <Compile Include="Encryption\JsonWebTokenService.cs" />
     <Compile Include="Encryption\SaltCombiner.cs" />
     <Compile Include="Encryption\SecretGenerator.cs" />
+    <Compile Include="Exceptions\DataMissingException.cs" />
     <Compile Include="Exceptions\JsonWebTokenTimedOutException.cs" />
     <Compile Include="Exceptions\LogbookException.cs" />
     <Compile Include="Exceptions\CannotLoginWithPasswordException.cs" />

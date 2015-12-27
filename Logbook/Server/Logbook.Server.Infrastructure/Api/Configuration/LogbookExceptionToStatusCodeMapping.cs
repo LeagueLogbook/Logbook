@@ -18,6 +18,7 @@ namespace Logbook.Server.Infrastructure.Api.Configuration
             [typeof(UnauthorizedException)] = HttpStatusCode.Unauthorized,
             [typeof(UserNotFoundException)] = HttpStatusCode.NotFound,
             [typeof(OnlyLocalException)] = HttpStatusCode.Unauthorized,
+            [typeof(DataMissingException)] = HttpStatusCode.BadRequest,
         };
 
         public static HttpStatusCode GetStatusCode(LogbookException exception)
