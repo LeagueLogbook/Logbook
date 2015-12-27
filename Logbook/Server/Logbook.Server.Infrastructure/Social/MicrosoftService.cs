@@ -54,12 +54,18 @@ namespace Logbook.Server.Infrastructure.Social
             var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
             var responseJson = JObject.Parse(responseJsonString);
 
-            return new MicrosoftUser
+            var user = new MicrosoftUser
             {
                 Id = responseJson.Value<string>("id"),
-                EmailAddress = responseJson.Value<JObject>("emails").Value<string>("preferred"),
-                Locale = responseJson.Value<string>("locale").Replace("_", "-")
+                EmailAddress = responseJson.Value<JObject>("emails")?.Value<string>("preferred"),
+                Locale = responseJson.Value<string>("locale")?.Replace("_", "-")
             };
+
+            if (string.IsNullOrWhiteSpace(user.EmailAddress) ||
+                string.IsNullOrWhiteSpace(user.Locale))
+                return null;
+
+            return user;
         }
     }
 }
