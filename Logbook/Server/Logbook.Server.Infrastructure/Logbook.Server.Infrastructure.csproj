@@ -153,6 +153,7 @@
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommandHandler.cs" />
     <Compile Include="Commands\Authentication\FacebookLoginCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\GoogleLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\MicrosoftLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\LoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\SocialLoginCommandHandler.cs" />
