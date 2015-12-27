@@ -67,7 +67,9 @@
     <Compile Include="IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Social\FacebookUser.cs" />
+    <Compile Include="Social\GoogleUser.cs" />
     <Compile Include="Social\IFacebookService.cs" />
+    <Compile Include="Social\IGoogleService.cs" />
     <Compile Include="Social\IMicrosoftService.cs" />
     <Compile Include="Social\MicrosoftUser.cs" />
   </ItemGroup>

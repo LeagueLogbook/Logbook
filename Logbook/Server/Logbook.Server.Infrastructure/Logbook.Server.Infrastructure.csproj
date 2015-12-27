@@ -184,6 +184,7 @@
     <Compile Include="Raven\Indexes\AuthenticationData_ByAllFields.cs" />
     <Compile Include="Raven\Indexes\Users_ByEmailAddress.cs" />
     <Compile Include="Social\FacebookService.cs" />
+    <Compile Include="Social\GoogleService.cs" />
     <Compile Include="Social\MicrosoftService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Windsor\CommandInstaller.cs" />

@@ -24,6 +24,8 @@ namespace Logbook.Server.Infrastructure
             MicrosoftClientSecret = new StringSetting("Logbook/MicrosoftClientSecret", string.Empty);
             FacebookAppId = new StringSetting("Logbook/FacebookAppId", string.Empty);
             FacebookAppSecret = new StringSetting("Logbook/FacebookAppSecret", string.Empty);
+            GoogleClientId = new StringSetting("Logbook/GoogleClientId", string.Empty);
+            GoogleClientSecret = new StringSetting("Logbook/GoogleClientSecret", string.Empty);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -42,6 +44,7 @@ namespace Logbook.Server.Infrastructure
         public static StringSetting MicrosoftClientSecret { get; }
         public static StringSetting FacebookAppId { get; }
         public static StringSetting FacebookAppSecret { get; }
-
+        public static StringSetting GoogleClientId { get; }
+        public static StringSetting GoogleClientSecret { get; }
     }
 }

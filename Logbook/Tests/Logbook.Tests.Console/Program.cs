@@ -11,10 +11,10 @@ namespace Logbook.Tests.Console
     {
         static void Main(string[] args)
         {
-            string code = "M935fc443-fd45-c195-d571-f7c9638bfd47";
-            string redirectUrl = "https://login.live.com/oauth20_desktop.srf";
+            string code = "4/BP5x5HSAODf9XSj6H1J31TgIT9BOsABhB4pPfDC4GzU#";
+            string redirectUrl = "http://localhost/";
 
-            var facebookService = new MicrosoftService();
+            var facebookService = new GoogleService();
             var token = facebookService.ExchangeCodeForTokenAsync(redirectUrl, code).Result;
             var me = facebookService.GetMeAsync(token).Result;
         }
