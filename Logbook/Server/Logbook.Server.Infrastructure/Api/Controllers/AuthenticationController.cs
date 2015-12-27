@@ -76,5 +76,19 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
+
+        [HttpPost]
+        [Route("Login/Google")]
+        public async Task<HttpResponseMessage> LoginGoogleAsync(GoogleLoginData data)
+        {
+            if (data?.Code == null || data?.RedirectUrl == null)
+                throw new DataMissingException();
+
+            var token = await this.CommandExecutor
+                .Execute(new GoogleLoginCommand(data.Code, data.RedirectUrl))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
+        }
     }
 }

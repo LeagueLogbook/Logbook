@@ -24,4 +24,10 @@
         public string Code { get; set; }
         public string RedirectUrl { get; set; }
     }
+
+    public class GoogleLoginData
+    {
+        public string Code { get; set; }
+        public string RedirectUrl { get; set; }
+    }
 }
