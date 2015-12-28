@@ -11,6 +11,12 @@ namespace Logbook.Server.Infrastructure.Social
 {
     public class FacebookService : IFacebookService
     {
+        public Task<string> GetLoginUrlAsync(string redirectUrl)
+        {
+            var url = $"";
+            return Task.FromResult(url);
+        }
+
         public async Task<string> ExchangeCodeForTokenAsync(string redirectURl, string code)
         {
             var client = new HttpClient();

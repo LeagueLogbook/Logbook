@@ -19,13 +19,16 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
     public class AuthenticationController : BaseController
     {
         private readonly IMicrosoftService _microsoftService;
+        private readonly IFacebookService _facebookService;
 
-        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService)
+        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService, IFacebookService facebookService)
             : base(commandExecutor)
         {
             Guard.AgainstNullArgument(nameof(microsoftService), microsoftService);
+            Guard.AgainstNullArgument(nameof(facebookService), facebookService);
 
             this._microsoftService = microsoftService;
+            this._facebookService = facebookService;
         }
 
         [HttpPost]
@@ -63,7 +66,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new DataMissingException();
 
-            var url = await this._microsoftService.GetLoginUrl(redirectUrl);
+            var url = await this._microsoftService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
         }
 
@@ -80,7 +83,18 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
-        
+
+        [HttpGet]
+        [Route("Login/Facebook/Url")]
+        public async Task<HttpResponseMessage> GetLoginFacebookUrlAsync(string redirectUrl)
+        {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new DataMissingException();
+
+            var url = await this._facebookService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
+        }
+
         [HttpPost]
         [Route("Login/Facebook")]
         public async Task<HttpResponseMessage> LoginFacebookAsync(FacebookLoginData data)

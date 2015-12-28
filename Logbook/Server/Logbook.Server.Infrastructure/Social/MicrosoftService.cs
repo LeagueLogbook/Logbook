@@ -13,7 +13,7 @@ namespace Logbook.Server.Infrastructure.Social
 {
     public class MicrosoftService : IMicrosoftService
     {
-        public Task<string> GetLoginUrl(string redirectUrl)
+        public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
             var url = $"";
             return Task.FromResult(url);

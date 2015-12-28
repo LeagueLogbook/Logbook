@@ -4,7 +4,7 @@ namespace Logbook.Server.Contracts.Social
 {
     public interface IMicrosoftService : IService
     {
-        Task<string> GetLoginUrl(string redirectUrl);
+        Task<string> GetLoginUrlAsync(string redirectUrl);
 
         Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code);
 
