@@ -15,7 +15,14 @@ namespace Logbook.Server.Infrastructure.Social
     {
         public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
-            var url = $"";
+            var scopes = string.Join(" ", Constants.Authentication.MicrosoftRequiredScopes);
+
+            var url = $"https://login.live.com/oauth20_authorize.srf" +
+                      $"?client_id={Config.MicrosoftClientId.GetValue()}" +
+                      $"&scope={scopes}" +
+                      $"&response_type=code" +
+                      $"&redirect_uri={redirectUrl}";
+
             return Task.FromResult(url);
         }
 
