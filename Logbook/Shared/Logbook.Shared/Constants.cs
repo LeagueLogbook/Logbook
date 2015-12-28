@@ -14,6 +14,7 @@
             public static readonly string JWTIssuer = "Logbook";
             public static readonly string[] MicrosoftRequiredScopes = { "wl.basic", "wl.emails" };
             public static readonly string[] FacebookRequiredScopes = { "email", "public_profile" };
+            public static readonly string[] GoogleRequiredScopes = { "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/plus.login" };
         }
     }
 }

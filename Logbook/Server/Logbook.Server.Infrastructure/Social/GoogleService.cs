@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Social;
+using Logbook.Shared;
 using Newtonsoft.Json.Linq;
 
 namespace Logbook.Server.Infrastructure.Social
@@ -13,7 +14,14 @@ namespace Logbook.Server.Infrastructure.Social
     {
         public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
-            var url = $"";
+            string scope = string.Join(" ", Constants.Authentication.GoogleRequiredScopes);
+
+            var url = $"https://accounts.google.com/o/oauth2/v2/auth" +
+                      $"?response_type=code" +
+                      $"&client_id={Config.GoogleClientId.GetValue()}" +
+                      $"&redirect_uri={redirectUrl}" +
+                      $"&scope={scope}";
+
             return Task.FromResult(url);
         }
 
