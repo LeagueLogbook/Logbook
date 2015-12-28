@@ -13,6 +13,12 @@ namespace Logbook.Server.Infrastructure.Social
 {
     public class MicrosoftService : IMicrosoftService
     {
+        public Task<string> GetLoginUrl(string redirectUrl)
+        {
+            var url = $"";
+            return Task.FromResult(url);
+        }
+
         public async Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code)
         {
             var data = new Dictionary<string, string>

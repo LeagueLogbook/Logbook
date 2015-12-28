@@ -3,9 +3,11 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using LiteGuard;
 using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
+using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Extensions;
@@ -16,9 +18,14 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
     [RoutePrefix("Authentication")]
     public class AuthenticationController : BaseController
     {
-        public AuthenticationController(ICommandExecutor commandExecutor)
+        private readonly IMicrosoftService _microsoftService;
+
+        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService)
             : base(commandExecutor)
         {
+            Guard.AgainstNullArgument(nameof(microsoftService), microsoftService);
+
+            this._microsoftService = microsoftService;
         }
 
         [HttpPost]
@@ -49,6 +56,17 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
 
+        [HttpGet]
+        [Route("Login/Microsoft/Url")]
+        public async Task<HttpResponseMessage> GetLoginLiveUrlAsync(string redirectUrl)
+        {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new DataMissingException();
+
+            var url = await this._microsoftService.GetLoginUrl(redirectUrl);
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
+        }
+
         [HttpPost]
         [Route("Login/Microsoft")]
         public async Task<HttpResponseMessage> LoginLiveAsync(MicrosoftLoginData data)
@@ -62,7 +80,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
-
+        
         [HttpPost]
         [Route("Login/Facebook")]
         public async Task<HttpResponseMessage> LoginFacebookAsync(FacebookLoginData data)
