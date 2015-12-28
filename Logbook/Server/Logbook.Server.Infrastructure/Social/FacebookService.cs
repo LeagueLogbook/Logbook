@@ -13,7 +13,14 @@ namespace Logbook.Server.Infrastructure.Social
     {
         public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
-            var url = $"";
+            string scope = string.Join(",", Constants.Authentication.FacebookRequiredScopes);
+
+            var url = $"https://www.facebook.com/dialog/oauth" +
+                      $"?client_id={Config.FacebookAppId.GetValue()}" +
+                      $"&redirect_uri={redirectUrl}" +
+                      $"&scope={scope}" +
+                      $"&response_type=code";
+
             return Task.FromResult(url);
         }
 
