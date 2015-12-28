@@ -11,6 +11,12 @@ namespace Logbook.Server.Infrastructure.Social
 {
     public class GoogleService : IGoogleService
     {
+        public Task<string> GetLoginUrlAsync(string redirectUrl)
+        {
+            var url = $"";
+            return Task.FromResult(url);
+        }
+
         public async Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code)
         {
             var data = new Dictionary<string, string>

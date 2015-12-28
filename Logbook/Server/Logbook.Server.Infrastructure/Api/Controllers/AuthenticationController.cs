@@ -20,15 +20,18 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
     {
         private readonly IMicrosoftService _microsoftService;
         private readonly IFacebookService _facebookService;
+        private readonly IGoogleService _googleService;
 
-        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService, IFacebookService facebookService)
+        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService, IFacebookService facebookService, IGoogleService googleService)
             : base(commandExecutor)
         {
             Guard.AgainstNullArgument(nameof(microsoftService), microsoftService);
             Guard.AgainstNullArgument(nameof(facebookService), facebookService);
+            Guard.AgainstNullArgument(nameof(facebookService), googleService);
 
             this._microsoftService = microsoftService;
             this._facebookService = facebookService;
+            this._googleService = googleService;
         }
 
         [HttpPost]
@@ -107,6 +110,17 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
+        }
+
+        [HttpGet]
+        [Route("Login/Google/Url")]
+        public async Task<HttpResponseMessage> GetLoginGoogleUrlAsync(string redirectUrl)
+        {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new DataMissingException();
+
+            var url = await this._googleService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
         }
 
         [HttpPost]
