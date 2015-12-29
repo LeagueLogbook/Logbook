@@ -6,7 +6,7 @@ namespace Logbook.Server.Contracts.Encryption
 {
     public interface IJsonWebTokenService : IService
     {
-        JsonWebToken Generate<T>(T payload, TimeSpan validDuration);
-        T ValidateAndDecode<T>(string jsonWebToken);
+        JsonWebToken Generate<T>(T payload, TimeSpan validDuration, string password);
+        T ValidateAndDecode<T>(string jsonWebToken, string password);
     }
 }

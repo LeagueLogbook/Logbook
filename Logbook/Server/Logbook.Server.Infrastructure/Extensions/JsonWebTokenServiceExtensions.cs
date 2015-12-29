@@ -5,18 +5,48 @@ namespace Logbook.Server.Infrastructure.Extensions
 {
     public static class JsonWebTokenServiceExtensions
     {
-        public static JsonWebToken GenerateForLogin(this IJsonWebTokenService jsonWebTokenService, string userId)
+        public static JsonWebToken GenerateForLogin(this IJsonWebTokenService self, string userId)
         {
-            return jsonWebTokenService.Generate(new ForLogin {UserId = userId}, Config.LoginIsValidForDuration);
-        }
-        public static string ValidateAndDecodeForLogin(this IJsonWebTokenService jsonWebTokenService, string jsonWebToken)
-        {
-            return jsonWebTokenService.ValidateAndDecode<ForLogin>(jsonWebToken).UserId;
+            var payload = new ForLogin
+            {
+                UserId = userId
+            };
+
+            return self.Generate(payload, Config.LoginIsValidForDuration, Config.AuthenticationKeyPhrase);
         }
 
-        private class ForLogin
+        public static string ValidateAndDecodeForLogin(this IJsonWebTokenService self, string jsonWebToken)
+        {
+            return self.ValidateAndDecode<ForLogin>(jsonWebToken, Config.AuthenticationKeyPhrase).UserId;
+        }
+
+        public static JsonWebToken GenerateForConfirmEmail(this IJsonWebTokenService self, string emailAddress, string preferredLanauge, byte[] passwordSHA256Hash)
+        {
+            var payload = new ForConfirmEmail
+            {
+                EmailAddress = emailAddress,
+                PreferredLanguage =  preferredLanauge,
+                PasswordSHA256Hash = passwordSHA256Hash
+            };
+
+            return self.Generate(payload, Config.ConfirmEmailIsValidForDuration, Config.ConfirmEmailKeyPhrase);
+        }
+
+        public static ForConfirmEmail ValidateAndDecodeForConfirmEmail(this IJsonWebTokenService self, string jsonWebToken)
+        {
+            return self.ValidateAndDecode<ForConfirmEmail>(jsonWebToken, Config.ConfirmEmailKeyPhrase);
+        }
+
+        public class ForLogin
         {
             public string UserId { get; set; }
+        }
+
+        public class ForConfirmEmail
+        {
+            public string EmailAddress { get; set; }
+            public string PreferredLanguage { get; set; }
+            public byte[] PasswordSHA256Hash { get; set; }
         }
     }
 }

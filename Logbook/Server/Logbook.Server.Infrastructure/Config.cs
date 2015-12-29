@@ -26,12 +26,14 @@ namespace Logbook.Server.Infrastructure
             FacebookAppSecret = new StringSetting("Logbook/FacebookAppSecret", string.Empty);
             GoogleClientId = new StringSetting("Logbook/GoogleClientId", string.Empty);
             GoogleClientSecret = new StringSetting("Logbook/GoogleClientSecret", string.Empty);
-            SmtpHost = new StringSetting("Logbook/Smtp/Host", string.Empty);
+            SmtpHost = new StringSetting("Logbook/Smtp/Host", "localhost");
             SmtpPort = new IntSetting("Logbook/Smtp/Port", 25);
             SmtpUseDefaultCredentials = new BoolSetting("Logbook/Smtp/UseDefaultCredentials", true);
             SmtpUsername = new StringSetting("Logbook/Smtp/Username", string.Empty);
             SmtpPassword = new StringSetting("Logbook/Smtp/Password", string.Empty);
             SmtpUseSsl = new BoolSetting("Logbook/Smtp/UseSsl", false);
+            ConfirmEmailIsValidForDuration = new TimeSpanSetting("Logbook/ConfirmEmailIsValidForDuration", TimeSpan.FromHours(2));
+            ConfirmEmailKeyPhrase = new StringSetting("Logbook/ConfirmEmailKeyPhrase", string.Empty);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -58,5 +60,7 @@ namespace Logbook.Server.Infrastructure
         public static StringSetting SmtpUsername { get; }
         public static StringSetting SmtpPassword { get; }
         public static BoolSetting SmtpUseSsl { get; }
+        public static TimeSpanSetting ConfirmEmailIsValidForDuration { get; }
+        public static StringSetting ConfirmEmailKeyPhrase { get; }
     }
 }

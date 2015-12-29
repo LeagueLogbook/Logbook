@@ -6,5 +6,6 @@ namespace Logbook.Shared.Models
     {
         public string Token { get; set; }
         public DateTime ExpiresAt { get; set; }
+        public TimeSpan ValidDuration { get; set; }
     }
 }
