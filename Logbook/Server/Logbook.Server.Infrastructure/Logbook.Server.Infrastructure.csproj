@@ -180,6 +180,7 @@
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\IDependencyResolverExtensions.cs" />
+    <Compile Include="Extensions\JsonWebTokenServiceExtensions.cs" />
     <Compile Include="Extensions\SaltCombinerExtensions.cs" />
     <Compile Include="Extensions\CommandExecutorExtensions.cs" />
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />

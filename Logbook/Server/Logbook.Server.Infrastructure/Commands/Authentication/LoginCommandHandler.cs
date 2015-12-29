@@ -76,7 +76,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             if (computedHash.SequenceEqual(authentication.Hash) == false)
                 throw new IncorrectPasswordException();
 
-            return this._jsonWebTokenService.Generate(user.Id);
+            return this._jsonWebTokenService.GenerateForLogin(user.Id);
         }
         #endregion
     }

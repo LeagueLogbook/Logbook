@@ -9,6 +9,7 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
 using Microsoft.Owin;
 
@@ -49,7 +50,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             if (token == null)
                 throw new UnauthorizedException();
 
-            return this._jsonWebTokenService.ValidateAndDecode(token);
+            return this._jsonWebTokenService.ValidateAndDecodeForLogin(token);
         }
         #endregion
 

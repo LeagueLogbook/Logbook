@@ -8,6 +8,7 @@ using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
@@ -61,7 +62,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 var userId = await caseToCheck(socialLoginUser).WithCurrentCulture();
                 if (userId != null)
                 {
-                    return this._jsonWebTokenService.Generate(userId);
+                    return this._jsonWebTokenService.GenerateForLogin(userId);
                 }
             }
 

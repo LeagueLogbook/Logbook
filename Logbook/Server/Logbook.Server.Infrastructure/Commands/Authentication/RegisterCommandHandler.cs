@@ -60,7 +60,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             if (emailAddressAlreadyInUse)
                 throw new EmailIsNotAvailableException();
-
+            
             var user = new User
             {
                 EmailAddress = command.EmailAddress,

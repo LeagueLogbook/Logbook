@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using JWT;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
@@ -6,6 +7,7 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
 using Logbook.Shared.Models;
 using Metrics.Utils;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonWebToken = Logbook.Shared.Models.JsonWebToken;
 
@@ -13,18 +15,15 @@ namespace Logbook.Server.Infrastructure.Encryption
 {
     public class JsonWebTokenService : IJsonWebTokenService
     {
-        public JsonWebToken Generate(string userId)
+        public JsonWebToken Generate<T>(T payload, TimeSpan validDuration)
         {
-            var expiresAt = DateTime.UtcNow.Add(Config.LoginIsValidForDuration).StripEverythingAfterSeconds();
+            var expiresAt = DateTime.UtcNow.Add(validDuration).StripEverythingAfterSeconds();
 
-            var payload = new
-            {
-                userId = userId,
-                iss = Constants.Authentication.JWTIssuer,
-                exp = expiresAt.ToUnixTime()
-            };
+            var actualPayload = this.ToDictionary(payload);
+            actualPayload["iss"] = Constants.Authentication.JWTIssuer;
+            actualPayload["exp"] = expiresAt.ToUnixTime();
 
-            var token = JWT.JsonWebToken.Encode(payload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
+            var token = JWT.JsonWebToken.Encode(actualPayload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
 
             return new JsonWebToken
             {
@@ -33,16 +32,12 @@ namespace Logbook.Server.Infrastructure.Encryption
             };
         }
 
-        public string ValidateAndDecode(string jsonWebToken)
+        public T ValidateAndDecode<T>(string jsonWebToken)
         {
             try
             {
                 var decodedTokenAsJsonString = JWT.JsonWebToken.Decode(jsonWebToken, Config.AuthenticationKeyPhrase, verify: true);
-                JObject json = JObject.Parse(decodedTokenAsJsonString);
-
-                string userId = json.Value<string>("userId");
-
-                return userId;
+                return JsonConvert.DeserializeObject<T>(decodedTokenAsJsonString);
             }
             catch (SignatureVerificationException)
             {
@@ -52,6 +47,12 @@ namespace Logbook.Server.Infrastructure.Encryption
             {
                 throw new InvalidJsonWebTokenException();
             }
+        }
+
+        private Dictionary<string, object> ToDictionary(object payload)
+        {
+            string json = JsonConvert.SerializeObject(payload);
+            return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
         }
     }
 }
