@@ -2,7 +2,7 @@
 
 namespace Logbook.Shared.Models
 {
-    public class AuthenticationToken
+    public class JsonWebToken
     {
         public string Token { get; set; }
         public DateTime ExpiresAt { get; set; }

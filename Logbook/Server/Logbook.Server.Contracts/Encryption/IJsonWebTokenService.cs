@@ -5,7 +5,7 @@ namespace Logbook.Server.Contracts.Encryption
 {
     public interface IJsonWebTokenService : IService
     {
-        AuthenticationToken Generate(string userId);
+        JsonWebToken Generate(string userId);
         string ValidateAndDecode(string jsonWebToken);
     }
 }

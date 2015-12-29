@@ -4,7 +4,7 @@ using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class MicrosoftLoginCommand : ICommand<AuthenticationToken>
+    public class MicrosoftLoginCommand : ICommand<JsonWebToken>
     {
         public MicrosoftLoginCommand([NotNull]string code, [NotNull]string redirectUrl)
         {

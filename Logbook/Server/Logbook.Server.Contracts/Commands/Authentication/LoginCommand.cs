@@ -5,7 +5,7 @@ using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class LoginCommand : ICommand<AuthenticationToken>
+    public class LoginCommand : ICommand<JsonWebToken>
     {
         public LoginCommand([NotNull]string emailAddress, [NotNull]byte[] passwordSha256Hash)
         {

@@ -7,12 +7,13 @@ using Logbook.Shared;
 using Logbook.Shared.Models;
 using Metrics.Utils;
 using Newtonsoft.Json.Linq;
+using JsonWebToken = Logbook.Shared.Models.JsonWebToken;
 
 namespace Logbook.Server.Infrastructure.Encryption
 {
     public class JsonWebTokenService : IJsonWebTokenService
     {
-        public AuthenticationToken Generate(string userId)
+        public JsonWebToken Generate(string userId)
         {
             var expiresAt = DateTime.UtcNow.Add(Config.LoginIsValidForDuration).StripEverythingAfterSeconds();
 
@@ -23,9 +24,9 @@ namespace Logbook.Server.Infrastructure.Encryption
                 exp = expiresAt.ToUnixTime()
             };
 
-            var token = JsonWebToken.Encode(payload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
+            var token = JWT.JsonWebToken.Encode(payload, Config.AuthenticationKeyPhrase, JwtHashAlgorithm.HS256);
 
-            return new AuthenticationToken
+            return new JsonWebToken
             {
                 ExpiresAt = expiresAt,
                 Token = token
@@ -36,7 +37,7 @@ namespace Logbook.Server.Infrastructure.Encryption
         {
             try
             {
-                var decodedTokenAsJsonString = JsonWebToken.Decode(jsonWebToken, Config.AuthenticationKeyPhrase, verify: true);
+                var decodedTokenAsJsonString = JWT.JsonWebToken.Decode(jsonWebToken, Config.AuthenticationKeyPhrase, verify: true);
                 JObject json = JObject.Parse(decodedTokenAsJsonString);
 
                 string userId = json.Value<string>("userId");

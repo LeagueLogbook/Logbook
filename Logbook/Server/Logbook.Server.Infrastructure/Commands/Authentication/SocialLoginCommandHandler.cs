@@ -17,8 +17,8 @@ using Raven.Client.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public abstract class SocialLoginCommandHandler<TCommand> : ICommandHandler<TCommand, AuthenticationToken>
-        where TCommand : ICommand<AuthenticationToken>
+    public abstract class SocialLoginCommandHandler<TCommand> : ICommandHandler<TCommand, JsonWebToken>
+        where TCommand : ICommand<JsonWebToken>
     {
         #region Fields
         private readonly IAsyncDocumentSession _documentSession;
@@ -37,7 +37,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         #endregion
 
         #region Methods
-        public async Task<AuthenticationToken> Execute(TCommand command, ICommandScope scope)
+        public async Task<JsonWebToken> Execute(TCommand command, ICommandScope scope)
         {
             string token = await this.ExchangeCodeForTokenAsync(command).WithCurrentCulture();
 

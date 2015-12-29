@@ -3,7 +3,7 @@ using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class FacebookLoginCommand : ICommand<AuthenticationToken>
+    public class FacebookLoginCommand : ICommand<JsonWebToken>
     {
         public FacebookLoginCommand(string code, string redirectUrl)
         {

@@ -16,7 +16,7 @@ using Raven.Client;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class LoginCommandHandler : ICommandHandler<LoginCommand, AuthenticationToken>
+    public class LoginCommandHandler : ICommandHandler<LoginCommand, JsonWebToken>
     {
         #region Fields
         private readonly IAsyncDocumentSession _documentSession;
@@ -49,7 +49,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public async Task<AuthenticationToken> Execute(LoginCommand command, ICommandScope scope)
+        public async Task<JsonWebToken> Execute(LoginCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);

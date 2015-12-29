@@ -3,7 +3,7 @@ using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class GoogleLoginCommand : ICommand<AuthenticationToken>
+    public class GoogleLoginCommand : ICommand<JsonWebToken>
     {
         public GoogleLoginCommand(string code, string redirectUrl)
         {
