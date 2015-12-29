@@ -62,6 +62,8 @@
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
+    <Compile Include="Emails\Email.cs" />
+    <Compile Include="Emails\IEmailSender.cs" />
     <Compile Include="Encryption\IJsonWebTokenService.cs" />
     <Compile Include="Encryption\ISaltCombiner.cs" />
     <Compile Include="Encryption\ISecretGenerator.cs" />
