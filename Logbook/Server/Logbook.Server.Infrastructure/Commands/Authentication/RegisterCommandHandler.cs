@@ -7,6 +7,8 @@ using Logbook.Localization.Server;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
+using Logbook.Server.Contracts.Emails;
+using Logbook.Server.Contracts.Emails.Templates;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
@@ -17,12 +19,13 @@ using Raven.Client.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class RegisterCommandHandler : ICommandHandler<RegisterCommand, User>
+    public class RegisterCommandHandler : ICommandHandler<RegisterCommand, object>
     {
         #region Fields
         private readonly IAsyncDocumentSession _documentSession;
-        private readonly ISecretGenerator _secretGenerator;
-        private readonly ISaltCombiner _saltCombiner;
+        private readonly IJsonWebTokenService _jsonWebTokenService;
+        private readonly IEmailTemplateService _emailTemplateService;
+        private readonly IEmailSender _emailSender;
         #endregion
 
         #region Constructors
@@ -30,17 +33,20 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// Initializes a new instance of the <see cref="RegisterCommandHandler"/> class.
         /// </summary>
         /// <param name="documentSession">The document session.</param>
-        /// <param name="secretGenerator">The secret generator.</param>
-        /// <param name="saltCombiner">The salt combiner.</param>
-        public RegisterCommandHandler([NotNull]IAsyncDocumentSession documentSession, [NotNull]ISecretGenerator secretGenerator, [NotNull]ISaltCombiner saltCombiner)
+        /// <param name="jsonWebTokenService">The json web token service.</param>
+        /// <param name="emailTemplateService">The email template service.</param>
+        /// <param name="emailSender">The email sender.</param>
+        public RegisterCommandHandler([NotNull]IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
         {
             Guard.AgainstNullArgument(nameof(documentSession), documentSession);
-            Guard.AgainstNullArgument(nameof(secretGenerator), secretGenerator);
-            Guard.AgainstNullArgument(nameof(saltCombiner), saltCombiner);
+            Guard.AgainstNullArgument(nameof(jsonWebTokenService), jsonWebTokenService);
+            Guard.AgainstNullArgument(nameof(emailTemplateService), emailTemplateService);
+            Guard.AgainstNullArgument(nameof(emailSender), emailSender);
 
             this._documentSession = documentSession;
-            this._secretGenerator = secretGenerator;
-            this._saltCombiner = saltCombiner;
+            this._jsonWebTokenService = jsonWebTokenService;
+            this._emailTemplateService = emailTemplateService;
+            this._emailSender = emailSender;
         }
         #endregion
 
@@ -50,7 +56,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public async Task<User> Execute(RegisterCommand command, ICommandScope scope)
+        public async Task<object> Execute(RegisterCommand command, ICommandScope scope)
         {
             var emailAddressAlreadyInUse = await this._documentSession
                 .Query<User, Users_ByEmailAddress>()
@@ -60,33 +66,23 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             if (emailAddressAlreadyInUse)
                 throw new EmailIsNotAvailableException();
-            
-            var user = new User
+
+            var token = this._jsonWebTokenService.GenerateForConfirmEmail(command.EmailAddress, command.PreferredLanguage, command.PasswordSHA256Hash);
+
+            var emailTemplate = new ConfirmEmailEmailTemplate
             {
-                EmailAddress = command.EmailAddress,
-                PreferredLanguage = command.PreferredLanguage
+                Url = command.OwinContext.Request.Uri + "////" + token.Token,
+                ValidDuration = token.ValidDuration
             };
+            var email = this._emailTemplateService.GetTemplate(emailTemplate);
 
-            await this._documentSession.StoreAsync(user).WithCurrentCulture();
+            email.Receiver = command.EmailAddress;
+            email.Sender = "info@logbook.com";
 
-            var salt = this._secretGenerator.Generate();
-            var authenticationData = new AuthenticationData
-            {
-                ForUserId = user.Id,
-                Authentications =
-                {
-                    new LogbookAuthenticationKind
-                    {
-                        Salt = salt,
-                        IterationCount = Config.IterationCountForPasswordHashing,
-                        Hash = this._saltCombiner.Combine(salt, Config.IterationCountForPasswordHashing, command.PasswordSHA256Hash)
-                    }
-                }
-            };
+            await this._emailSender.SendMailAsync(email)
+                .WithCurrentCulture();
 
-            await this._documentSession.StoreAsync(authenticationData).WithCurrentCulture();
-
-            return user;
+            return new object();
         }
         #endregion
     }

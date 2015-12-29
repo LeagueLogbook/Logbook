@@ -42,7 +42,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 throw new DataMissingException();
 
             var user = await this.CommandExecutor
-                .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage))
+                .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage, this.OwinContext))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithObject(HttpStatusCode.Created, user);
