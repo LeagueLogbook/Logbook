@@ -2,6 +2,11 @@
 {
     public static class Constants
     {
+        public static class Email
+        {
+            public static readonly string TemplateSuffix = "EmailTemplate";
+        }
+
         public static class HttpApi
         {
             public static readonly string ContentType = "application/json";

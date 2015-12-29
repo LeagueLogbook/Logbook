@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Logbook.Server.Contracts.Emails.Templates;
+using Logbook.Server.Infrastructure.Emails;
 using Logbook.Server.Infrastructure.Social;
 
 namespace Logbook.Tests.Console
@@ -11,12 +13,14 @@ namespace Logbook.Tests.Console
     {
         static void Main(string[] args)
         {
-            string code = "4/BP5x5HSAODf9XSj6H1J31TgIT9BOsABhB4pPfDC4GzU#";
-            string redirectUrl = "http://localhost/";
+            var emailTemplateService = new EmailTemplateService();
+            var template = new ConfirmEmailEmailTemplate
+            {
+                Url = "http://cs-ulm-danhae://",
+                ValidDuration = TimeSpan.FromHours(2)
+            };
 
-            var facebookService = new GoogleService();
-            var token = facebookService.ExchangeCodeForTokenAsync(redirectUrl, code).Result;
-            var me = facebookService.GetMeAsync(token).Result;
+            var email = emailTemplateService.GetTemplate(template);
         }
     }
 }

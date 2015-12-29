@@ -162,6 +162,7 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Emails\EmailTemplateService.cs" />
     <Compile Include="Emails\SmtpEmailSender.cs" />
     <Compile Include="Encryption\JsonWebTokenService.cs" />
     <Compile Include="Encryption\SaltCombiner.cs" />
