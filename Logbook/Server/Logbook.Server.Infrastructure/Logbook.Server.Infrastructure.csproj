@@ -157,6 +157,7 @@
     <Compile Include="Commands\Authentication\GoogleLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\MicrosoftLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\LoginCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\ResetPasswordCommandHandler.cs" />
     <Compile Include="Commands\Authentication\SocialLoginCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />

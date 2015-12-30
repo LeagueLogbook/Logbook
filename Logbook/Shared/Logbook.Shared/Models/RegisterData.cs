@@ -30,4 +30,9 @@
         public string Code { get; set; }
         public string RedirectUrl { get; set; }
     }
+
+    public class PasswordResetData
+    {
+        public string EmailAddress { get; set; }
+    }
 }

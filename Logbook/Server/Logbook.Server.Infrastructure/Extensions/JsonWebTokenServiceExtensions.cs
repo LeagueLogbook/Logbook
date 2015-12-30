@@ -37,6 +37,21 @@ namespace Logbook.Server.Infrastructure.Extensions
             return self.ValidateAndDecode<ForConfirmEmail>(jsonWebToken, Config.ConfirmEmailKeyPhrase);
         }
 
+        public static JsonWebToken GenerateForPasswordReset(this IJsonWebTokenService self, string emailAddress)
+        {
+            var payload = new ForPasswordReset
+            {
+                EmailAddress = emailAddress
+            };
+
+            return self.Generate(payload, Config.PasswordResetIsValidForDuration, Config.PasswordResetKeyPhrase);
+        }
+
+        public static string ValidateAndDecodeForPasswordReset(this IJsonWebTokenService self, string jsonWebToken)
+        {
+            return self.ValidateAndDecode<ForPasswordReset>(jsonWebToken, Config.PasswordResetKeyPhrase).EmailAddress;
+        }
+
         public class ForLogin
         {
             public string UserId { get; set; }
@@ -47,6 +62,11 @@ namespace Logbook.Server.Infrastructure.Extensions
             public string EmailAddress { get; set; }
             public string PreferredLanguage { get; set; }
             public byte[] PasswordSHA256Hash { get; set; }
+        }
+
+        public class ForPasswordReset
+        {
+            public string EmailAddress { get; set; }
         }
     }
 }

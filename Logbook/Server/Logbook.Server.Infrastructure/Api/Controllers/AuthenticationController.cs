@@ -76,6 +76,20 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
 
+        [HttpPost]
+        [Route("Login/Logbook/PasswordReset")]
+        public async Task<HttpResponseMessage> RequestPasswordResetAsync(PasswordResetData data)
+        {
+            if (data?.EmailAddress == null)
+                throw new DataMissingException();
+
+            await this.CommandExecutor
+                .Execute(new ResetPasswordCommand(data.EmailAddress))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessage(HttpStatusCode.OK);
+        }
+
         [HttpGet]
         [Route("Login/Microsoft/Url")]
         public async Task<HttpResponseMessage> GetLoginLiveUrlAsync(string redirectUrl)
