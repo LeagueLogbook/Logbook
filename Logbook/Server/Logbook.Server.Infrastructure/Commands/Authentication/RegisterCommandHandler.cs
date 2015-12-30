@@ -8,8 +8,8 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Emails;
-using Logbook.Server.Contracts.Emails.Templates;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Server.Infrastructure.Emails.Templates;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
@@ -74,12 +74,12 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/Register/Finish?token={token.Token}",
                 ValidDuration = token.ValidDuration
             };
+
             var email = this._emailTemplateService.GetTemplate(emailTemplate);
-
             email.Receiver = command.EmailAddress;
-            email.Sender = "info@logbook.com";
 
-            await this._emailSender.SendMailAsync(email)
+            await this._emailSender
+                .SendMailAsync(email)
                 .WithCurrentCulture();
 
             return new object();

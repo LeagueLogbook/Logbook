@@ -67,7 +67,6 @@
     <Compile Include="Emails\IEmailTemplate.cs" />
     <Compile Include="Emails\IEmailSender.cs" />
     <Compile Include="Emails\IEmailTemplateService.cs" />
-    <Compile Include="Emails\Templates\ConfirmEmailEmailTemplate.cs" />
     <Compile Include="Encryption\IJsonWebTokenService.cs" />
     <Compile Include="Encryption\ISaltCombiner.cs" />
     <Compile Include="Encryption\ISecretGenerator.cs" />

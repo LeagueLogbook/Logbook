@@ -15,6 +15,7 @@ namespace Logbook.Server.Infrastructure.Emails
             var template = this.ReadEmailTemplate(email.GetType());
             template.Subject = this.ReplaceVariables(template.Subject, variables);
             template.Body = this.ReplaceVariables(template.Body, variables);
+            template.Sender = email.Sender;
 
             return template;
         }

@@ -34,6 +34,7 @@ namespace Logbook.Server.Infrastructure
             SmtpUseSsl = new BoolSetting("Logbook/Smtp/UseSsl", false);
             ConfirmEmailIsValidForDuration = new TimeSpanSetting("Logbook/ConfirmEmailIsValidForDuration", TimeSpan.FromHours(2));
             ConfirmEmailKeyPhrase = new StringSetting("Logbook/ConfirmEmailKeyPhrase", string.Empty);
+            ConfirmEmailSender = new StringSetting("Logbook/ConfirmEmailSender", "no-reply@logbook.xyz");
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -62,5 +63,6 @@ namespace Logbook.Server.Infrastructure
         public static BoolSetting SmtpUseSsl { get; }
         public static TimeSpanSetting ConfirmEmailIsValidForDuration { get; }
         public static StringSetting ConfirmEmailKeyPhrase { get; }
+        public static StringSetting ConfirmEmailSender { get; }
     }
 }
