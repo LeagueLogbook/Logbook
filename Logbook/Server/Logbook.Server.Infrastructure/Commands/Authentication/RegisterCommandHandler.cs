@@ -71,7 +71,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             var emailTemplate = new ConfirmEmailEmailTemplate
             {
-                Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/FinishRegistration?token={token.Token}",
+                Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/Register/Finish?token={token.Token}",
                 ValidDuration = token.ValidDuration
             };
             var email = this._emailTemplateService.GetTemplate(emailTemplate);

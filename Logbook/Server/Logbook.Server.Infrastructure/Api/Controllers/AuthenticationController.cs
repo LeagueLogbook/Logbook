@@ -49,7 +49,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         }
 
         [HttpGet]
-        [Route("FinishRegistration")]
+        [Route("Register/Finish")]
         public async Task<HttpResponseMessage> FinishRegistrationAsync(string token)
         {
             if (string.IsNullOrWhiteSpace(token))
