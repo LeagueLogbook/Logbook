@@ -41,8 +41,22 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
                 throw new DataMissingException();
 
-            var user = await this.CommandExecutor
+             await this.CommandExecutor
                 .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage, this.OwinContext))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessage(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [Route("FinishRegistration")]
+        public async Task<HttpResponseMessage> FinishRegistrationAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+                throw new DataMissingException();
+
+            var user = await this.CommandExecutor
+                .Execute(new FinishRegistrationCommand(token))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithObject(HttpStatusCode.Created, user);

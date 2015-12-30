@@ -61,7 +61,7 @@ namespace Logbook.Localization.Server {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Body.
+        ///   Looks up a localized string similar to Body @@Url@@.
         /// </summary>
         public static string ConfirmEmail_Body {
             get {
@@ -70,7 +70,7 @@ namespace Logbook.Localization.Server {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject @@Url@@.
+        ///   Looks up a localized string similar to Subject.
         /// </summary>
         public static string ConfirmEmail_Subject {
             get {
