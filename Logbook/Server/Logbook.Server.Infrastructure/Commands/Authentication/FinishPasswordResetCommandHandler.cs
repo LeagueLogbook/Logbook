@@ -24,14 +24,16 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         private readonly IJsonWebTokenService _jsonWebTokenService;
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly IEmailSender _emailSender;
+        private readonly IHashingService _hashingService;
 
-        public FinishPasswordResetCommandHandler(IAsyncDocumentSession documentSession, ISecretGenerator secretGenerator, IJsonWebTokenService jsonWebTokenService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
+        public FinishPasswordResetCommandHandler(IAsyncDocumentSession documentSession, ISecretGenerator secretGenerator, IJsonWebTokenService jsonWebTokenService, IEmailTemplateService emailTemplateService, IEmailSender emailSender, IHashingService hashingService)
         {
             this._documentSession = documentSession;
             this._secretGenerator = secretGenerator;
             this._jsonWebTokenService = jsonWebTokenService;
             this._emailTemplateService = emailTemplateService;
             this._emailSender = emailSender;
+            this._hashingService = hashingService;
         }
 
         public async Task<object> Execute(FinishPasswordResetCommand command, ICommandScope scope)
@@ -48,8 +50,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 .LoadAsync<AuthenticationData>(AuthenticationData.CreateId(user.Id))
                 .WithCurrentCulture();
 
-            var newPassword = Convert.ToBase64String(this._secretGenerator.Generate(16));
-            var newPasswordSHA256Hash = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(newPassword));
+            var newPassword = this._secretGenerator.GenerateString(16);
+            var newPasswordSHA256Hash = this._hashingService.ComputeSHA256Hash(newPassword);
 
             await scope
                 .Execute(new ChangePasswordCommand(user, authenticationData, newPasswordSHA256Hash))
