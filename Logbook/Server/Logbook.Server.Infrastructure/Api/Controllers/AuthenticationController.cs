@@ -55,11 +55,11 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (string.IsNullOrWhiteSpace(token))
                 throw new DataMissingException();
 
-            var user = await this.CommandExecutor
+            await this.CommandExecutor
                 .Execute(new FinishRegistrationCommand(token))
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithObject(HttpStatusCode.Created, user);
+            return this.Request.GetMessage(HttpStatusCode.Created);
         }
 
         [HttpPost]

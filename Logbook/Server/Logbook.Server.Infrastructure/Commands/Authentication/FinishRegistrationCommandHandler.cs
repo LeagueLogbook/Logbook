@@ -12,7 +12,7 @@ using Raven.Client.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class FinishRegistrationCommandHandler : ICommandHandler<FinishRegistrationCommand, User>
+    public class FinishRegistrationCommandHandler : ICommandHandler<FinishRegistrationCommand, object>
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly IJsonWebTokenService _jsonWebTokenService;
@@ -23,7 +23,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             this._jsonWebTokenService = jsonWebTokenService;
         }
 
-        public async Task<User> Execute(FinishRegistrationCommand command, ICommandScope scope)
+        public async Task<object> Execute(FinishRegistrationCommand command, ICommandScope scope)
         {
             var decryptedToken = this._jsonWebTokenService.ValidateAndDecodeForConfirmEmail(command.Token);
 
@@ -59,7 +59,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 .StoreAsync(authenticationData)
                 .WithCurrentCulture();
 
-            return user;
+            return new object();
         }
     }
 }
