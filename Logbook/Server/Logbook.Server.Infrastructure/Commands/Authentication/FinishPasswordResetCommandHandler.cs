@@ -50,7 +50,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 .LoadAsync<AuthenticationData>(AuthenticationData.CreateId(user.Id))
                 .WithCurrentCulture();
 
-            var newPassword = this._secretGenerator.GenerateString(16);
+            var newPassword = this._secretGenerator.GenerateString(Config.PasswordResetNewPasswordLength);
             var newPasswordSHA256Hash = this._hashingService.ComputeSHA256Hash(newPassword);
 
             await scope

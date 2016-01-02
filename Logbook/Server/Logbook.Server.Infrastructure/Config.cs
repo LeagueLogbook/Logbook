@@ -38,6 +38,7 @@ namespace Logbook.Server.Infrastructure
             PasswordResetKeyPhrase = new StringSetting("Logbook/PasswordResetKeyPhrase", string.Empty);
             PasswordResetIsValidForDuration = new TimeSpanSetting("Logbook/PasswordResetIsValidForDuration", TimeSpan.FromHours(2));
             PasswordResetEmailSender = new StringSetting("Logbook/PasswordResetEmailSender", string.Empty);
+            PasswordResetNewPasswordLength = new IntSetting("Logbook/PasswordResetNewPasswordLength", 16);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -70,5 +71,6 @@ namespace Logbook.Server.Infrastructure
         public static StringSetting PasswordResetKeyPhrase { get; }
         public static TimeSpanSetting PasswordResetIsValidForDuration { get; }
         public static StringSetting PasswordResetEmailSender { get; }
+        public static IntSetting PasswordResetNewPasswordLength { get; }
     }
 }
