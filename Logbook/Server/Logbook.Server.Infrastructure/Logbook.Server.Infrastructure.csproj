@@ -152,6 +152,7 @@
     <Compile Include="Commands\Admin\CreateIndexesCommandHandler.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\ChangePasswordCommandHandler.cs" />
     <Compile Include="Commands\Authentication\FacebookLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\FinishPasswordResetCommandHandler.cs" />
     <Compile Include="Commands\Authentication\FinishRegistrationCommandHandler.cs" />

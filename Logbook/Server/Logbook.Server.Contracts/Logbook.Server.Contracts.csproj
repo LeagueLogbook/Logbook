@@ -54,6 +54,7 @@
     <Compile Include="Commands\Admin\CreateIndexesCommand.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommand.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommand.cs" />
+    <Compile Include="Commands\Authentication\ChangePasswordCommand.cs" />
     <Compile Include="Commands\Authentication\FacebookLoginCommand.cs" />
     <Compile Include="Commands\Authentication\FinishPasswordResetCommand.cs" />
     <Compile Include="Commands\Authentication\FinishRegistrationCommand.cs" />
