@@ -123,4 +123,17 @@
   <data name="ConfirmEmail_Subject" xml:space="preserve">
     <value>Subject</value>
   </data>
+  <data name="PasswordResetted_Body" xml:space="preserve">
+    <value>Your new password is "@@NewPassword@@".</value>
+  </data>
+  <data name="PasswordResetted_Subject" xml:space="preserve">
+    <value>New Logbook password</value>
+  </data>
+  <data name="ResetPassword_Body" xml:space="preserve">
+    <value>Click on the following link to reset your logbook password:
+@@Url@@</value>
+  </data>
+  <data name="ResetPassword_Subject" xml:space="preserve">
+    <value>Logbook password reset</value>
+  </data>
 </root>

@@ -77,5 +77,42 @@ namespace Logbook.Localization.Server {
                 return ResourceManager.GetString("ConfirmEmail_Subject", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your new password is &quot;@@NewPassword@@&quot;..
+        /// </summary>
+        public static string PasswordResetted_Body {
+            get {
+                return ResourceManager.GetString("PasswordResetted_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Logbook password.
+        /// </summary>
+        public static string PasswordResetted_Subject {
+            get {
+                return ResourceManager.GetString("PasswordResetted_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click on the following link to reset your logbook password:
+        ///@@Url@@.
+        /// </summary>
+        public static string ResetPassword_Body {
+            get {
+                return ResourceManager.GetString("ResetPassword_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logbook password reset.
+        /// </summary>
+        public static string ResetPassword_Subject {
+            get {
+                return ResourceManager.GetString("ResetPassword_Subject", resourceCulture);
+            }
+        }
     }
 }

@@ -37,6 +37,7 @@ namespace Logbook.Server.Infrastructure
             ConfirmEmailSender = new StringSetting("Logbook/ConfirmEmailSender", "no-reply@logbook.xyz");
             PasswordResetKeyPhrase = new StringSetting("Logbook/PasswordResetKeyPhrase", string.Empty);
             PasswordResetIsValidForDuration = new TimeSpanSetting("Logbook/PasswordResetIsValidForDuration", TimeSpan.FromHours(2));
+            PasswordResetEmailSender = new StringSetting("Logbook/PasswordResetEmailSender", string.Empty);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -68,5 +69,6 @@ namespace Logbook.Server.Infrastructure
         public static StringSetting ConfirmEmailSender { get; }
         public static StringSetting PasswordResetKeyPhrase { get; }
         public static TimeSpanSetting PasswordResetIsValidForDuration { get; }
+        public static StringSetting PasswordResetEmailSender { get; }
     }
 }

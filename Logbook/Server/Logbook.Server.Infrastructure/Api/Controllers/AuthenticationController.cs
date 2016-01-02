@@ -63,6 +63,34 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         }
 
         [HttpPost]
+        [Route("PasswordReset")]
+        public async Task<HttpResponseMessage> RequestPasswordResetAsync(PasswordResetData data)
+        {
+            if (data?.EmailAddress == null)
+                throw new DataMissingException();
+
+            await this.CommandExecutor
+                .Execute(new ResetPasswordCommand(data.EmailAddress, this.OwinContext))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessage(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [Route("PasswordReset/Finish")]
+        public async Task<HttpResponseMessage> FinishPasswordResetAsync(string token)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+                throw new DataMissingException();
+
+            await this.CommandExecutor
+                .Execute(new FinishPasswordResetCommand(token))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessage(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
         [Route("Login/Logbook")]
         public async Task<HttpResponseMessage> LoginAsync(LoginData data)
         {
@@ -74,20 +102,6 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
-        }
-
-        [HttpPost]
-        [Route("Login/Logbook/PasswordReset")]
-        public async Task<HttpResponseMessage> RequestPasswordResetAsync(PasswordResetData data)
-        {
-            if (data?.EmailAddress == null)
-                throw new DataMissingException();
-
-            await this.CommandExecutor
-                .Execute(new ResetPasswordCommand(data.EmailAddress))
-                .WithCurrentCulture();
-
-            return this.Request.GetMessage(HttpStatusCode.OK);
         }
 
         [HttpGet]

@@ -153,6 +153,7 @@
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommandHandler.cs" />
     <Compile Include="Commands\Authentication\FacebookLoginCommandHandler.cs" />
+    <Compile Include="Commands\Authentication\FinishPasswordResetCommandHandler.cs" />
     <Compile Include="Commands\Authentication\FinishRegistrationCommandHandler.cs" />
     <Compile Include="Commands\Authentication\GoogleLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\MicrosoftLoginCommandHandler.cs" />
@@ -167,6 +168,8 @@
     <Compile Include="Emails\EmailTemplateService.cs" />
     <Compile Include="Emails\SmtpEmailSender.cs" />
     <Compile Include="Emails\Templates\ConfirmEmailEmailTemplate.cs" />
+    <Compile Include="Emails\Templates\PasswordResettedEmailTemplate.cs" />
+    <Compile Include="Emails\Templates\ResetPasswordEmailTemplate.cs" />
     <Compile Include="Encryption\JsonWebTokenService.cs" />
     <Compile Include="Encryption\SaltCombiner.cs" />
     <Compile Include="Encryption\SecretGenerator.cs" />
@@ -178,6 +181,7 @@
     <Compile Include="Exceptions\IncorrectPasswordException.cs" />
     <Compile Include="Exceptions\InternalServerErrorException.cs" />
     <Compile Include="Exceptions\InvalidJsonWebTokenException.cs" />
+    <Compile Include="Exceptions\NoLogbookLoginToResetPasswordException.cs" />
     <Compile Include="Exceptions\OnlyLocalException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
