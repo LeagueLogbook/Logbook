@@ -12,6 +12,7 @@ using Microsoft.AspNet.WebApi.MessageHandlers.Compression;
 using Microsoft.AspNet.WebApi.MessageHandlers.Compression.Compressors;
 using Microsoft.Owin.Cors;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Owin;
 
 namespace Logbook.Server.Infrastructure
@@ -64,7 +65,7 @@ namespace Logbook.Server.Infrastructure
             this.ConfigureMessageHandlers(config);
             this.ConfigureServices(config);
             this.ConfigureRoutes(config);
-            this.ConfigureAllowOnlyJson(config);
+            this.ConfigureJson(config);
 
             app.UseWebApi(config);
         }
@@ -129,13 +130,14 @@ namespace Logbook.Server.Infrastructure
         /// Configures the config to allow only json requests.
         /// </summary>
         /// <param name="config">The configuration.</param>
-        private void ConfigureAllowOnlyJson(HttpConfiguration config)
+        private void ConfigureJson(HttpConfiguration config)
         {
             if (Config.FormatResponses.GetValue())
             {
                 config.Formatters.JsonFormatter.SerializerSettings.Formatting = Formatting.Indented;
             }
 
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Services.Replace(typeof(IContentNegotiator), new JsonContentNegotiator(config.Formatters.JsonFormatter));
         }
         #endregion
