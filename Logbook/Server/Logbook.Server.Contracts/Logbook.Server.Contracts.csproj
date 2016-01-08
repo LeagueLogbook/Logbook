@@ -70,6 +70,7 @@
     <Compile Include="Emails\IEmailTemplate.cs" />
     <Compile Include="Emails\IEmailSender.cs" />
     <Compile Include="Emails\IEmailTemplateService.cs" />
+    <Compile Include="Encryption\IEncryptionService.cs" />
     <Compile Include="Encryption\IHashingService.cs" />
     <Compile Include="Encryption\IJsonWebTokenService.cs" />
     <Compile Include="Encryption\ISaltCombiner.cs" />

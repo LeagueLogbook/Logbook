@@ -17,7 +17,6 @@ namespace Logbook.Tests.Console
             var template = new ConfirmEmailEmailTemplate
             {
                 Url = "http://cs-ulm-danhae://",
-                ValidDuration = TimeSpan.FromHours(2)
             };
 
             var email = emailTemplateService.GetTemplate(template);

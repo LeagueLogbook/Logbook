@@ -21,16 +21,16 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
     {
         private readonly IAsyncDocumentSession _documentSession;
         private readonly ISecretGenerator _secretGenerator;
-        private readonly IJsonWebTokenService _jsonWebTokenService;
+        private readonly IEncryptionService _encryptionService;
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly IEmailSender _emailSender;
         private readonly IHashingService _hashingService;
 
-        public FinishPasswordResetCommandHandler(IAsyncDocumentSession documentSession, ISecretGenerator secretGenerator, IJsonWebTokenService jsonWebTokenService, IEmailTemplateService emailTemplateService, IEmailSender emailSender, IHashingService hashingService)
+        public FinishPasswordResetCommandHandler(IAsyncDocumentSession documentSession, ISecretGenerator secretGenerator, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender, IHashingService hashingService)
         {
             this._documentSession = documentSession;
             this._secretGenerator = secretGenerator;
-            this._jsonWebTokenService = jsonWebTokenService;
+            this._encryptionService = encryptionService;
             this._emailTemplateService = emailTemplateService;
             this._emailSender = emailSender;
             this._hashingService = hashingService;
@@ -38,11 +38,11 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         public async Task<object> Execute(FinishPasswordResetCommand command, ICommandScope scope)
         {
-            var decryptedToken = this._jsonWebTokenService.ValidateAndDecodeForPasswordReset(command.Token);
+            var emailAddress = this._encryptionService.ValidateAndDecodeForPasswordReset(command.Token);
 
             var user = await this._documentSession
                 .Query<User, Users_ByEmailAddress>()
-                .Where(f => f.EmailAddress == decryptedToken)
+                .Where(f => f.EmailAddress == emailAddress)
                 .FirstAsync()
                 .WithCurrentCulture();
 
@@ -62,7 +62,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
                 NewPassword = newPassword
             };
             var email = this._emailTemplateService.GetTemplate(emailTemplate);
-            email.Receiver = decryptedToken;
+            email.Receiver = emailAddress;
 
             await this._emailSender
                 .SendMailAsync(email)

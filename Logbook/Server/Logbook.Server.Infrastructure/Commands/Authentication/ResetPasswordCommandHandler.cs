@@ -19,14 +19,14 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
     public class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, object>
     {
         private readonly IAsyncDocumentSession _documentSession;
-        private readonly IJsonWebTokenService _jsonWebTokenService;
+        private readonly IEncryptionService _encryptionService;
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly IEmailSender _emailSender;
 
-        public ResetPasswordCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
+        public ResetPasswordCommandHandler(IAsyncDocumentSession documentSession, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
         {
             this._documentSession = documentSession;
-            this._jsonWebTokenService = jsonWebTokenService;
+            this._encryptionService = encryptionService;
             this._emailTemplateService = emailTemplateService;
             this._emailSender = emailSender;
         }
@@ -46,12 +46,11 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             if (authenticationData.Authentications.Any(f => f.Kind == AuthenticationKind.Logbook) == false)
                 throw new NoLogbookLoginToResetPasswordException();
 
-            var token = this._jsonWebTokenService.GenerateForPasswordReset(command.EmailAddress);
+            var token = this._encryptionService.GenerateForPasswordReset(command.EmailAddress);
 
             var emailTemplate = new ResetPasswordEmailTemplate
             {
-                Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/PasswordReset/Finish?token={token.Token}",
-                ValidDuration = token.ValidDuration
+                Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/PasswordReset/Finish?token={token}",
             };
 
             var email = this._emailTemplateService.GetTemplate(emailTemplate);

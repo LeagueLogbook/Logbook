@@ -15,17 +15,17 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
     public class FinishRegistrationCommandHandler : ICommandHandler<FinishRegistrationCommand, object>
     {
         private readonly IAsyncDocumentSession _documentSession;
-        private readonly IJsonWebTokenService _jsonWebTokenService;
+        private readonly IEncryptionService _encryptionService;
 
-        public FinishRegistrationCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService)
+        public FinishRegistrationCommandHandler(IAsyncDocumentSession documentSession, IEncryptionService encryptionService)
         {
             this._documentSession = documentSession;
-            this._jsonWebTokenService = jsonWebTokenService;
+            this._encryptionService = encryptionService;
         }
 
         public async Task<object> Execute(FinishRegistrationCommand command, ICommandScope scope)
         {
-            var decryptedToken = this._jsonWebTokenService.ValidateAndDecodeForConfirmEmail(command.Token);
+            var decryptedToken = this._encryptionService.ValidateAndDecodeForConfirmEmail(command.Token);
 
             var emailAddressAlreadyInUse = await this._documentSession
                 .Query<User, Users_ByEmailAddress>()
