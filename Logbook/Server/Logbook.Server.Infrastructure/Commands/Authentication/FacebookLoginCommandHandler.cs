@@ -20,14 +20,11 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         {
             this._facebookService = facebookService;
         }
-
-        protected override Task<string> ExchangeCodeForTokenAsync(FacebookLoginCommand command)
+        
+        protected override async Task<SocialLoginUser> GetMeAsync(FacebookLoginCommand command)
         {
-            return this._facebookService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
-        }
+            var token = await this._facebookService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
 
-        protected override async Task<SocialLoginUser> GetMeAsync(string token)
-        {
             var user = await this._facebookService.GetMeAsync(token).WithCurrentCulture();
 
             if (user == null)

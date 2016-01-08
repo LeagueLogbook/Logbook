@@ -22,13 +22,10 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             this._microsoftService = microsoftService;
         }
 
-        protected override Task<string> ExchangeCodeForTokenAsync(MicrosoftLoginCommand command)
+        protected override async Task<SocialLoginUser> GetMeAsync(MicrosoftLoginCommand command)
         {
-            return this._microsoftService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
-        }
+            var token = await this._microsoftService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
 
-        protected override async Task<SocialLoginUser> GetMeAsync(string token)
-        {
             var user = await this._microsoftService.GetMeAsync(token).WithCurrentCulture();
 
             if (user == null)

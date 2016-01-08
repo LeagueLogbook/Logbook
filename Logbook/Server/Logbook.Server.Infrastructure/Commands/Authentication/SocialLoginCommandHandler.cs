@@ -40,12 +40,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         #region Methods
         public async Task<JsonWebToken> Execute(TCommand command, ICommandScope scope)
         {
-            string token = await this.ExchangeCodeForTokenAsync(command).WithCurrentCulture();
-
-            if (string.IsNullOrWhiteSpace(token))
-                throw new InternalServerErrorException();
-
-            var socialLoginUser = await this.GetMeAsync(token).WithCurrentCulture();
+            var socialLoginUser = await this.GetMeAsync(command).WithCurrentCulture();
 
             if (socialLoginUser == null)
                 throw new InternalServerErrorException();
@@ -125,9 +120,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             return user.Id;
         }
         
-        protected abstract Task<string> ExchangeCodeForTokenAsync(TCommand command);
-
-        protected abstract Task<SocialLoginUser> GetMeAsync(string token);
+        protected abstract Task<SocialLoginUser> GetMeAsync(TCommand command);
 
         protected abstract Expression<Func<AuthenticationData_ByAllFields.Result, bool>> GetExpressionForSocialUserId(SocialLoginUser user);
 

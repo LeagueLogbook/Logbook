@@ -20,14 +20,11 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         {
             this._googleService = googleService;
         }
-
-        protected override Task<string> ExchangeCodeForTokenAsync(GoogleLoginCommand command)
+        
+        protected override async Task<SocialLoginUser> GetMeAsync(GoogleLoginCommand command)
         {
-            return this._googleService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
-        }
+            var token = await this._googleService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
 
-        protected override async Task<SocialLoginUser> GetMeAsync(string token)
-        {
             var user = await this._googleService.GetMeAsync(token).WithCurrentCulture();
 
             if (user == null)
