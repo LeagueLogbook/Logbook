@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
 using Raven.Client;
@@ -23,6 +24,10 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         protected override async Task<SocialLoginUser> GetMeAsync(TwitterLoginCommand command)
         {
             var token = await this._twitterService.ExchangeForToken(command.Payload, command.OAuthVerifier);
+
+            if (token == null)
+                throw new InternalServerErrorException();
+
             var user = await this._twitterService.GetMeAsync(token);
 
             if (user == null)

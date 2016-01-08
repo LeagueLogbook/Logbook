@@ -21,17 +21,20 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         private readonly IMicrosoftService _microsoftService;
         private readonly IFacebookService _facebookService;
         private readonly IGoogleService _googleService;
+        private readonly ITwitterService _twitterService;
 
-        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService, IFacebookService facebookService, IGoogleService googleService)
+        public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService, IFacebookService facebookService, IGoogleService googleService, ITwitterService twitterService)
             : base(commandExecutor)
         {
             Guard.AgainstNullArgument(nameof(microsoftService), microsoftService);
             Guard.AgainstNullArgument(nameof(facebookService), facebookService);
-            Guard.AgainstNullArgument(nameof(facebookService), googleService);
+            Guard.AgainstNullArgument(nameof(googleService), googleService);
+            Guard.AgainstNullArgument(nameof(twitterService), twitterService);
 
             this._microsoftService = microsoftService;
             this._facebookService = facebookService;
             this._googleService = googleService;
+            this._twitterService = twitterService;
         }
 
         [HttpPost]
@@ -174,6 +177,31 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
 
             var token = await this.CommandExecutor
                 .Execute(new GoogleLoginCommand(data.Code, data.RedirectUrl))
+                .WithCurrentCulture();
+
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
+        }
+
+        [HttpGet]
+        [Route("Login/Twitter/Url")]
+        public async Task<HttpResponseMessage> GetLoginTwitterUrlAsync(string redirectUrl)
+        {
+            if (string.IsNullOrWhiteSpace(redirectUrl))
+                throw new DataMissingException();
+
+            var url = await this._twitterService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, url);
+        }
+
+        [HttpPost]
+        [Route("Login/Twitter")]
+        public async Task<HttpResponseMessage> LoginTwitterAsync(TwitterLoginData data)
+        {
+            if (data?.Payload == null || data?.OAuthVerifier == null)
+                throw new DataMissingException();
+
+            var token = await this.CommandExecutor
+                .Execute(new TwitterLoginCommand(data.OAuthVerifier, data.Payload))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);

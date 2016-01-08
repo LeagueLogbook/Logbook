@@ -31,6 +31,12 @@
         public string RedirectUrl { get; set; }
     }
 
+    public class TwitterLoginData
+    {
+        public string Payload { get; set; }
+        public string OAuthVerifier { get; set; }
+    }
+
     public class PasswordResetData
     {
         public string EmailAddress { get; set; }
