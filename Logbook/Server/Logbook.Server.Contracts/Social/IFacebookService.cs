@@ -10,4 +10,11 @@ namespace Logbook.Server.Contracts.Social
 
         Task<FacebookUser> GetMeAsync(string token);
     }
+
+    public interface ITwitterService : IService
+    {
+        Task<TwitterLoginUrl> GetLoginUrlAsync(string redirectUrl);
+
+        Task<TwitterUser> GetMeAsync(string payload, string oauthVerifier);
+    }
 }
