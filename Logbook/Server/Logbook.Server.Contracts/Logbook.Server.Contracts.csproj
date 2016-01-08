@@ -82,8 +82,10 @@
     <Compile Include="Social\IFacebookService.cs" />
     <Compile Include="Social\IGoogleService.cs" />
     <Compile Include="Social\IMicrosoftService.cs" />
+    <Compile Include="Social\ITwitterService.cs" />
     <Compile Include="Social\MicrosoftUser.cs" />
     <Compile Include="Social\TwitterLoginUrl.cs" />
+    <Compile Include="Social\TwitterToken.cs" />
     <Compile Include="Social\TwitterUser.cs" />
   </ItemGroup>
   <ItemGroup>
