@@ -39,6 +39,9 @@ namespace Logbook.Server.Infrastructure
             PasswordResetIsValidForDuration = new TimeSpanSetting("Logbook/PasswordResetIsValidForDuration", TimeSpan.FromHours(2));
             PasswordResetEmailSender = new StringSetting("Logbook/PasswordResetEmailSender", string.Empty);
             PasswordResetNewPasswordLength = new IntSetting("Logbook/PasswordResetNewPasswordLength", 16);
+            TwitterConsumerKey = new StringSetting("Logbook/TwitterConsumerKey", string.Empty);
+            TwitterConsumerSecret = new StringSetting("Logbook/TwitterConsumerSecret", string.Empty);
+            TwitterLoginKeyPhrase = new StringSetting("Logbook/TwitterLoginKeyPhrase", string.Empty);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -72,5 +75,8 @@ namespace Logbook.Server.Infrastructure
         public static TimeSpanSetting PasswordResetIsValidForDuration { get; }
         public static StringSetting PasswordResetEmailSender { get; }
         public static IntSetting PasswordResetNewPasswordLength { get; }
+        public static StringSetting TwitterConsumerKey { get; }
+        public static StringSetting TwitterConsumerSecret { get; }
+        public static StringSetting TwitterLoginKeyPhrase { get; }
     }
 }

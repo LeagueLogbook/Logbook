@@ -62,6 +62,22 @@ namespace Logbook.Server.Infrastructure.Extensions
             return result.EmailAddress;
         }
 
+        public static string GenerateForTwitterLogin(this IEncryptionService self, string oauthToken, string oauthTokenSecret)
+        {
+            var payload = new ForTwitterLogin
+            {
+                OAuthToken = oauthToken,
+                OAuthTokenSecret = oauthTokenSecret
+            };
+
+            return Encrypt(self, payload, Config.TwitterLoginKeyPhrase);
+        }
+
+        public static ForTwitterLogin DecodeForTwitterLogin(this IEncryptionService self, string encrypted)
+        {
+            return self.Decrypt<ForTwitterLogin>(encrypted, Config.TwitterLoginKeyPhrase);
+        }
+
         public class ForConfirmEmail
         {
             public string EmailAddress { get; set; }
@@ -74,6 +90,12 @@ namespace Logbook.Server.Infrastructure.Extensions
         {
             public string EmailAddress { get; set; }
             public DateTimeOffset Timeout { get; set; }
+        }
+
+        public class ForTwitterLogin
+        {
+            public string OAuthToken { get; set; }
+            public string OAuthTokenSecret { get; set; }
         }
     }
 }
