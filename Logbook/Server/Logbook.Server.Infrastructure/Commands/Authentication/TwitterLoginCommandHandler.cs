@@ -6,47 +6,46 @@ using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Raven.Indexes;
 using Logbook.Shared.Entities.Authentication;
-using Logbook.Shared.Extensions;
 using Raven.Client;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class GoogleLoginCommandHandler : SocialLoginCommandHandler<GoogleLoginCommand>
+    public class TwitterLoginCommandHandler : SocialLoginCommandHandler<TwitterLoginCommand>
     {
-        private readonly IGoogleService _googleService;
+        private readonly ITwitterService _twitterService;
 
-        public GoogleLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, IGoogleService googleService)
+        public TwitterLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, ITwitterService twitterService)
             : base(documentSession, jsonWebTokenService)
         {
-            this._googleService = googleService;
+            this._twitterService = twitterService;
         }
-        
-        protected override async Task<SocialLoginUser> GetMeAsync(GoogleLoginCommand command)
+
+        protected override async Task<SocialLoginUser> GetMeAsync(TwitterLoginCommand command)
         {
-            var token = await this._googleService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
-            var user = await this._googleService.GetMeAsync(token).WithCurrentCulture();
+            var token = await this._twitterService.ExchangeForToken(command.Payload, command.OAuthVerifier);
+            var user = await this._twitterService.GetMeAsync(token);
 
             if (user == null)
                 return null;
 
             return new SocialLoginUser
             {
-                EmailAddress = user.EmailAddress,
+                Id = user.Id,
                 Locale = user.Locale,
-                Id = user.Id
+                EmailAddress = user.Email
             };
         }
 
         protected override Expression<Func<AuthenticationData_ByAllFields.Result, bool>> GetExpressionForSocialUserId(SocialLoginUser user)
         {
-            return f => f.GoogleUserId == user.Id;
+            return f => f.TwitterUserId == user.Id;
         }
 
         protected override AuthenticationKindBase CreateAuthentication(SocialLoginUser user)
         {
-            return new GoogleAuthenticationKind
+            return new TwitterAuthenticationKind
             {
-                GoogleUserId = user.Id
+                TwitterUserId = user.Id
             };
         }
     }

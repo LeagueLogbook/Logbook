@@ -6,5 +6,6 @@
         Microsoft,
         Facebook,
         Google,
+        Twitter,
     }
 }
