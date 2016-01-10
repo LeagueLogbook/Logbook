@@ -143,6 +143,7 @@
     <Compile Include="Api\Controllers\AuthenticationController.cs" />
     <Compile Include="Api\Controllers\BaseController.cs" />
     <Compile Include="Api\Controllers\MetricsController.cs" />
+    <Compile Include="Api\Controllers\UsersController.cs" />
     <Compile Include="Api\Filter\LogbookAuthenticationAttribute.cs" />
     <Compile Include="Api\Filter\OnlyLocalAttribute.cs" />
     <Compile Include="Api\MessageHandlers\ConcurrentRequestCountMessageHandler.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Commands\CommandScope.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
+    <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Emails\EmailTemplateService.cs" />
     <Compile Include="Emails\SmtpEmailSender.cs" />

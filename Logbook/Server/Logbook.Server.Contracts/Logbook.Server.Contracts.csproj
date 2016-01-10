@@ -69,6 +69,7 @@
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
+    <Compile Include="Commands\Users\GetUserCommand.cs" />
     <Compile Include="Emails\Email.cs" />
     <Compile Include="Emails\IEmailTemplate.cs" />
     <Compile Include="Emails\IEmailSender.cs" />
