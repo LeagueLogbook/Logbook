@@ -205,3 +205,4 @@ frontend/dist
 frontend/build/reports
 frontend/coverage
 frontend/test/e2e/dist
+frontend/typings
