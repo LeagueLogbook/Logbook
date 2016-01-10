@@ -63,6 +63,7 @@
     <Compile Include="Commands\Authentication\LoginCommand.cs" />
     <Compile Include="Commands\Authentication\ResetPasswordCommand.cs" />
     <Compile Include="Commands\Authentication\TwitterLoginCommand.cs" />
+    <Compile Include="Commands\Budgets\CreateBudgetCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
@@ -98,9 +99,7 @@
       <Name>Logbook.Shared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\Users\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
