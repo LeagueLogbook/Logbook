@@ -20,7 +20,7 @@ namespace Logbook.Server.Infrastructure.Commands.Budgets
             var budget = new Budget
             {
                 Name = command.BudgetName,
-                ForUserId = command.CurrentUserId
+                ForUserId = command.ForUserId
             };
 
             await this._documentSession.StoreAsync(budget);

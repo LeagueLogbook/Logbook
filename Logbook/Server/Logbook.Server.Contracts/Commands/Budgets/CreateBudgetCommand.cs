@@ -5,16 +5,16 @@ namespace Logbook.Server.Contracts.Commands.Budgets
 {
     public class CreateBudgetCommand : ICommand<Budget>
     {
-        public CreateBudgetCommand(string budgetName, string currentUserId)
+        public CreateBudgetCommand(string budgetName, string forUserId)
         {
             Guard.AgainstNullArgument(nameof(budgetName), budgetName);
-            Guard.AgainstNullArgument(nameof(currentUserId), currentUserId);
+            Guard.AgainstNullArgument(nameof(forUserId), forUserId);
 
             this.BudgetName = budgetName;
-            this.CurrentUserId = currentUserId;
+            this.ForUserId = forUserId;
         }
 
         public string BudgetName { get; }
-        public string CurrentUserId { get; }
+        public string ForUserId { get; }
     }
 }
