@@ -38,7 +38,8 @@
     "run-sequence": "^1.0.2",
     "systemjs": "^0.19.6",
     "tslint": "^3.2.0",
-    "typescript": "^1.7.3"
+    "typescript": "^1.7.3",
+    "vinyl-paths": "^1.0.0"
   },
   "jspm": {
     "dependencies": {
