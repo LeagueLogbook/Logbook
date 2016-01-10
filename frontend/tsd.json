@@ -7,9 +7,6 @@
   "installed": {
     "es6-promise/es6-promise.d.ts": {
       "commit": "24e12a7af994afa2226af70fbfae0adc78736a9e"
-    },
-    "crypto-js/crypto-js.d.ts": {
-      "commit": "6eebd5e90a1cbd6b47b0705ba72dbcd5baf846f3"
     }
   }
 }
