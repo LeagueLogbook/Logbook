@@ -2,8 +2,7 @@
   "name": "aurelia-skeleton-navigation",
   "version": "",
   "description": "",
-  "keywords": [
-  ],
+  "keywords": [],
   "homepage": "",
   "bugs": {
     "url": ""
@@ -15,8 +14,7 @@
     "type": "git",
     "url": ""
   },
-  "scripts": {
-  },
+  "scripts": {},
   "devDependencies": {
     "aurelia-bundler": "^0.2.1",
     "aurelia-tools": "^0.1.18",
