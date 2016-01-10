@@ -1,28 +1,21 @@
 {
   "name": "aurelia-skeleton-navigation",
-  "version": "1.0.0-beta.1.0.5",
-  "description": "A starter kit for building a standard navigation-style app with Aurelia and TypeScript.",
+  "version": "",
+  "description": "",
   "keywords": [
-    "aurelia",
-    "navigation",
-    "skeleton",
-    "typescript",
-    "vscode"
   ],
-  "homepage": "http://aurelia.io",
+  "homepage": "",
   "bugs": {
-    "url": "https://github.com/aurelia/skeleton-navigation-typescript/issues"
+    "url": ""
   },
-  "license": "CC0-1.0",
-  "author": "Mike Graham <mgraham@technicalmedia.com> (http://cmichaelgraham.io/)",
+  "license": "",
+  "author": "",
   "main": "dist/main.js",
   "repository": {
     "type": "git",
-    "url": "http://github.com/aurelia/skeleton-navigation-typescript"
+    "url": ""
   },
   "scripts": {
-    "test": "gulp test",
-    "e2e": "gulp serve e2e"
   },
   "devDependencies": {
     "aurelia-bundler": "^0.2.1",
@@ -31,7 +24,6 @@
     "babel-core": "^6.3.17",
     "babel-eslint": "^4.1.3",
     "browser-sync": "^1.8.1",
-    "conventional-changelog": "0.0.11",
     "del": "^1.1.0",
     "es6-module-loader": "^0.17.8",
     "gulp": "^3.8.10",
@@ -39,27 +31,19 @@
     "gulp-changed": "^1.1.0",
     "gulp-notify": "^2.2.0",
     "gulp-plumber": "^0.6.6",
-    "gulp-protractor": "^0.0.12",
     "gulp-sourcemaps": "^1.3.0",
     "gulp-tslint": "^4.2.1",
     "gulp-typescript": "^2.9.2",
     "isparta": "^3.1.0",
     "istanbul": "gotwarlost/istanbul#source-map",
-    "jasmine-core": "^2.1.3",
     "jspm": "^0.16.11",
-    "karma": "^0.13.15",
-    "karma-babel-preprocessor": "^5.2.1",
-    "karma-chrome-launcher": "^0.1.7",
-    "karma-jasmine": "^0.3.5",
-    "karma-systemjs": "^0.10.0",
     "object.assign": "^1.0.3",
     "require-dir": "^0.1.0",
     "run-sequence": "^1.0.2",
     "systemjs": "^0.19.6",
     "tslint": "^3.2.0",
     "typescript": "^1.7.3",
-    "vinyl-paths": "^1.0.0",
-    "yargs": "^2.1.1"
+    "vinyl-paths": "^1.0.0"
   },
   "jspm": {
     "dependencies": {
