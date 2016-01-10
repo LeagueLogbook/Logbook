@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 using Anotar.NLog;
 using LiteGuard;
@@ -21,6 +22,10 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         {
             get { return this.Request.GetOwinContext(); }
         }
+        /// <summary>
+        /// Gets or sets the current user identifier.
+        /// </summary>
+        public string CurrentUserId => Thread.CurrentPrincipal?.Identity?.Name;
         #endregion
 
         #region Constructors
