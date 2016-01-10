@@ -194,3 +194,14 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+#Frontend
+frontend/node_modules
+frontend/jspm_packages
+frontend/bower_components
+frontend/.idea
+frontend/.DS_STORE
+frontend/dist
+frontend/build/reports
+frontend/coverage
+frontend/test/e2e/dist
