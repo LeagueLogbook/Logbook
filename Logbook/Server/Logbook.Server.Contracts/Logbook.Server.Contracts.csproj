@@ -64,6 +64,7 @@
     <Compile Include="Commands\Authentication\ResetPasswordCommand.cs" />
     <Compile Include="Commands\Authentication\TwitterLoginCommand.cs" />
     <Compile Include="Commands\Budgets\CreateBudgetCommand.cs" />
+    <Compile Include="Commands\Budgets\GetBudgetsCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
