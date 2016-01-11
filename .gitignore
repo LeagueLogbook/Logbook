@@ -206,5 +206,5 @@ frontend/build/reports
 frontend/coverage
 frontend/test/e2e/dist
 frontend/typings/*
-!frontend/typings/es6.d.ts
+!frontend/typings/custom/
 !frontend/build
