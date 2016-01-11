@@ -51,4 +51,34 @@ export class AuthenticationApi {
                 return Promise.reject(response.content.message);
             });
     }
+    
+    getMicrosoftLoginUrl(redirectUrl: string) : Promise<string> {
+        return this.httpClient
+            .createRequest(`Authentication/Login/Microsoft/Url?redirectUrl=${encodeURIComponent(redirectUrl)}`)
+            .asGet()
+            .send()
+            .then(response => {
+                return response.content.url;
+            })
+            .catch(response => {
+                return Promise.reject(response.content.message);
+            });
+    }
+    
+    loginMicrosoft(code: string, redirectUrl: string) : Promise<JsonWebToken> {
+        let content = {
+            code: code,
+            redirectUrl: redirectUrl  
+        };
+        
+        return this.httpClient
+            .createRequest("Authentication/Login/Microsoft")
+            .asPost()
+            .withContent(content)
+            .send()
+            .then(response => {
+                return response.content;
+            })
+            .catch(response => Promise.reject(response.content.message));
+    }
 }

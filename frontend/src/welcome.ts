@@ -8,10 +8,8 @@ export class Welcome {
         
     }
     
-    activate() : Promise<void> {
-        return this.authService
-            .loginLogbook("haefele@xemio.net", "123456")
-            .then(token => alert(token.token))
-            .catch(error => alert(error));
-    }
+    loginMicrosoft(): Promise<void> {
+        alert("Jo");
+        return this.authService.loginMicrosoft();
+    }    
 }

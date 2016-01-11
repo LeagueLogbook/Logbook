@@ -26,4 +26,20 @@ export class AuthService {
     register(emailAddress: string, password: string) : Promise<void> {
         return this.logbookApi.authenticationApi.register(emailAddress, password, this.languageService.userLanguage);
     }
+    
+    loginMicrosoft() : Promise<void> {
+        return this.logbookApi.authenticationApi
+            .getMicrosoftLoginUrl(config.socialLoginRedirectUrl)
+            .then(url => {                
+                return this.oauth2Helper
+                    .showOAuth2Popup("Microsoft", url, config.socialLoginRedirectUrl)
+                    .then(code => {
+                        return this.logbookApi.authenticationApi
+                            .loginMicrosoft(code, config.socialLoginRedirectUrl)
+                            .then(token => {
+                                this.storageService.setItem(this.storageServiceKey, token); 
+                            });
+                    });
+            });
+    }
 }
