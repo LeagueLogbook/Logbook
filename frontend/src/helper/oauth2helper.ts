@@ -1,5 +1,7 @@
 import {UrlHelper} from './url-helper';
+import {autoinject} from 'aurelia-framework';
 
+@autoinject()
 export class OAuth2Helper {
     
     constructor(public urlHelper: UrlHelper) {
@@ -10,7 +12,7 @@ export class OAuth2Helper {
         
         return new Promise((resolve, reject) => {
             var polling = setInterval(() => {
-               try {
+               try {                   
                    if (popupWindow.location.href.indexOf(redirectUri) === 0) {
                        var code = this.urlHelper.getParameter(popupWindow.location.href, 'code');
                        
