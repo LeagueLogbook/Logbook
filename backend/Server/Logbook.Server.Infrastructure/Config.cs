@@ -42,6 +42,7 @@ namespace Logbook.Server.Infrastructure
             TwitterConsumerKey = new StringSetting("Logbook/TwitterConsumerKey", string.Empty);
             TwitterConsumerSecret = new StringSetting("Logbook/TwitterConsumerSecret", string.Empty);
             TwitterLoginKeyPhrase = new StringSetting("Logbook/TwitterLoginKeyPhrase", string.Empty);
+            InDebugHoldOnException = new BoolSetting("Logbook/InDebugHoldOnException", true);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -78,5 +79,6 @@ namespace Logbook.Server.Infrastructure
         public static StringSetting TwitterConsumerKey { get; }
         public static StringSetting TwitterConsumerSecret { get; }
         public static StringSetting TwitterLoginKeyPhrase { get; }
+        public static BoolSetting InDebugHoldOnException { get; }
     }
 }
