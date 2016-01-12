@@ -34,4 +34,12 @@ export class AuthService {
             .then(code => this.logbookApi.authenticationApi.loginMicrosoft(code, config.socialLoginRedirectUrl))
             .then(token => this.storageService.setItem(this.storageServiceKey, token));
     }
+    
+    loginFacebook() : Promise<void> {
+        return this.logbookApi.authenticationApi
+            .getFacebookLoginUrl(config.socialLoginRedirectUrl)
+            .then(url => this.oauth2Helper.showOAuth2Popup("Facebook", url, config.socialLoginRedirectUrl))
+            .then(code => this.logbookApi.authenticationApi.loginFacebook(code, config.socialLoginRedirectUrl))
+            .then(token => this.storageService.setItem(this.storageServiceKey, token));
+    }
 }

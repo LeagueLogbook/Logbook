@@ -57,12 +57,8 @@ export class AuthenticationApi {
             .createRequest(`Authentication/Login/Microsoft/Url?redirectUrl=${encodeURIComponent(redirectUrl)}`)
             .asGet()
             .send()
-            .then(response => {
-                return response.content.url;
-            })
-            .catch(response => {
-                return Promise.reject(response.content.message);
-            });
+            .then(response => response.content.url)
+            .catch(response => Promise.reject(response.content.message));
     }
     
     loginMicrosoft(code: string, redirectUrl: string) : Promise<JsonWebToken> {
@@ -76,9 +72,31 @@ export class AuthenticationApi {
             .asPost()
             .withContent(content)
             .send()
-            .then(response => {
-                return response.content;
-            })
+            .then(response => response.content)
+            .catch(response => Promise.reject(response.content.message));
+    }
+    
+    getFacebookLoginUrl(redirectUrl: string) : Promise<string> {
+        return this.httpClient
+            .createRequest(`Authentication/Login/Facebook/Url?redirectUrl=${encodeURIComponent(redirectUrl)}`)
+            .asGet()
+            .send()
+            .then(response => response.content.url)
+            .catch(response => Promise.reject(response.content.message));
+    }
+    
+    loginFacebook(code: string, redirectUrl: string): Promise<JsonWebToken> {
+        let content = {
+            code: code,
+            redirectUrl: redirectUrl
+        };
+        
+        return this.httpClient
+            .createRequest("Authentication/Login/Facebook")
+            .asPost()
+            .withContent(content)
+            .send()
+            .then(response => response.content)
             .catch(response => Promise.reject(response.content.message));
     }
 }
