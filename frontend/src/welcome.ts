@@ -1,15 +1,20 @@
 import {AuthService} from 'services/auth-service';
-import {autoinject} from 'aurelia-framework';
+import {autoinject, Aurelia} from 'aurelia-framework';
 
  @autoinject()
 export class Welcome {
     
-    constructor(public authService: AuthService) {
+    constructor(private authService: AuthService, private aurelia: Aurelia) {
         
     }
     
-    loginMicrosoft(): Promise<void> {
-        alert("Jo");
-        return this.authService.loginMicrosoft();
-    }    
+    logout(): Promise<void> {
+        return this.authService
+            .logout()
+            .then(_ => this.setAureliaRootToLoggedOut());
+    }
+    
+    private setAureliaRootToLoggedOut() {
+        this.aurelia.setRoot("loggedOut");
+    }
 }
