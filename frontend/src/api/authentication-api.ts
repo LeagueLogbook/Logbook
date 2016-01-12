@@ -3,6 +3,7 @@ import {HttpClient} from 'aurelia-http-client';
 import config from 'config';
 import * as crypto from 'crypto-js';
 import {JsonWebToken} from 'api/models/json-web-token';
+import {TwitterLoginUrl} from 'api/models/twitter-login-url';
 
 @autoinject()
 export class AuthenticationApi {
@@ -19,7 +20,7 @@ export class AuthenticationApi {
             passwordSHA256Hash: crypto.SHA256(password).toString(crypto.enc.Base64),
             preferredLanguage: language  
         };
-        
+
         return this.httpClient
             .createRequest("Authentication/Register")
             .asPost()
@@ -117,6 +118,30 @@ export class AuthenticationApi {
         
         return this.httpClient
             .createRequest("Authentication/Login/Google")
+            .asPost()
+            .withContent(content)
+            .send()
+            .then(response => response.content)
+            .catch(response => Promise.reject(response.content.message));
+    }
+    
+    getTwitterLoginUrl(redirectUrl: string) : Promise<TwitterLoginUrl> {
+        return this.httpClient
+            .createRequest(`Authentication/Login/Twitter/Url?redirectUrl=${encodeURIComponent(redirectUrl)}`)
+            .asGet()
+            .send()
+            .then(response => response.content)
+            .catch(response => Promise.reject(response.content.message));
+    }
+    
+    loginTwitter(oauthVerifier: string, payload: string) : Promise<JsonWebToken> {
+        let content = {
+            oauthVerifier: oauthVerifier,
+            payload: payload,
+        };
+        
+        return this.httpClient
+            .createRequest("Authentication/Login/Twitter")
             .asPost()
             .withContent(content)
             .send()

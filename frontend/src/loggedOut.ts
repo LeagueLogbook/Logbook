@@ -12,8 +12,10 @@ export class LoggedOut {
             .loginMicrosoft()
             .then(_ => this.setAureliaRootToApp());
     }
-    loginTwitter() {
-        
+    loginTwitter() : Promise<void> {
+        return this.authService
+            .loginTwitter()
+            .then(_ => this.setAureliaRootToApp());
     }
     loginFacebook() : Promise<void> {
         return this.authService
