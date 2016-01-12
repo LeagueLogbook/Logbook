@@ -1,10 +1,10 @@
 import {autoinject} from 'aurelia-framework';
-import {LogbookApi} from '../api/logbook-api';
-import {JsonWebToken} from '../api/models/json-web-token';
-import {StorageService} from './storage-service';
-import {LanguageService} from './language-service';
-import {OAuth2Helper} from '../helper/oauth2Helper';
-import config from '../config';
+import {LogbookApi} from 'api/logbook-api';
+import {JsonWebToken} from 'api/models/json-web-token';
+import {StorageService} from 'services/storage-service';
+import {LanguageService} from 'services/language-service';
+import {OAuth2Helper} from 'helper/oauth2Helper';
+import config from 'config';
 import * as crypto from 'crypto-js';
 
 @autoinject()

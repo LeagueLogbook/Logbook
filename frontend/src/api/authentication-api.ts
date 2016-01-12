@@ -2,7 +2,7 @@ import {autoinject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import config from 'config';
 import * as crypto from 'crypto-js';
-import {JsonWebToken} from './models/json-web-token';
+import {JsonWebToken} from 'api/models/json-web-token';
 
 @autoinject()
 export class AuthenticationApi {

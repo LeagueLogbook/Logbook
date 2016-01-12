@@ -1,4 +1,4 @@
-import {AuthService} from './services/auth-service';
+import {AuthService} from 'services/auth-service';
 import {autoinject} from 'aurelia-framework';
 
  @autoinject()

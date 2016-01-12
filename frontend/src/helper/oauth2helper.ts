@@ -1,4 +1,4 @@
-import {UrlHelper} from './url-helper';
+import {UrlHelper} from 'helper/url-helper';
 import {autoinject} from 'aurelia-framework';
 
 @autoinject()
