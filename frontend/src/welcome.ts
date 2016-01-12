@@ -14,6 +14,10 @@ export class Welcome {
             .then(_ => this.setAureliaRootToLoggedOut());
     }
     
+    currentUserId(): void {
+        alert(this.authService.currentUserId);
+    }
+    
     private setAureliaRootToLoggedOut() {
         this.aurelia.setRoot("loggedOut");
     }

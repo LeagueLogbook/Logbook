@@ -7,6 +7,7 @@ import {OAuthHelper} from 'helper/oauth-helper';
 import {UrlHelper} from 'helper/url-helper';
 import config from 'config';
 import * as crypto from 'crypto-js';
+import * as jwt from 'jwt-simple';
 
 @autoinject()
 export class AuthService {
@@ -21,8 +22,19 @@ export class AuthService {
         return Promise.resolve(null);
     }
     
-    get isLoggedIn() {
+    get isLoggedIn() : boolean {
         return this.storageService.getItem(this.storageServiceKey) !== null;
+    }
+    
+    get currentUserId() : boolean {
+        
+        if (this.isLoggedIn === false)
+            return false;
+        
+        let token: JsonWebToken = this.storageService.getItem(this.storageServiceKey);
+        let decoded = jwt.decode(token.token, "", true);
+        
+        return decoded.UserId;
     }
     
     loginLogbook(emailAddress: string, password: string) : Promise<JsonWebToken> {

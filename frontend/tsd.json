@@ -7,6 +7,9 @@
   "installed": {
     "es6-promise/es6-promise.d.ts": {
       "commit": "24e12a7af994afa2226af70fbfae0adc78736a9e"
+    },
+    "jwt-simple/jwt-simple.d.ts": {
+      "commit": "984a41af67d76b5134e0d4991a30f813dfb8561f"
     }
   }
 }
