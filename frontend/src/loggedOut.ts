@@ -1,22 +1,32 @@
 import {AuthService} from 'services/auth-service';
-import {autoinject} from 'aurelia-framework';
+import {autoinject, Aurelia} from 'aurelia-framework';
 
 @autoinject()
 export class LoggedOut {
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private aurelia: Aurelia) {
         
     }
     
     loginMicrosoft() : Promise<void> {
-        return this.authService.loginMicrosoft();
+        return this.authService
+            .loginMicrosoft()
+            .then(_ => this.setAureliaRootToApp());
     }
     loginTwitter() {
         
     }
-    loginFacebook() {
-        return this.authService.loginFacebook();
+    loginFacebook() : Promise<void> {
+        return this.authService
+            .loginFacebook()
+            .then(_ => this.setAureliaRootToApp());
     }
-    loginGoogle() {
-        
+    loginGoogle() : Promise<void> {
+        return this.authService
+            .loginGoogle()
+            .then(_ => this.setAureliaRootToApp())
+    }
+    
+    private setAureliaRootToApp() {
+        this.aurelia.setRoot("app");
     }
 }

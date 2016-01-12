@@ -15,6 +15,11 @@ export class AuthService {
     constructor(public logbookApi : LogbookApi, public storageService : StorageService, public oauth2Helper: OAuth2Helper, public languageService: LanguageService) {
     }
     
+    logout() : Promise<void> {
+        this.storageService.removeItem(this.storageServiceKey);
+        return Promise.resolve(null);
+    }
+    
     get isLoggedIn() {
         return this.storageService.getItem(this.storageServiceKey) !== null;
     }
@@ -32,7 +37,7 @@ export class AuthService {
             .getMicrosoftLoginUrl(config.socialLoginRedirectUrl)
             .then(url => this.oauth2Helper.showOAuth2Popup("Microsoft", url, config.socialLoginRedirectUrl))                    
             .then(code => this.logbookApi.authenticationApi.loginMicrosoft(code, config.socialLoginRedirectUrl))
-            .then(token => this.storageService.setItem(this.storageServiceKey, token));
+            .then(token => this.saveToken(token));
     }
     
     loginFacebook() : Promise<void> {
@@ -40,6 +45,18 @@ export class AuthService {
             .getFacebookLoginUrl(config.socialLoginRedirectUrl)
             .then(url => this.oauth2Helper.showOAuth2Popup("Facebook", url, config.socialLoginRedirectUrl))
             .then(code => this.logbookApi.authenticationApi.loginFacebook(code, config.socialLoginRedirectUrl))
-            .then(token => this.storageService.setItem(this.storageServiceKey, token));
+            .then(token => this.saveToken(token));
+    }
+    
+    loginGoogle() : Promise<void> {
+        return this.logbookApi.authenticationApi
+            .getGoogleLoginUrl(config.socialLoginRedirectUrl)
+            .then(url => this.oauth2Helper.showOAuth2Popup("Google", url, config.socialLoginRedirectUrl))
+            .then(code => this.logbookApi.authenticationApi.loginGoogle(code, config.socialLoginRedirectUrl))
+            .then(token => this.saveToken(token));
+    }
+    
+    private saveToken(token: JsonWebToken) {
+        this.storageService.setItem(this.storageServiceKey, token);
     }
 }

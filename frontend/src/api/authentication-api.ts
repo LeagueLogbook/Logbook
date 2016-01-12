@@ -85,7 +85,7 @@ export class AuthenticationApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    loginFacebook(code: string, redirectUrl: string): Promise<JsonWebToken> {
+    loginFacebook(code: string, redirectUrl: string) : Promise<JsonWebToken> {
         let content = {
             code: code,
             redirectUrl: redirectUrl
@@ -93,6 +93,30 @@ export class AuthenticationApi {
         
         return this.httpClient
             .createRequest("Authentication/Login/Facebook")
+            .asPost()
+            .withContent(content)
+            .send()
+            .then(response => response.content)
+            .catch(response => Promise.reject(response.content.message));
+    }
+    
+    getGoogleLoginUrl(redirectUrl: string) : Promise<string> {
+        return this.httpClient
+            .createRequest(`Authentication/Login/Google/Url?redirectUrl=${encodeURIComponent(redirectUrl)}`)
+            .asGet()
+            .send()
+            .then(response => response.content.url)
+            .catch(response => Promise.reject(response.content.message));
+    }
+    
+    loginGoogle(code: string, redirectUrl: string) : Promise<JsonWebToken> {
+        let content = {
+            code: code,
+            redirectUrl: redirectUrl
+        };
+        
+        return this.httpClient
+            .createRequest("Authentication/Login/Google")
             .asPost()
             .withContent(content)
             .send()
