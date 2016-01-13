@@ -6,27 +6,29 @@ import {LanguageService} from 'services/language-service';
 import {OAuthHelper} from 'helper/oauth-helper';
 import {UrlHelper} from 'helper/url-helper';
 import config from 'config';
+"use strict";
+
 import * as crypto from 'crypto-js';
 import * as jwt from 'jwt-simple';
 
 @autoinject()
 export class AuthService {
     
-    storageServiceKey: string = "auth_token";
+    private storageServiceKey: string = "auth_token";
     
     constructor(private logbookApi: LogbookApi, private storageService: StorageService, private oauthHelper: OAuthHelper, private languageService: LanguageService, private urlHelper: UrlHelper) {
     }
     
-    logout() : Promise<void> {
+    public logout() : Promise<void> {
         this.storageService.removeItem(this.storageServiceKey);
         return Promise.resolve(null);
     }
     
-    get isLoggedIn() : boolean {
+    public get isLoggedIn() : boolean {
         return this.storageService.getItem(this.storageServiceKey) !== null;
     }
     
-    get currentUserId() : boolean {
+    public get currentUserId() : boolean {
         
         if (this.isLoggedIn === false)
             return false;
@@ -37,56 +39,51 @@ export class AuthService {
         return decoded.UserId;
     }
     
-    loginLogbook(emailAddress: string, password: string) : Promise<JsonWebToken> {
+    public loginLogbook(emailAddress: string, password: string) : Promise<JsonWebToken> {
         return this.logbookApi.authenticationApi.loginLogbook(emailAddress, password);
     }
     
-    register(emailAddress: string, password: string) : Promise<void> {
+    public register(emailAddress: string, password: string) : Promise<void> {
         return this.logbookApi.authenticationApi.register(emailAddress, password, this.languageService.userLanguage);
     }
     
-    loginMicrosoft() : Promise<void> {
-        return this.logbookApi.authenticationApi
-            .getMicrosoftLoginUrl(config.socialLoginRedirectUrl)
-            .then(url => this.oauthHelper.showOAuthPopup("Microsoft", url, config.socialLoginRedirectUrl))
-            .then(url => this.urlHelper.getParameter(url, "code"))                    
-            .then(code => this.logbookApi.authenticationApi.loginMicrosoft(code, config.socialLoginRedirectUrl))
-            .then(token => this.saveToken(token));
-    }
-    
-    loginFacebook() : Promise<void> {
-        return this.logbookApi.authenticationApi
-            .getFacebookLoginUrl(config.socialLoginRedirectUrl)
-            .then(url => this.oauthHelper.showOAuthPopup("Facebook", url, config.socialLoginRedirectUrl))
-            .then(url => this.urlHelper.getParameter(url, "code"))
-            .then(code => this.logbookApi.authenticationApi.loginFacebook(code, config.socialLoginRedirectUrl))
-            .then(token => this.saveToken(token));
-    }
-    
-    loginGoogle() : Promise<void> {
-        return this.logbookApi.authenticationApi
-            .getGoogleLoginUrl(config.socialLoginRedirectUrl)
-            .then(url => this.oauthHelper.showOAuthPopup("Google", url, config.socialLoginRedirectUrl))
-            .then(url => this.urlHelper.getParameter(url, "code"))
-            .then(code => this.logbookApi.authenticationApi.loginGoogle(code, config.socialLoginRedirectUrl))
-            .then(token => this.saveToken(token));
-    }
-    
-    loginTwitter() : Promise<void> {        
-        let payload: string;
+    public async loginMicrosoft() : Promise<void> {
+        let loginUrl = await this.logbookApi.authenticationApi.getMicrosoftLoginUrl(config.socialLoginRedirectUrl);
+        let loggedInUrl = await this.oauthHelper.showOAuthPopup("Microsoft", loginUrl, config.socialLoginRedirectUrl);
+        let code = this.urlHelper.getParameter(loggedInUrl, "code");
+        let jsonWebToken = await this.logbookApi.authenticationApi.loginMicrosoft(code, config.socialLoginRedirectUrl);
         
-        return this.logbookApi.authenticationApi
-            .getTwitterLoginUrl(config.socialLoginRedirectUrl)
-            .then(url => {
-                payload = url.payload;
-                return this.oauthHelper.showOAuthPopup("Twitter", url.url, config.socialLoginRedirectUrl);
-            })
-            .then(url => this.urlHelper.getParameter(url, "oauth_verifier"))
-            .then(verifier => this.logbookApi.authenticationApi.loginTwitter(verifier, payload))
-            .then(token => this.saveToken(token));
+        this.saveToken(jsonWebToken);
     }
     
-    private saveToken(token: JsonWebToken) {
+    public async loginFacebook() : Promise<void> {
+        let loginUrl = await this.logbookApi.authenticationApi.getFacebookLoginUrl(config.socialLoginRedirectUrl);
+        let loggedInUrl = await this.oauthHelper.showOAuthPopup("Facebook", loginUrl, config.socialLoginRedirectUrl);
+        let code = this.urlHelper.getParameter(loggedInUrl, "code");
+        let jsonWebToken = await this.logbookApi.authenticationApi.loginFacebook(code, config.socialLoginRedirectUrl);
+        
+        this.saveToken(jsonWebToken);
+    }
+    
+    public async loginGoogle() : Promise<void> {
+        let loginUrl = await this.logbookApi.authenticationApi.getGoogleLoginUrl(config.socialLoginRedirectUrl);
+        let loggedInUrl = await this.oauthHelper.showOAuthPopup("Google", loginUrl, config.socialLoginRedirectUrl);
+        let code = this.urlHelper.getParameter(loggedInUrl, "code");
+        let jsonWebToken = await this.logbookApi.authenticationApi.loginGoogle(code, config.socialLoginRedirectUrl);
+        
+        this.saveToken(jsonWebToken);
+    }
+    
+    public async loginTwitter() : Promise<void> {        
+        let loginUrl = await this.logbookApi.authenticationApi.getTwitterLoginUrl(config.socialLoginRedirectUrl);
+        let loggedInUrl = await this.oauthHelper.showOAuthPopup("Twitter", loginUrl.url, config.socialLoginRedirectUrl);
+        let verifier = this.urlHelper.getParameter(loggedInUrl, "oauth_verifier");
+        let jsonWebToken = await this.logbookApi.authenticationApi.loginTwitter(verifier, loginUrl.payload);
+        
+        this.saveToken(jsonWebToken);
+    }
+    
+    private saveToken(token: JsonWebToken) : void {
         this.storageService.setItem(this.storageServiceKey, token);
     }
 }

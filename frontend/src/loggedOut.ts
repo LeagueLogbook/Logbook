@@ -1,3 +1,5 @@
+"use strict";
+
 import {AuthService} from 'services/auth-service';
 import {autoinject, Aurelia} from 'aurelia-framework';
 

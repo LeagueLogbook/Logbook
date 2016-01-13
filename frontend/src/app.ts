@@ -1,3 +1,5 @@
+"use strict";
+
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {autoinject} from 'aurelia-framework';
 

@@ -1,3 +1,5 @@
+"use strict";
+
 import 'bootstrap';
 import {Aurelia} from 'aurelia-framework';
 import {AuthService} from 'services/auth-service';

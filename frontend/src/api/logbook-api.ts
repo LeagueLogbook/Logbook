@@ -1,3 +1,5 @@
+"use strict";
+
 import {autoinject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {AuthenticationApi} from './authentication-api';

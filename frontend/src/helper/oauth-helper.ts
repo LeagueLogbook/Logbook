@@ -1,3 +1,5 @@
+"use strict";
+
 export class OAuthHelper {
         
     showOAuthPopup(name: string, uri: string, redirectUri: string) : Promise<string> {
