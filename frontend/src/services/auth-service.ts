@@ -1,3 +1,5 @@
+"use strict";
+
 import {autoinject} from 'aurelia-framework';
 import {LogbookApi} from 'api/logbook-api';
 import {JsonWebToken} from 'api/models/json-web-token';
@@ -6,8 +8,6 @@ import {LanguageService} from 'services/language-service';
 import {OAuthHelper} from 'helper/oauth-helper';
 import {UrlHelper} from 'helper/url-helper';
 import config from 'config';
-"use strict";
-
 import * as crypto from 'crypto-js';
 import * as jwt from 'jwt-simple';
 
