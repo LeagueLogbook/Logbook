@@ -1,7 +1,7 @@
 "use strict";
 
 export class JsonWebToken {
-    token: string;
-    expiresAt: Date;
-    validDuration: string;
+    public token: string;
+    public expiresAt: Date;
+    public validDuration: string;
 }

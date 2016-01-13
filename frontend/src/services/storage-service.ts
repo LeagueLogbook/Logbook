@@ -1,13 +1,13 @@
 "use strict";
 
 export class StorageService {
-    setItem(key: string, value: any) {
+    public setItem(key: string, value: Object) {
         localStorage.setItem(key, JSON.stringify(value));
     }
-    getItem(key: string) {
+    public getItem(key: string) {
         return JSON.parse(localStorage.getItem(key));
     }
-    removeItem(key: string) {
+    public removeItem(key: string) {
         localStorage.removeItem(key);
     }
 }

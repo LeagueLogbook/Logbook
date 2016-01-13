@@ -1,25 +1,22 @@
 "use strict";
 
-import {Router, RouterConfiguration} from 'aurelia-router';
-import {autoinject} from 'aurelia-framework';
+import {Router, RouterConfiguration} from "aurelia-router";
+import {autoinject} from "aurelia-framework";
 
 @autoinject()
 export class App {
-  router: Router;
-  
-  constructor() {
-  }
-  
-  configureRouter(config: RouterConfiguration, router: Router) {
-    config.title = 'Aurelia';
+  private router: Router;
+    
+  public configureRouter(config: RouterConfiguration, router: Router) {
+    config.title = "Aurelia";
     config.map([
         { 
-            route: ['', 'welcome'], 
-            name: 'welcome',      
-            moduleId: 'welcome',      
+            route: ["", "welcome"], 
+            name: "welcome",      
+            moduleId: "welcome",      
             nav: true, 
-            title: 'Welcome' 
-        }
+            title: "Welcome",
+        },
     ]);
 
     this.router = router;

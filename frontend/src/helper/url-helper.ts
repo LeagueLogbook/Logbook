@@ -1,7 +1,7 @@
 "use strict";
 
 export class UrlHelper {
-    getParameter(uri: string, name: string) : string {
+    public getParameter(uri: string, name: string) : string {
         name = name
             .replace(/[\[]/, "\\[")
             .replace(/[\]]/, "\\]");

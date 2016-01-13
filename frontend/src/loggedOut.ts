@@ -1,33 +1,33 @@
 "use strict";
 
-import {AuthService} from 'services/auth-service';
-import {autoinject, Aurelia} from 'aurelia-framework';
+import {AuthService} from "services/auth-service";
+import {autoinject, Aurelia} from "aurelia-framework";
 
 @autoinject()
 export class LoggedOut {
-    constructor(private authService: AuthService, private aurelia: Aurelia) {
+    public constructor(private authService: AuthService, private aurelia: Aurelia) {
         
     }
     
-    loginMicrosoft() : Promise<void> {
+    public loginMicrosoft() : Promise<void> {
         return this.authService
             .loginMicrosoft()
             .then(_ => this.setAureliaRootToApp());
     }
-    loginTwitter() : Promise<void> {
+    public loginTwitter() : Promise<void> {
         return this.authService
             .loginTwitter()
             .then(_ => this.setAureliaRootToApp());
     }
-    loginFacebook() : Promise<void> {
+    public loginFacebook() : Promise<void> {
         return this.authService
             .loginFacebook()
             .then(_ => this.setAureliaRootToApp());
     }
-    loginGoogle() : Promise<void> {
+    public loginGoogle() : Promise<void> {
         return this.authService
             .loginGoogle()
-            .then(_ => this.setAureliaRootToApp())
+            .then(_ => this.setAureliaRootToApp());
     }
     
     private setAureliaRootToApp() {

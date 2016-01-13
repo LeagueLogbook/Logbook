@@ -1,6 +1,6 @@
 "use strict";
 
 export class TwitterLoginUrl {
-    url: string;
-    payload: string;
+    public url: string;
+    public payload: string;
 }

@@ -1,22 +1,22 @@
 "use strict";
 
-import {AuthService} from 'services/auth-service';
-import {autoinject, Aurelia} from 'aurelia-framework';
+import {AuthService} from "services/auth-service";
+import {autoinject, Aurelia} from "aurelia-framework";
 
  @autoinject()
 export class Welcome {
     
-    constructor(private authService: AuthService, private aurelia: Aurelia) {
+    public constructor(private authService: AuthService, private aurelia: Aurelia) {
         
     }
     
-    logout(): Promise<void> {
+    public logout(): Promise<void> {
         return this.authService
             .logout()
             .then(_ => this.setAureliaRootToLoggedOut());
     }
     
-    currentUserId(): void {
+    public currentUserId(): void {
         alert(this.authService.currentUserId);
     }
     

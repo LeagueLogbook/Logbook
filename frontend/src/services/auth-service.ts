@@ -1,22 +1,21 @@
 "use strict";
 
-import {autoinject} from 'aurelia-framework';
-import {LogbookApi} from 'api/logbook-api';
-import {JsonWebToken} from 'api/models/json-web-token';
-import {StorageService} from 'services/storage-service';
-import {LanguageService} from 'services/language-service';
-import {OAuthHelper} from 'helper/oauth-helper';
-import {UrlHelper} from 'helper/url-helper';
-import config from 'config';
-import * as crypto from 'crypto-js';
-import * as jwt from 'jwt-simple';
+import {autoinject} from "aurelia-framework";
+import {LogbookApi} from "api/logbook-api";
+import {JsonWebToken} from "api/models/json-web-token";
+import {StorageService} from "services/storage-service";
+import {LanguageService} from "services/language-service";
+import {OAuthHelper} from "helper/oauth-helper";
+import {UrlHelper} from "helper/url-helper";
+import config from "config";
+import * as jwt from "jwt-simple";
 
 @autoinject()
 export class AuthService {
     
     private storageServiceKey: string = "auth_token";
     
-    constructor(private logbookApi: LogbookApi, private storageService: StorageService, private oauthHelper: OAuthHelper, private languageService: LanguageService, private urlHelper: UrlHelper) {
+    public constructor(private logbookApi: LogbookApi, private storageService: StorageService, private oauthHelper: OAuthHelper, private languageService: LanguageService, private urlHelper: UrlHelper) {
     }
     
     public logout() : Promise<void> {
@@ -30,8 +29,9 @@ export class AuthService {
     
     public get currentUserId() : boolean {
         
-        if (this.isLoggedIn === false)
+        if (this.isLoggedIn === false) {
             return false;
+        }
         
         let token: JsonWebToken = this.storageService.getItem(this.storageServiceKey);
         let decoded = jwt.decode(token.token, "", true);

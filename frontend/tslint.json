@@ -1,5 +1,33 @@
 {
-  "rules": {
-
-  }
+    "rules": {
+        "class-name": true,
+        "comment-format": [true, "check-space", "check-lowercase"],
+        "curly": true,
+        "eofline": true,
+        "indent": [true, "spaces"],
+        "interface-name": true,
+        "member-access": [true, "check-accessor", "check-constructor"],
+        "member-ordering": [true, "public-before-private", "static-before-instance", "variables-before-functions"],
+        "no-any": true,
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-construct": true,
+        "no-duplicate-key": true,
+        "no-duplicate-variable": true,
+        "no-empty": true,
+        "no-eval": true,
+        "no-require": true,
+        "no-string-literal": true,
+        "no-unreachable": true,
+        "no-unused-variable": true,
+        "no-use-before-declare": true,
+        "no-var-keyword": true,
+        "quotemark": [true, "double"],
+        "semicolon": true,
+        "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+        "triple-equals": true,
+        "use-strict": [true, "check-module", "check-function"],
+        "variable-name": [true, "check-format", "allow-leading-underscore", "ban-keywords"],
+        "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type", "check-module"]
+    }
 }

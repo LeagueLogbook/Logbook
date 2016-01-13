@@ -1,7 +1,7 @@
 "use strict";
 
 export class LanguageService {
-    get userLanguage() {
+    public get userLanguage() {
         return navigator.language || navigator.userLanguage;
     } 
 }
