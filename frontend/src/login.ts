@@ -52,25 +52,41 @@ export class Login {
         }
     }
     
-    public loginMicrosoft() : Promise<void> {
-        return this.authService
-            .loginMicrosoft()
-            .then(_ => this.browserService.reload());
+    public async loginMicrosoft() : Promise<void> {
+        try {
+            await this.authService.loginMicrosoft();
+            this.browserService.reload();
+        }
+        catch (error) {
+            alert(error);
+        }
     }
-    public loginTwitter() : Promise<void> {
-        return this.authService
-            .loginTwitter()
-            .then(_ => this.browserService.reload());
+    public async loginTwitter() : Promise<void> {
+        try {
+            await this.authService.loginTwitter();
+            this.browserService.reload();            
+        }
+        catch (error) {
+            alert(error);
+        }
     }
-    public loginFacebook() : Promise<void> {
-        return this.authService
-            .loginFacebook()
-            .then(_ => this.browserService.reload());
+    public async loginFacebook() : Promise<void> {
+        try {
+            await this.authService.loginFacebook();
+            this.browserService.reload();            
+        }
+        catch (error) {
+            alert(error);
+        }
     }
-    public loginGoogle() : Promise<void> {
-        return this.authService
-            .loginGoogle()
-            .then(_ => this.browserService.reload());
+    public async loginGoogle() : Promise<void> {
+        try {
+            await this.authService.loginGoogle();
+            this.browserService.reload();   
+        }
+        catch (error) {
+            alert(error);
+        }
     }
     
     public async register() : Promise<void> {
