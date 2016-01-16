@@ -39,8 +39,10 @@ export class AuthService {
         return decoded.UserId;
     }
     
-    public loginLogbook(emailAddress: string, password: string) : Promise<JsonWebToken> {
-        return this.logbookApi.authenticationApi.loginLogbook(emailAddress, password);
+    public async loginLogbook(emailAddress: string, password: string) : Promise<void> {
+        let jsonWebToken = await this.logbookApi.authenticationApi.loginLogbook(emailAddress, password);
+        
+        this.saveToken(jsonWebToken);
     }
     
     public register(emailAddress: string, password: string) : Promise<void> {

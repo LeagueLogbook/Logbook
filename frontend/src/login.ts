@@ -6,8 +6,21 @@ import {BrowserService} from "services/browser-service";
 
 @autoinject()
 export class Login {
+    public emailAddress: string;
+    public password: string;
+    
+    public registerEmailAddress: string;
+    public registerPassword: string;
+    public registerPasswordSecond: string;
+    
     public constructor(private authService: AuthService, private aurelia: Aurelia, private browserService: BrowserService) {
         
+    }
+    
+    public login() : Promise<void> {
+        return this.authService
+            .loginLogbook(this.emailAddress, this.password)
+            .then(_ => this.browserService.reload());
     }
     
     public loginMicrosoft() : Promise<void> {
@@ -29,5 +42,11 @@ export class Login {
         return this.authService
             .loginGoogle()
             .then(_ => this.browserService.reload());
+    }
+    
+    public register() : Promise<void> {
+        return this.authService
+            .register(this.registerEmailAddress, this.registerPassword)
+            .catch(error => alert(error));
     }
 }

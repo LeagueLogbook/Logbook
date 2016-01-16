@@ -30,6 +30,5 @@ export class AppLoggedOut {
         ]);
         
         this.router = router;
-        this.router.navigate("welcome");
     }    
 }

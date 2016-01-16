@@ -1,3 +1,71 @@
 <template>
-    <button click.delegate="loginMicrosoft()">Microsoft</button>
+        
+    <style type="text/css">
+    .margin {
+        padding: 15px;
+    }
+    .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+    .form-signin input[type="password"] {
+        margin-bottom: 15px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+    .form-register input {
+        margin-bottom: 5px;
+    }
+    </style>
+    
+    <div class="container-fluid margin">
+        <div class="row">
+            <div class="col-md-6">                
+    
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Login</h3>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="form-signin">                            
+                            <input type="email" value.bind="emailAddress" class="form-control" placeholder="Email address" />
+                            <input type="password" value.bind="password" class="form-control" placeholder="Password" />
+                    
+                            <button click.trigger="login()" class="btn btn-primary btn-block">Login</button>                                                
+                        </div>
+                        
+                        <hr />
+                    
+                        <button click.delegate="loginFacebook()" class="btn btn-default btn-block">Facebook</button>
+                        <button click.delegate="loginGoogle()" class="btn btn-default btn-block">Google</button>
+                        <button click.delegate="loginTwitter()" class="btn btn-default btn-block">Twitter</button>
+                        <button click.delegate="loginMicrosoft()" class="btn btn-default btn-block">Microsoft</button>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+                
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Register</h3>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <div class="form-register">
+                            <input type="email" value.bind="registerEmailAddress" class="form-control" placeholder="Email address" />
+                            <input type="password" value.bind="registerPassword" class="form-control" placeholder="Password" />
+                            <input type="password" value.bind="registerPasswordSecond" class="form-control" placeholder="Password again" />
+                            
+                            <button click.trigger="register()" class="btn btn-primary btn-block">Register</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
 </template>
