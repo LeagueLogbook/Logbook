@@ -1,7 +1,6 @@
 import "bootstrap";
 import {Aurelia} from "aurelia-framework";
 import {AuthService} from "services/auth-service";
-import {Router, RouterConfiguration} from "aurelia-router";
 
 export function configure(aurelia: Aurelia) {
     "use strict";
