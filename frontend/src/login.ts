@@ -17,10 +17,37 @@ export class Login {
         
     }
     
-    public login() : Promise<void> {
-        return this.authService
-            .loginLogbook(this.emailAddress, this.password)
-            .then(_ => this.browserService.reload());
+    public get canLogin() : boolean {
+        return 
+            this.emailAddress != null && 
+            this.emailAddress != "" && 
+            this.password != null && 
+            this.password != "";
+    }
+    
+    public get canRegister() : boolean {
+        return  
+            this.registerEmailAddress != null &&
+            this.registerEmailAddress != "" &&
+            this.registerPassword != null &&
+            this.registerPassword != "" &&
+            this.registerPasswordSecond != null &&
+            this.registerPasswordSecond != null &&
+            this.registerPassword == this.registerPasswordSecond;
+    }
+    
+    public async login() : Promise<void> {    
+        try {
+            if (this.canLogin == false) {
+                return;
+            }
+            
+            await this.authService.loginLogbook(this.emailAddress, this.password)        
+            this.browserService.reload();
+        }
+        catch(error) {
+            alert(error);            
+        }
     }
     
     public loginMicrosoft() : Promise<void> {
@@ -44,9 +71,16 @@ export class Login {
             .then(_ => this.browserService.reload());
     }
     
-    public register() : Promise<void> {
-        return this.authService
-            .register(this.registerEmailAddress, this.registerPassword)
-            .catch(error => alert(error));
+    public async register() : Promise<void> {
+        try {
+            if (this.canRegister == false) {
+                return;
+            }
+            
+            await this.authService.register(this.registerEmailAddress, this.registerPassword);   
+        }
+        catch(error) {
+            alert(error);
+        }
     }
 }

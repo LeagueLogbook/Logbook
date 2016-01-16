@@ -33,7 +33,7 @@
                             <input type="email" value.bind="emailAddress" class="form-control" placeholder="Email address" />
                             <input type="password" value.bind="password" class="form-control" placeholder="Password" />
                     
-                            <button click.trigger="login()" class="btn btn-primary btn-block">Login</button>                                                
+                            <button click.trigger="login()" class="btn btn-primary btn-block ${canLogin ? '' : 'disabled'}">Login</button>                                                
                         </div>
                         
                         <hr />
@@ -71,7 +71,7 @@
                             <input type="password" value.bind="registerPassword" class="form-control" placeholder="Password" />
                             <input type="password" value.bind="registerPasswordSecond" class="form-control" placeholder="Password again" />
                             
-                            <button click.trigger="register()" class="btn btn-primary btn-block">Register</button>
+                            <button click.trigger="register()" class="btn btn-primary btn-block ${canRegister ? '' : 'disabled'}">Register</button>
                         </div>
                     </div>
                 </div>
