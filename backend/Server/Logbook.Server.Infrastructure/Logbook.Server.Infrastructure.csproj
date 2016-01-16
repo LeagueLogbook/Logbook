@@ -163,8 +163,6 @@
     <Compile Include="Commands\Authentication\ResetPasswordCommandHandler.cs" />
     <Compile Include="Commands\Authentication\SocialLoginCommandHandler.cs" />
     <Compile Include="Commands\Authentication\TwitterLoginCommandHandler.cs" />
-    <Compile Include="Commands\Budgets\CreateBudgetCommandHandler.cs" />
-    <Compile Include="Commands\Budgets\GetBudgetsCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
