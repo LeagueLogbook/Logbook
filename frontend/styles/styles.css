@@ -23,6 +23,10 @@ body {
   margin-top: 50px;
 }
 
+.navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+
 .page-host {
   position: absolute;
   left: 0;

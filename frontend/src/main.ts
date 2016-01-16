@@ -1,6 +1,7 @@
 import "bootstrap";
 import {Aurelia} from "aurelia-framework";
 import {AuthService} from "services/auth-service";
+import {Router, RouterConfiguration} from "aurelia-router";
 
 export function configure(aurelia: Aurelia) {
     "use strict";
@@ -8,19 +9,13 @@ export function configure(aurelia: Aurelia) {
     aurelia.use
         .standardConfiguration()
         .developmentLogging();
-
-  // uncomment the line below to enable animation.
-  // aurelia.use.plugin("aurelia-animator-css");
-
-  // anyone wanting to use HTMLImports to load views, will need to install the following plugin.
-  // aurelia.use.plugin("aurelia-html-import-template-loader")
-
-    aurelia.start().then(a =>  {
+        
+    aurelia.start().then(a =>  {        
         let authService: AuthService = a.container.get(AuthService);
         
         let root = authService.isLoggedIn
-            ? "app"
-            : "loggedOut";
+            ? "app-logged-in"
+            : "app-logged-out";
             
         a.setRoot(root); 
     });
