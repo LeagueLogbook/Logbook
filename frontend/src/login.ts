@@ -2,41 +2,32 @@
 
 import {AuthService} from "services/auth-service";
 import {autoinject, Aurelia} from "aurelia-framework";
+import {BrowserService} from "services/browser-service";
 
 @autoinject()
 export class Login {
-    public constructor(private authService: AuthService, private aurelia: Aurelia) {
+    public constructor(private authService: AuthService, private aurelia: Aurelia, private browserService: BrowserService) {
         
-    }
-    
-    public activate() : Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-            resolve();
-        });
     }
     
     public loginMicrosoft() : Promise<void> {
         return this.authService
             .loginMicrosoft()
-            .then(_ => this.setAureliaRootToAppLoggedIn());
+            .then(_ => this.browserService.reload());
     }
     public loginTwitter() : Promise<void> {
         return this.authService
             .loginTwitter()
-            .then(_ => this.setAureliaRootToAppLoggedIn());
+            .then(_ => this.browserService.reload());
     }
     public loginFacebook() : Promise<void> {
         return this.authService
             .loginFacebook()
-            .then(_ => this.setAureliaRootToAppLoggedIn());
+            .then(_ => this.browserService.reload());
     }
     public loginGoogle() : Promise<void> {
         return this.authService
             .loginGoogle()
-            .then(_ => this.setAureliaRootToAppLoggedIn());
-    }
-    
-    private setAureliaRootToAppLoggedIn() {
-        this.aurelia.setRoot("app-logged-in");
+            .then(_ => this.browserService.reload());
     }
 }

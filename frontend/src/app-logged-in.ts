@@ -6,6 +6,10 @@ export class AppLoggedIn {
     
     public router: Router;
     
+    public attached() {    
+        this.router.navigateToRoute("welcome");
+    }
+        
     public configureRouter(config: RouterConfiguration, router: Router) {
         config.title = "Aurelia";
         config.map([
