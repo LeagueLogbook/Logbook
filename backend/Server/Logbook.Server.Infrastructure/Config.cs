@@ -45,7 +45,7 @@ namespace Logbook.Server.Infrastructure
             InDebugHoldOnException = new BoolSetting("Logbook/InDebugHoldOnException", true);
             RiotApiKey = new StringSetting("Logbook/RiotApiKey", string.Empty);
             RiotApiRateLimitPer10Seconds = new IntSetting("Logbook/RiotApiRateLimitPer10Seconds", 10);
-            RiotAPiRateLimitPer10Minutes = new IntSetting("Logbook/RiotAPiRateLimitPer10Minutes", 500);
+            RiotApiRateLimitPer10Minutes = new IntSetting("Logbook/RiotApiRateLimitPer10Minutes", 500);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -85,6 +85,6 @@ namespace Logbook.Server.Infrastructure
         public static BoolSetting InDebugHoldOnException { get; }
         public static StringSetting RiotApiKey { get; }
         public static IntSetting RiotApiRateLimitPer10Seconds { get; }
-        public static IntSetting RiotAPiRateLimitPer10Minutes { get; }
+        public static IntSetting RiotApiRateLimitPer10Minutes { get; }
     }
 }

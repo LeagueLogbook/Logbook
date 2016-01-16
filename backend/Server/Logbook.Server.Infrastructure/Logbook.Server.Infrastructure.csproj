@@ -159,6 +159,7 @@
     <Compile Include="Api\Controllers\AuthenticationController.cs" />
     <Compile Include="Api\Controllers\BaseController.cs" />
     <Compile Include="Api\Controllers\MetricsController.cs" />
+    <Compile Include="Api\Controllers\SummonersController.cs" />
     <Compile Include="Api\Controllers\UsersController.cs" />
     <Compile Include="Api\Filter\LogbookAuthenticationAttribute.cs" />
     <Compile Include="Api\Filter\OnlyLocalAttribute.cs" />
@@ -183,6 +184,9 @@
     <Compile Include="Commands\CommandScope.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\AddSummonerCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\GetSummonersCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\RemoveSummonerCommandHandler.cs" />
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Emails\EmailTemplateService.cs" />
@@ -207,6 +211,7 @@
     <Compile Include="Exceptions\NoLogbookLoginToResetPasswordException.cs" />
     <Compile Include="Exceptions\OnlyLocalException.cs" />
     <Compile Include="Exceptions\PasswordResetTimedOutException.cs" />
+    <Compile Include="Exceptions\SummonerNotFoundException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
@@ -221,8 +226,8 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raven\Indexes\AuthenticationData_ByAllFields.cs" />
-    <Compile Include="Raven\Indexes\Budgets_ByUserId.cs" />
     <Compile Include="Raven\Indexes\Users_ByEmailAddress.cs" />
+    <Compile Include="Riot\LeagueService.cs" />
     <Compile Include="Social\FacebookService.cs" />
     <Compile Include="Social\GoogleService.cs" />
     <Compile Include="Social\MicrosoftService.cs" />

@@ -1,4 +1,6 @@
-﻿namespace Logbook.Shared.Models
+﻿using Logbook.Shared.Entities.Summoners;
+
+namespace Logbook.Shared.Models
 {
     public class RegisterData
     {
@@ -40,5 +42,17 @@
     public class PasswordResetData
     {
         public string EmailAddress { get; set; }
+    }
+
+    public class AddSummonerData
+    {
+        public Region Region { get; set; }
+        public string SummonerName { get; set; }
+    }
+
+    public class DeleteSummonerData
+    {
+        public Region Region { get; set; }
+        public string SummonerId { get; set; }
     }
 }

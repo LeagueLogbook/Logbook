@@ -67,7 +67,8 @@
     <Compile Include="Entities\Authentication\LogbookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\TwitterAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\User.cs" />
-    <Compile Include="Entities\Budgets\Budget.cs" />
+    <Compile Include="Entities\Summoners\Summoner.cs" />
+    <Compile Include="Entities\Summoners\UserSummoners.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\JsonWebToken.cs" />
