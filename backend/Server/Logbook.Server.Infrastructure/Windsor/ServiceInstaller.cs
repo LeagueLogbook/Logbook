@@ -2,6 +2,7 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Logbook.Server.Contracts;
+using RiotSharp;
 
 namespace Logbook.Server.Infrastructure.Windsor
 {
@@ -13,7 +14,11 @@ namespace Logbook.Server.Infrastructure.Windsor
                 .FromThisAssembly()
                 .BasedOn<IService>()
                 .WithServiceFromInterface()
-                .LifestyleSingleton());
+                .LifestyleTransient());
+
+            container.Register(
+                Component.For<IRiotApi>().UsingFactoryMethod((kernel, context) => RiotApi.GetInstance(Config.RiotApiKey, Config.RiotApiRateLimitPer10Seconds, Config.RiotAPiRateLimitPer10Minutes)).LifestyleTransient(),
+                Component.For<IStaticRiotApi>().UsingFactoryMethod((kernel, context) => StaticRiotApi.GetInstance(Config.RiotApiKey)).LifestyleTransient());
         }
     }
 }

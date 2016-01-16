@@ -43,6 +43,9 @@ namespace Logbook.Server.Infrastructure
             TwitterConsumerSecret = new StringSetting("Logbook/TwitterConsumerSecret", string.Empty);
             TwitterLoginKeyPhrase = new StringSetting("Logbook/TwitterLoginKeyPhrase", string.Empty);
             InDebugHoldOnException = new BoolSetting("Logbook/InDebugHoldOnException", true);
+            RiotApiKey = new StringSetting("Logbook/RiotApiKey", string.Empty);
+            RiotApiRateLimitPer10Seconds = new IntSetting("Logbook/RiotApiRateLimitPer10Seconds", 10);
+            RiotAPiRateLimitPer10Minutes = new IntSetting("Logbook/RiotAPiRateLimitPer10Minutes", 500);
         }
 
         public static BoolSetting EnableDefaultMetrics { get; }
@@ -80,5 +83,8 @@ namespace Logbook.Server.Infrastructure
         public static StringSetting TwitterConsumerSecret { get; }
         public static StringSetting TwitterLoginKeyPhrase { get; }
         public static BoolSetting InDebugHoldOnException { get; }
+        public static StringSetting RiotApiKey { get; }
+        public static IntSetting RiotApiRateLimitPer10Seconds { get; }
+        public static IntSetting RiotAPiRateLimitPer10Minutes { get; }
     }
 }
