@@ -15,7 +15,9 @@ export class OAuthHelper {
                         resolve(popupWindow.location.href);
                     }
                 } 
-                catch (e) { }
+                catch (e) { 
+                    // ignore errors
+                }
             }, 35);
         });
     }    

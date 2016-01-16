@@ -14,38 +14,40 @@ export class Login {
     public registerPasswordSecond: string;
     
     public constructor(private authService: AuthService, private aurelia: Aurelia, private browserService: BrowserService) {
-        
+        this.emailAddress = "";
+        this.password = "";
+        this.registerEmailAddress = "";
+        this.registerPassword = "";
+        this.registerPasswordSecond = "";
     }
     
     public get canLogin() : boolean {
-        return 
-            this.emailAddress != null && 
-            this.emailAddress != "" && 
-            this.password != null && 
-            this.password != "";
+        return this.emailAddress !== null 
+            && this.emailAddress !== "" 
+            && this.password !== null 
+            && this.password !== "";
     }
     
     public get canRegister() : boolean {
-        return  
-            this.registerEmailAddress != null &&
-            this.registerEmailAddress != "" &&
-            this.registerPassword != null &&
-            this.registerPassword != "" &&
-            this.registerPasswordSecond != null &&
-            this.registerPasswordSecond != null &&
-            this.registerPassword == this.registerPasswordSecond;
+        return this.registerEmailAddress !== null 
+            && this.registerEmailAddress !== "" 
+            && this.registerPassword !== null 
+            && this.registerPassword !== "" 
+            && this.registerPasswordSecond !== null 
+            && this.registerPasswordSecond !== null 
+            && this.registerPassword === this.registerPasswordSecond;
     }
     
     public async login() : Promise<void> {    
         try {
-            if (this.canLogin == false) {
+            if (this.canLogin === false) {
                 return;
             }
             
-            await this.authService.loginLogbook(this.emailAddress, this.password)        
+            await this.authService.loginLogbook(this.emailAddress, this.password);        
             this.browserService.reload();
         }
-        catch(error) {
+        catch (error) {
             alert(error);            
         }
     }
@@ -73,13 +75,13 @@ export class Login {
     
     public async register() : Promise<void> {
         try {
-            if (this.canRegister == false) {
+            if (this.canRegister === false) {
                 return;
             }
             
             await this.authService.register(this.registerEmailAddress, this.registerPassword);   
         }
-        catch(error) {
+        catch (error) {
             alert(error);
         }
     }
