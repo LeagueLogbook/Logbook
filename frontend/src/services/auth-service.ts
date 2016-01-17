@@ -13,36 +13,38 @@ import * as jwt from "jwt-simple";
 @autoinject()
 export class AuthService {
     
-    private storageServiceKey: string = "auth_token";
+    public get token() : JsonWebToken {
+        return this.storageService.getItem("auth_token");
+    }
+    public set token(token: JsonWebToken) {
+        this.storageService.setItem("auth_token", token);
+    }    
+    
+    public get isLoggedIn() : boolean {
+        return this.token !== null;
+    }
+    
+    public get currentUserId() : boolean {        
+        if (this.isLoggedIn === false) {
+            return false;
+        }
+        
+        let decoded = jwt.decode(this.token.token, "", true);        
+        return decoded.UserId;
+    }
     
     public constructor(private logbookApi: LogbookApi, private storageService: StorageService, private oauthHelper: OAuthHelper, private languageService: LanguageService, private urlHelper: UrlHelper) {
     }
     
     public logout() : Promise<void> {
-        this.storageService.removeItem(this.storageServiceKey);
+        this.token = null;
         return Promise.resolve(null);
-    }
-    
-    public get isLoggedIn() : boolean {
-        return this.storageService.getItem(this.storageServiceKey) !== null;
-    }
-    
-    public get currentUserId() : boolean {
-        
-        if (this.isLoggedIn === false) {
-            return false;
-        }
-        
-        let token: JsonWebToken = this.storageService.getItem(this.storageServiceKey);
-        let decoded = jwt.decode(token.token, "", true);
-        
-        return decoded.UserId;
     }
     
     public async loginLogbook(emailAddress: string, password: string) : Promise<void> {
         let jsonWebToken = await this.logbookApi.authenticationApi.loginLogbook(emailAddress, password);
         
-        this.saveToken(jsonWebToken);
+        this.token = jsonWebToken;
     }
     
     public register(emailAddress: string, password: string) : Promise<void> {
@@ -55,7 +57,7 @@ export class AuthService {
         let code = this.urlHelper.getParameter(loggedInUrl, "code");
         let jsonWebToken = await this.logbookApi.authenticationApi.loginMicrosoft(code, config.socialLoginRedirectUrl);
         
-        this.saveToken(jsonWebToken);
+        this.token = jsonWebToken;
     }
     
     public async loginFacebook() : Promise<void> {
@@ -64,7 +66,7 @@ export class AuthService {
         let code = this.urlHelper.getParameter(loggedInUrl, "code");
         let jsonWebToken = await this.logbookApi.authenticationApi.loginFacebook(code, config.socialLoginRedirectUrl);
         
-        this.saveToken(jsonWebToken);
+        this.token = jsonWebToken;
     }
     
     public async loginGoogle() : Promise<void> {
@@ -73,7 +75,7 @@ export class AuthService {
         let code = this.urlHelper.getParameter(loggedInUrl, "code");
         let jsonWebToken = await this.logbookApi.authenticationApi.loginGoogle(code, config.socialLoginRedirectUrl);
         
-        this.saveToken(jsonWebToken);
+        this.token = jsonWebToken;
     }
     
     public async loginTwitter() : Promise<void> {        
@@ -82,10 +84,6 @@ export class AuthService {
         let verifier = this.urlHelper.getParameter(loggedInUrl, "oauth_verifier");
         let jsonWebToken = await this.logbookApi.authenticationApi.loginTwitter(verifier, loginUrl.payload);
         
-        this.saveToken(jsonWebToken);
-    }
-    
-    private saveToken(token: JsonWebToken) : void {
-        this.storageService.setItem(this.storageServiceKey, token);
+        this.token = jsonWebToken;
     }
 }

@@ -1,24 +1,22 @@
 "use strict";
 
 import {Router, RouterConfiguration} from "aurelia-router";
+import {autoinject} from "aurelia-framework";
 
+@autoinject()
 export class AppLoggedIn {
     
     public router: Router;
-    
-    public attached() {    
-        this.router.navigateToRoute("welcome");
-    }
-        
-    public configureRouter(config: RouterConfiguration, router: Router) {
+            
+    public configureRouter(config: RouterConfiguration, router: Router) : void {
         config.title = "Aurelia";
         config.map([
             { 
-                route: ["", "welcome"], 
-                name: "welcome",      
-                moduleId: "welcome",      
+                route: ["", "summonerOverview"], 
+                name: "summonerOverview",      
+                moduleId: "summoner-overview",      
                 nav: true, 
-                title: "Welcome",
+                title: "Overview",
             },
             { 
                 route: "logout", 
