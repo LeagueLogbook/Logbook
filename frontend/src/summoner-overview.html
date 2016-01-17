@@ -17,7 +17,7 @@
                     
                     <div class="panel-body">
                         <select value.bind="selectedRegion">
-                            <option repeat.for="region of regions" model.bind="region.region">${region.name}</option>
+                            <option repeat.for="region of regions" model.bind="region">${region.name}</option>
                         </select>
                         
                         <button class="btn btn-default" click.trigger="test()" >Test</button>

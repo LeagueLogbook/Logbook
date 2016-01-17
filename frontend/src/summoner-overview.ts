@@ -3,26 +3,18 @@
 import {autoinject} from "aurelia-framework";
 import {SummonersService} from "services/summoners-service";
 import {Summoner} from "api/models/summoner";
-import {Region} from "api/models/region";
+import {Region, RegionHelper} from "api/models/region";
 
 @autoinject()
 export class SummonerOverview {
     
     public summoners: Summoner[];
-    public regions: RegionValue[];
-    public selectedRegion: Region;
+    public regions: RegionHelper[];
+    public selectedRegion: RegionHelper;
     
     public constructor(private summonersService: SummonersService) {
-        this.regions = [
-            {
-                region: Region.euw,
-                name: "EUW",
-            },
-            {
-                region: Region.na,
-                name: "NA",
-            },
-        ];
+        this.regions = RegionHelper.getAll();
+        this.selectedRegion = this.regions[0];
     }
     
     public async activate() : Promise<void> {
@@ -36,11 +28,6 @@ export class SummonerOverview {
     }
     
     public test(): void {
-        alert(this.selectedRegion);
+        alert(this.selectedRegion.region);
     }
-}
-
-class RegionValue {
-    public region: Region;
-    public name: string;
 }
