@@ -1,5 +1,7 @@
 <template>
     
+    <require from="components/combo-box"></require>
+    
     <style type="text/css">
     .margin {
         padding: 15px;
@@ -16,7 +18,11 @@
                     </div>
                     
                     <div class="panel-body">
-                        <select value.bind="selectedRegion">
+                        
+                        <combo-box items.bind="regions" selectedItem.two-way="selectedRegion" item-to-string.call="convert()"></combo-box>
+                        
+                        
+                        <select value.two-way="selectedRegion">
                             <option repeat.for="region of regions" model.bind="region">${region.name}</option>
                         </select>
                         
