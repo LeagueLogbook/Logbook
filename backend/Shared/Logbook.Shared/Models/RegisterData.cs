@@ -53,6 +53,6 @@ namespace Logbook.Shared.Models
     public class DeleteSummonerData
     {
         public Region Region { get; set; }
-        public string SummonerId { get; set; }
+        public long SummonerId { get; set; }
     }
 }

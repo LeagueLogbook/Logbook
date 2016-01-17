@@ -7,19 +7,16 @@ using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Server.Infrastructure.Commands.Summoners
 {
-    public class RemoveSummonerCommandHandler : ICommandHandler<RemoveSummonerCommand, UserSummoners>
+    public class RemoveSummonerCommandHandler : ICommandHandler<RemoveSummonerCommand, object>
     {
-        public async Task<UserSummoners> Execute(RemoveSummonerCommand command, ICommandScope scope)
+        public async Task<object> Execute(RemoveSummonerCommand command, ICommandScope scope)
         {
             var userSummoners = await scope.Execute(new GetSummonersCommand(command.UserId));
 
-            var summoner = userSummoners.Summoners.FirstOrDefault(f => f.Id == command.SummonerId && f.Region == command.Region);
-            if (summoner != null)
-            {
-                userSummoners.Summoners.Remove(summoner);
-            }
+            var summonerId = Summoner.CreateId(command.SummonerId, command.Region);
+            userSummoners.SummonerIds.Remove(summonerId);
 
-            return userSummoners;
+            return new object();
         }
     }
 }

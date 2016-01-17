@@ -68,6 +68,7 @@
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommand.cs" />
+    <Compile Include="Commands\Summoners\GetSummonerModelsCommand.cs" />
     <Compile Include="Commands\Summoners\GetSummonersCommand.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommand.cs" />
     <Compile Include="Commands\Users\GetUserCommand.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Encryption\ISaltCombiner.cs" />
     <Compile Include="Encryption\ISecretGenerator.cs" />
     <Compile Include="IService.cs" />
+    <Compile Include="Mapping\IMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Riot\ILeagueService.cs" />
     <Compile Include="Riot\Summoner.cs" />

@@ -185,6 +185,7 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\GetSummonerModelsCommandHandler.cs" />
     <Compile Include="Commands\Summoners\GetSummonersCommandHandler.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommandHandler.cs" />
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
@@ -224,6 +225,8 @@
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\SecretGeneratorExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Mapping\MapperExtensions.cs" />
+    <Compile Include="Mapping\SummonerToSummonerModelMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Raven\Indexes\AuthenticationData_ByAllFields.cs" />
     <Compile Include="Raven\Indexes\Users_ByEmailAddress.cs" />
@@ -236,6 +239,7 @@
     <Compile Include="Windsor\CommandInstaller.cs" />
     <Compile Include="Windsor\ContainerInstaller.cs" />
     <Compile Include="Windsor\ControllerInstaller.cs" />
+    <Compile Include="Windsor\MapperInstaller.cs" />
     <Compile Include="Windsor\RavenInstaller.cs" />
     <Compile Include="Windsor\ServiceInstaller.cs" />
     <Compile Include="Windsor\WindsorDependencyScope.cs" />

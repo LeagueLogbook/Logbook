@@ -1,39 +1,48 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Contracts.Riot;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Shared.Entities.Summoners;
+using Raven.Client;
 
 namespace Logbook.Server.Infrastructure.Commands.Summoners
 {
-    public class AddSummonerCommandHandler : ICommandHandler<AddSummonerCommand, UserSummoners>
+    public class AddSummonerCommandHandler : ICommandHandler<AddSummonerCommand, object>
     {
         private readonly ILeagueService _leagueService;
+        private readonly IAsyncDocumentSession _documentSession;
 
-        public AddSummonerCommandHandler(ILeagueService leagueService)
+        public AddSummonerCommandHandler(ILeagueService leagueService, IAsyncDocumentSession documentSession)
         {
             this._leagueService = leagueService;
+            this._documentSession = documentSession;
         }
 
-        public async Task<UserSummoners> Execute(AddSummonerCommand command, ICommandScope scope)
+        public async Task<object> Execute(AddSummonerCommand command, ICommandScope scope)
         {
             var userSummoners = await scope.Execute(new GetSummonersCommand(command.UserId));
             var summoner = await this._leagueService.GetSummonerAsync(command.Region, command.SummonerName);
+            var summonerId = Summoner.CreateId(summoner.RiotSummonerId, summoner.Region);
 
             if (summoner == null)
                 throw new SummonerNotFoundException();
 
-            bool userAlreadyHasSummoner = userSummoners.Summoners.Any(f => f.Id == summoner.Id && f.Region == summoner.Region);
+            bool userAlreadyHasSummoner = userSummoners.SummonerIds.Any(f => f == summonerId);
 
             if (userAlreadyHasSummoner == false)
             {
-                userSummoners.Summoners.Add(summoner);
+                userSummoners.SummonerIds.Add(summonerId);
             }
 
-            return userSummoners;
+            var existing = await this._documentSession.LoadAsync<Summoner>(summonerId);
+            if (existing == null)
+            {
+                await this._documentSession.StoreAsync(summoner);
+            }
+
+            return new object();
         }
     }
 }

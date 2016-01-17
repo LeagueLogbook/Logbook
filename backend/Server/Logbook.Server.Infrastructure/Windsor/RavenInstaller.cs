@@ -3,6 +3,7 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Logbook.Shared.Entities.Authentication;
+using Logbook.Shared.Entities.Summoners;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.FileSystem;
@@ -60,6 +61,10 @@ namespace Logbook.Server.Infrastructure.Windsor
         {
             store.Conventions.RegisterAsyncIdConvention<AuthenticationData>((databaseName, commands, obj) =>
                 Task.FromResult(AuthenticationData.CreateId(obj.ForUserId)));
+            store.Conventions.RegisterAsyncIdConvention<UserSummoners>((databaseName, commands, obj) =>
+                Task.FromResult(UserSummoners.CreateId(obj.ForUserId)));
+            store.Conventions.RegisterAsyncIdConvention<Summoner>((databaseName, commands, obj) =>
+                Task.FromResult(Summoner.CreateId(obj.RiotSummonerId, obj.Region)));
         }
     }
 }

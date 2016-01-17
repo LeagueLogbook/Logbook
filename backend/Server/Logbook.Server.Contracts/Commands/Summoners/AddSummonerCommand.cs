@@ -1,9 +1,10 @@
-﻿using LiteGuard;
+﻿using System.Collections.Generic;
+using LiteGuard;
 using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Server.Contracts.Commands.Summoners
 {
-    public class AddSummonerCommand : ICommand<UserSummoners>
+    public class AddSummonerCommand : ICommand<object>
     {
         public string UserId { get; }
         public Region Region { get; }

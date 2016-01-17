@@ -25,10 +25,10 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> GetSummoners()
         {
             var summoners = await this.CommandExecutor
-                .Execute(new GetSummonersCommand(this.CurrentUserId))
+                .Execute(new GetSummonerModelsCommand(this.CurrentUserId))
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithObject(HttpStatusCode.OK, summoners.Summoners);
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, summoners);
         }
 
         [HttpPatch]
@@ -40,10 +40,14 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 throw new DataMissingException();
 
             var summoners = await this.CommandExecutor
-                .Execute(new AddSummonerCommand(this.CurrentUserId, data.Region, data.SummonerName))
+                .Batch(async scope =>
+                {
+                    await scope.Execute(new AddSummonerCommand(this.CurrentUserId, data.Region, data.SummonerName));
+                    return await scope.Execute(new GetSummonerModelsCommand(this.CurrentUserId));
+                })
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithObject(HttpStatusCode.Found, summoners.Summoners);
+            return this.Request.GetMessageWithObject(HttpStatusCode.Found, summoners);
         }
 
 
@@ -56,10 +60,14 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
                 throw new DataMissingException();
 
             var summoners = await this.CommandExecutor
-                .Execute(new RemoveSummonerCommand(this.CurrentUserId, data.Region, data.SummonerId))
+                .Batch(async scope =>
+                {
+                    await scope.Execute(new RemoveSummonerCommand(this.CurrentUserId, data.Region, data.SummonerId));
+                    return await scope.Execute(new GetSummonerModelsCommand(this.CurrentUserId));
+                })
                 .WithCurrentCulture();
 
-            return this.Request.GetMessageWithObject(HttpStatusCode.OK, summoners.Summoners);
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, summoners);
         }
     }
 }

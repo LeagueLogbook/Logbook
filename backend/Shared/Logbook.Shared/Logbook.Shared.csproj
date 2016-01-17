@@ -73,6 +73,7 @@
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\JsonWebToken.cs" />
     <Compile Include="Models\RegisterData.cs" />
+    <Compile Include="Models\SummonerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

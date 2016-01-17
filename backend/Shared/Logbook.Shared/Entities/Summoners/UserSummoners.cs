@@ -8,10 +8,10 @@ namespace Logbook.Shared.Entities.Summoners
 
         public UserSummoners()
         {
-            this.Summoners = new List<Summoner>();
+            this.SummonerIds = new List<string>();
         }
 
         public string ForUserId { get; set; }
-        public List<Summoner> Summoners { get; set; } 
+        public List<string> SummonerIds { get; set; } 
     }
 }
