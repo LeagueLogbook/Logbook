@@ -12,11 +12,11 @@ export class AppLoggedIn {
         config.title = "Aurelia";
         config.map([
             { 
-                route: ["", "summonerOverview"], 
-                name: "summonerOverview",      
+                route: ["", "summoners"], 
+                name: "summoners",      
                 moduleId: "summoner-overview",      
                 nav: true, 
-                title: "Overview",
+                title: "Summoners",
             },
             { 
                 route: "logout", 
@@ -26,6 +26,7 @@ export class AppLoggedIn {
                 title: "Logout",
             },
         ]);
+        config.mapUnknownRoutes(instruction => "summoner-overview");
 
         this.router = router;
     }

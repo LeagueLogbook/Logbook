@@ -6,10 +6,6 @@ export class AppLoggedOut {
     
     public router: Router;
     
-    public attached() {        
-        this.router.navigateToRoute("welcome");
-    }
-    
     public configureRouter(config: RouterConfiguration, router: Router) {
         config.title = "Aurelia";
         config.map([
@@ -28,6 +24,7 @@ export class AppLoggedOut {
                 title: "Login",
             },
         ]);
+        config.mapUnknownRoutes(instruction => "welcome");
         
         this.router = router;
     }    
