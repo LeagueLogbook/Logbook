@@ -1,6 +1,7 @@
 "use strict";
 
 import {bindable} from "aurelia-framework";
+import * as _ from "lodash";
 
 export class ComboBox {
     @bindable()
@@ -9,15 +10,12 @@ export class ComboBox {
     @bindable()
     public selectedItem: Object;
         
-    public itemToString(item: any) : string {
-        if (item === null || typeof item === "undefined") {
-            return "";            
-        }
-        
-        return item.name;
-    }
-    
     public updateSelectedItem(item: Object): void {
         this.selectedItem = item;
+    }
+    /* tslint:disable:no-unused-variable */
+    private itemsChanged(newValue: Object[], oldValue: Object[]): void {
+    /* tsline:enable */
+        this.selectedItem = _.head(newValue);
     }
 }

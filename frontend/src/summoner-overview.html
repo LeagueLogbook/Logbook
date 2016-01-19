@@ -17,15 +17,16 @@
                         <h3 class="panel-title">Add summoner</h3>
                     </div>
                     
-                    <div class="panel-body">
-                        
-                        <combo-box items.bind="regions" selectedItem.two-way="selectedRegion" item-to-string.call="convert()"></combo-box>
-                        
-                        
-                        <select value.two-way="selectedRegion">
-                            <option repeat.for="region of regions" model.bind="region">${region.name}</option>
-                        </select>
-                        
+                    <div class="panel-body">                        
+                        <combo-box items.bind="regions" selected-item.two-way="selectedRegion">
+                            <template replace-part="dropdown-template">
+                                ${item.name}
+                            </template>
+                            <template replace-part="selected-template">
+                                ${selectedItem.name}
+                            </template>
+                        </combo-box>
+                                                
                         <button class="btn btn-default" click.trigger="test()" >Test</button>
                     </div>
                 </div>
