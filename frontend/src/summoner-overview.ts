@@ -9,8 +9,10 @@ import {Region, RegionHelper} from "api/models/region";
 export class SummonerOverview {
     
     public summoners: Summoner[];
+    
     public regions: RegionHelper[];
     public selectedRegion: RegionHelper;
+    public summonerName: string;
     
     public constructor(private summonersService: SummonersService) {
         this.regions = RegionHelper.getAll();
@@ -27,7 +29,7 @@ export class SummonerOverview {
         this.summoners = summoners.concat(summoner);
     }
     
-    public test(): void {
-        alert(this.selectedRegion.region);
+    public addSummoner(): void {
+        alert(`${this.selectedRegion.name} - ${this.summonerName}`);
     }
 }

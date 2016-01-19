@@ -10,24 +10,36 @@
     
     <div class="container margin">
         <div class="row">
-            <div class="col-md-12">                
+            <div class="col-md-12 col-xs-12">                
     
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">Add summoner</h3>
                     </div>
                     
-                    <div class="panel-body">                        
-                        <combo-box items.bind="regions" selected-item.two-way="selectedRegion">
-                            <template replace-part="dropdown-template">
-                                ${item.name}
-                            </template>
-                            <template replace-part="selected-template">
-                                ${selectedItem.name}
-                            </template>
-                        </combo-box>
-                                                
-                        <button class="btn btn-default" click.trigger="test()" >Test</button>
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-1 col-xs-1">
+                                    <combo-box items.bind="regions" selected-item.two-way="selectedRegion">
+                                        <template replace-part="dropdown-template">
+                                            ${item.name}
+                                        </template>
+                                        <template replace-part="selected-template">
+                                            ${selectedItem.name}
+                                        </template>
+                                    </combo-box>
+                                </div>
+                                               
+                                <div class="col-md-10 col-xs-10">
+                                    <input type="text" class="form-control" value.bind="summonerName">
+                                </div>
+                                
+                                <div class="col-md-1 col-xs-1">
+                                    <button class="btn btn-default" click.trigger="addSummoner()">Add</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
