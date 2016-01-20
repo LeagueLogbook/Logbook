@@ -19,7 +19,7 @@ export class SummonerOverview {
         this.selectedRegion = this.regions[0];
     }
     
-    public async activate() : Promise<void> {
+    public async activate(): Promise<void> {
         let summoner = new Summoner();
         summoner.id = 123;
         summoner.name = "haefele";
@@ -27,6 +27,10 @@ export class SummonerOverview {
         
         let summoners = await this.summonersService.getSummoners();
         this.summoners = summoners.concat(summoner);
+    }
+    
+    public updateSelectedRegion(region: RegionHelper): void {
+        this.selectedRegion = region;
     }
     
     public addSummoner(): void {
