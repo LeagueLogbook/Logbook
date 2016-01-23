@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace Logbook.Server.Infrastructure.Api.Controllers
 {
+    [DoNotTimeRequestExecutionAttribute]
     public class MetricsController : BaseController
     {
         #region Fields

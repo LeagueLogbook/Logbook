@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CultureAwaiter.cs" />
+    <Compile Include="Common\NullDisposable.cs" />
     <Compile Include="Configuration\BaseSetting.cs" />
     <Compile Include="Configuration\BoolSetting.cs" />
     <Compile Include="Configuration\IntSetting.cs" />

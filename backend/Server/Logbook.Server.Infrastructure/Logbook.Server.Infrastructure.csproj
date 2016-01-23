@@ -166,7 +166,7 @@
     <Compile Include="Api\MessageHandlers\ConcurrentRequestCountMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\LocalizationMessageHandler.cs" />
     <Compile Include="Api\MessageHandlers\LoggingMessageHandler.cs" />
-    <Compile Include="Api\MessageHandlers\RequestExecutionTimeMessageHandler.cs" />
+    <Compile Include="Api\Filter\RequestExecutionTimeActionFilter.cs" />
     <Compile Include="Commands\Admin\CreateIndexesCommandHandler.cs" />
     <Compile Include="Commands\Admin\ResetIndexesCommandHandler.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommandHandler.cs" />

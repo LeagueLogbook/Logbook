@@ -5,6 +5,7 @@ using System.Web.Http.ExceptionHandling;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Logbook.Server.Infrastructure.Api.Configuration;
+using Logbook.Server.Infrastructure.Api.Filter;
 using Logbook.Server.Infrastructure.Api.MessageHandlers;
 using Logbook.Server.Infrastructure.Windsor;
 using Metrics;
@@ -86,6 +87,7 @@ namespace Logbook.Server.Infrastructure
         /// <param name="config">The configuration.</param>
         private void ConfigureFilters(HttpConfiguration config)
         {
+            config.Filters.Add(new RequestExecutionTimeActionFilter());
         }
         /// <summary>
         /// Configures the message handlers.
@@ -93,7 +95,6 @@ namespace Logbook.Server.Infrastructure
         /// <param name="config">The configuration.</param>
         private void ConfigureMessageHandlers(HttpConfiguration config)
         {
-            config.MessageHandlers.Add(new RequestExecutionTimeMessageHandler());
             config.MessageHandlers.Add(new ConcurrentRequestCountMessageHandler());
 
             if (Config.CompressResponses.GetValue())
