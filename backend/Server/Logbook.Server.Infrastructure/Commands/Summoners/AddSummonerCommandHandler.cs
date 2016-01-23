@@ -24,10 +24,11 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
         {
             var userSummoners = await scope.Execute(new GetSummonersCommand(command.UserId));
             var summoner = await this._leagueService.GetSummonerAsync(command.Region, command.SummonerName);
-            var summonerId = Summoner.CreateId(summoner.RiotSummonerId, summoner.Region);
 
             if (summoner == null)
                 throw new SummonerNotFoundException();
+
+            var summonerId = Summoner.CreateId(summoner.RiotSummonerId, summoner.Region);
 
             bool userAlreadyHasSummoner = userSummoners.SummonerIds.Any(f => f == summonerId);
 
