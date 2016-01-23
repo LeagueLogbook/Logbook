@@ -36,19 +36,26 @@ namespace Logbook.Server.Infrastructure.Riot
 
         public async Task<Summoner> GetSummonerAsync(Region region, string name)
         {
-            var result = await this._api.GetSummonerAsync(this.ConvertRegion(region), name);
+            try
+            {
+                var result = await this._api.GetSummonerAsync(this.ConvertRegion(region), name);
 
-            if (result == null)
+                if (result == null)
+                    return null;
+
+                return this.ConvertSummoner(result);
+            }
+            catch (RiotSharpException e) when (e.Message.StartsWith("404"))
+            {
                 return null;
-
-            return this.ConvertSummoner(result);
+            }
         }
 
         private Summoner ConvertSummoner(RiotSharp.SummonerEndpoint.Summoner summoner)
         {
             return new Summoner
             {
-                Id = summoner.Id.ToString(),
+                RiotSummonerId = summoner.Id,
                 Name = summoner.Name,
                 Region = this.ConvertRegion(summoner.Region)
             };
