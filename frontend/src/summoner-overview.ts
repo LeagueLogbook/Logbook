@@ -3,7 +3,6 @@
 import {autoinject} from "aurelia-framework";
 import {SummonersService} from "services/summoners-service";
 import {Summoner} from "api/models/summoner";
-import {Region} from "api/models/region";
 import {IAddSummonerData} from "components/add-summoner";
 
 @autoinject()
@@ -15,16 +14,10 @@ export class SummonerOverview {
     }
     
     public async activate(): Promise<void> {
-        let summoner = new Summoner();
-        summoner.id = 123;
-        summoner.name = "haefele";
-        summoner.region = Region.euw;
-        
-        let summoners = await this.summonersService.getSummoners();
-        this.summoners = summoners.concat(summoner);
+        this.summoners = await this.summonersService.getSummoners();
     }
     
-    public addSummoner(data: IAddSummonerData) : void {
-        alert(`${data.region} ${data.summonerName}`);
+    public async addSummoner(data: IAddSummonerData) : Promise<void> {
+         this.summoners = await this.summonersService.addSummoner(data.region, data.summonerName);
     }
 }

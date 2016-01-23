@@ -1,30 +1,30 @@
 "use strict";
 
-import {Region, RegionHelper} from "api/models/region";
+import {Region} from "api/models/region";
 import {bindable} from "aurelia-framework";
 
 export class AddSummoner {   
     
-    public regions: RegionHelper[];
-    public selectedRegion: RegionHelper;
+    public regions: Region[];
+    public selectedRegion: Region;
     public summonerName: string;    
     @bindable
     public onAddSummoner: (data: IAddSummonerData) => void;
     
     public constructor() {
-        this.regions = RegionHelper.getAll();
+        this.regions = Region.getAll();
         this.selectedRegion = this.regions[0];
         this.summonerName = "";
     }
     
-    public updateSelectedRegion(region: RegionHelper): void {
+    public updateSelectedRegion(region: Region): void {
         this.selectedRegion = region;
     }
     
     public addSummoner(): void {
         let data : IAddSummonerData = {
             summonerName: this.summonerName,
-            region: this.selectedRegion.region,  
+            region: this.selectedRegion,  
         };
         
         if (this.onAddSummoner) {

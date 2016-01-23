@@ -16,10 +16,10 @@ export class SummonersService {
     }
     
     public addSummoner(region: Region, name: string) : Promise<Summoner[]> {
-        return this.logbookApi.summonersApi.addSummoner(region, name, this.authService.token);
+        return this.logbookApi.summonersApi.addSummoner(region.shortName, name, this.authService.token);
     }
     
     public deleteSummoner(region: Region, summonerId: number) : Promise<Summoner[]> {
-        return this.logbookApi.summonersApi.deleteSummoner(region, summonerId, this.authService.token);
+        return this.logbookApi.summonersApi.deleteSummoner(region.shortName, summonerId, this.authService.token);
     }
 }

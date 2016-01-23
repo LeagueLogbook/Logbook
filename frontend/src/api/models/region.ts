@@ -1,64 +1,57 @@
 "use strict";
 
-export enum Region {
-    br,
-    eune,
-    euw,
-    na,
-    kr,
-    lan,
-    las,
-    oce,
-    ru,
-    tr
-}
+import * as _ from "lodash";
 
-export class RegionHelper {
+export class Region {
     
-    public region: Region;
+    public shortName: string;
     public name: string;
     
-    public static getAll() : RegionHelper[] {
+    public static get(shortName: string) : Region {
+        return _.head(this.getAll().filter(f => f.shortName.toLowerCase() === shortName.toLowerCase()));
+    }
+    
+    public static getAll() : Region[] {
         return [
             {
-                region: Region.br,
-                name: "BR",    
+                shortName: "BR",
+                name: "Brazil",
             },
             {
-                region: Region.eune,
-                name: "EUNE",    
+                shortName: "EUNE",
+                name: "Europe Nordic & East",    
             },
             {
-                region: Region.euw,
-                name: "EUW",    
+                shortName: "EUW",    
+                name: "Europe West",
             },
             {
-                region: Region.na,
-                name: "NA",    
+                shortName: "NA",  
+                name: "North America",  
             },
             {
-                region: Region.kr,
-                name: "KR",    
+                shortName: "KR",
+                name: "Korea",    
             },
             {
-                region: Region.lan,
-                name: "LAN",    
+                shortName: "LAN",
+                name: "Latin America North",    
             },
             {
-                region: Region.las,
-                name: "LAS",    
+                shortName: "LAS",
+                name: "Latin America South",    
             },
             {
-                region: Region.oce,
-                name: "OCE",    
+                shortName: "OCE",
+                name: "Oceania",    
             },
             {
-                region: Region.ru,
-                name: "RU",    
+                shortName: "RU",
+                name: "Russia",    
             },
             {
-                region: Region.tr,
-                name: "TR",    
+                shortName: "TR",
+                name: "Turkey",    
             },
         ];
     }

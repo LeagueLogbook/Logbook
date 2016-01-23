@@ -28,12 +28,8 @@ export class AuthenticationApi {
             .asPost()
             .withContent(body)
             .send()
-            .then(response => {
-                return null;
-            })
-            .catch(response => {
-                return Promise.reject(response.content.message);
-            });
+            .then(response => null)
+            .catch(response => Promise.reject(response.content.message));
     }
     
     public loginLogbook(emailAddress: string, password: string) : Promise<JsonWebToken> {
@@ -47,12 +43,8 @@ export class AuthenticationApi {
             .asPost()
             .withContent(body)
             .send()
-            .then(response => {
-                return response.content;
-            })
-            .catch(response => {
-                return Promise.reject(response.content.message);
-            });
+            .then(response => response.content)
+            .catch(response => Promise.reject(response.content.message));
     }
     
     public getMicrosoftLoginUrl(redirectUrl: string) : Promise<string> {
