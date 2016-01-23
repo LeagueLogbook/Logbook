@@ -9,6 +9,11 @@ System.config({
   },
   paths: {
     "*": "dist/*",
+    "services":"dist/services/*",
+    "helper":"dist/helper/*",
+    "components":"dist/components/*",
+    "api":"dist/api/*",
+    "api/models":"dist/api/models/*",
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
   },
