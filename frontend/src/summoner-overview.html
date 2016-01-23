@@ -1,6 +1,6 @@
 <template>
     
-    <require from="components/combo-box"></require>
+    <require from="components/add-summoner"></require>
     
     <style type="text/css">
     .margin {
@@ -18,29 +18,7 @@
                     </div>
                     
                     <div class="panel-body">
-                        <div class="input-group">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    ${selectedRegion.name}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li repeat.for="region of regions" click.trigger="updateSelectedRegion(region)">
-                                        <a>
-                                            ${region.name}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                                                        
-                            <input type="text" class="form-control" value.bind="summonerName">
-                            
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default" click.trigger="addSummoner()">
-                                    Add
-                                </button>
-                            </div>
-                        </div>
+                        <add-summoner on-add-summoner.call="addSummoner($event)"></add-summoner>
                     </div>
                     
                 </div>
