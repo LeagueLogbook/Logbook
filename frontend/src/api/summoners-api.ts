@@ -43,7 +43,7 @@ export class SummonersApi {
     public deleteSummoner(region: string, summonerId: number, token: JsonWebToken): Promise<Summoner[]> {
         let body = {
             region: region,
-            summonerName: name,
+            summonerId: summonerId,
         };
         
         return this.httpClient
