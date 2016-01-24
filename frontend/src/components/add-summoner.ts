@@ -9,7 +9,7 @@ export class AddSummoner {
     public selectedRegion: Region;
     public summonerName: string;    
     @bindable
-    public onAddSummoner: (data: IAddSummonerData) => void;
+    public onAddSummoner: (data: IAddSummonerData) => Promise<void>;
     
     public constructor() {
         this.regions = Region.getAll();
@@ -21,15 +21,17 @@ export class AddSummoner {
         this.selectedRegion = region;
     }
     
-    public addSummoner(): void {
+    public async addSummoner(): Promise<void> {
         let data : IAddSummonerData = {
             summonerName: this.summonerName,
             region: this.selectedRegion,  
         };
         
         if (this.onAddSummoner) {
-            this.onAddSummoner(data);            
+            await this.onAddSummoner(data);            
         }
+        
+        this.summonerName = "";
     }
 }
 
