@@ -23,6 +23,5 @@
         Oce,
         Ru,
         Tr,
-        Global
     }
 }
