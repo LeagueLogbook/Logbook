@@ -7,6 +7,8 @@
         public long RiotSummonerId { get; set; }
         public string Name { get; set; }
         public Region Region { get; set; }
+        public int Level { get; set; }
+        public string ProfileIconUri { get; set; }
     }
 
     public enum Region

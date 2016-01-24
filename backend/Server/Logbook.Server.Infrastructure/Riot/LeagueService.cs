@@ -57,7 +57,9 @@ namespace Logbook.Server.Infrastructure.Riot
             {
                 RiotSummonerId = summoner.Id,
                 Name = summoner.Name,
-                Region = this.ConvertRegion(summoner.Region)
+                Region = this.ConvertRegion(summoner.Region),
+                Level = (int)summoner.Level,
+                ProfileIconUri = $"http://ddragon.leagueoflegends.com/cdn/6.1.1/img/profileicon/{summoner.ProfileIconId}.png"
             };
         }
 
