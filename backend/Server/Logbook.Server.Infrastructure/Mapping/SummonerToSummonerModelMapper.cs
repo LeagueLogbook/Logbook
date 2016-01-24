@@ -13,7 +13,9 @@ namespace Logbook.Server.Infrastructure.Mapping
             {
                 Id = source.RiotSummonerId,
                 Region = source.Region,
-                Name = source.Name
+                Name = source.Name,
+                Level = source.Level,
+                ProfileIconUri = source.ProfileIconUri
             };
 
             return Task.FromResult(result);
