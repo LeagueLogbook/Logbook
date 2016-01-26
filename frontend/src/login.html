@@ -15,35 +15,35 @@
                         <label>Password:</label>
                         <input type="password" value.bind="password" placeholder="Password">
                     </div>
-                    <button click.trigger="login()" class="fluid ui ${canLogin ? '' : 'disabled'} primary button">Login</button>
+                    <button click.delegate="login()" class="fluid ui ${canLogin ? '' : 'disabled'} primary button">Login</button>
                 </form>
                 
                 <div class="ui horizontal divider">
                     or login with
                 </div>
                 
-                <button class="fluid ui microsoft button" click.trigger="loginMicrosoft()">
+                <button class="fluid ui microsoft button" click.delegate="loginMicrosoft()">
                     <i class="windows icon"></i>
                     Microsoft
                 </button>       
                          
                 <br>           
                      
-                <button class="fluid ui facebook button" click.trigger="loginFacebook()">
+                <button class="fluid ui facebook button" click.delegate="loginFacebook()">
                     <i class="facebook icon"></i>
                     Facebook
                 </button>    
                 
                 <br>        
                 
-                <button class="fluid ui google plus button" click.trigger="loginGoogle()">
+                <button class="fluid ui google plus button" click.delegate="loginGoogle()">
                     <i class="google icon"></i>
                     Google
                 </button>    
                 
                 <br>        
                 
-                <button class="fluid ui twitter button" click.trigger="loginTwitter()" >                            
+                <button class="fluid ui twitter button" click.delegate="loginTwitter()" >                            
                     <i class="twitter icon"></i>
                     Twitter                            
                 </button>   
@@ -70,7 +70,7 @@
                 </div>
                 
                 <button class="fluid ui primary ${canRegister ? '' : 'disabled'} button" 
-                        click.trigger="register()">
+                        click.delegate="register()">
                     Register        
                 </button>
             </form>

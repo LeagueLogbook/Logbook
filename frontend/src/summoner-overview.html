@@ -19,7 +19,7 @@
                     </div>
                     <div class="content">
                         <div class="ui right floated">               
-                            <button class="ui circular negative icon button" click.trigger="deleteSummoner(summoner)">
+                            <button class="ui circular negative icon button" click.delegate="deleteSummoner(summoner)">
                                 <i class="remove user icon"></i>
                             </button>
                         </div>   
@@ -35,22 +35,6 @@
                     </div>
                 </div>
             </div>
-          
-          <!--<div class="media" repeat.for="summoner of summoners">            
-                    <div class="media-left">          
-                        <img src.bind="summoner.profileIconUri" height="60" width="60">
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">${summoner.name}</h4>
-                        <b>Region:</b> ${summoner.region.toUpperCase()} <br>
-                        <b>Level:</b> ${summoner.level}
-                    </div>
-                    <div class="media-right">
-                        <button type="button" class="btn btn-danger btn-lg" click.trigger="deleteSummoner(summoner)">
-                            <i class="fa fa-trash-o"></i>
-                        </button>
-                    </div>
-                </div>  -->
             
         </div>
         

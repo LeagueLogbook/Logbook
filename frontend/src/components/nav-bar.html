@@ -1,6 +1,8 @@
 <template>
     <div class="ui secondary pointing menu">
         
+        <div class="header item">${router.title}</div>
+                
         <a repeat.for="row of router.navigation" 
            class="${row.isActive ? 'active' : ''} item" 
            href.bind="row.href">
