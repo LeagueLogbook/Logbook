@@ -30,7 +30,6 @@ namespace Logbook.Server.Infrastructure.Riot
                 [Region.Oce] = RiotSharp.Region.oce,
                 [Region.Ru] = RiotSharp.Region.ru,
                 [Region.Tr] = RiotSharp.Region.tr,
-                [Region.Global] = RiotSharp.Region.global
             };
         }
 
