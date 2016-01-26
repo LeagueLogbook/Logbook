@@ -1,34 +1,42 @@
 <template>
     
     <require from="components/add-summoner"></require>
-    
-    <style type="text/css">
-    .margin {
-        padding: 15px;
-    }
-    </style>
-    
-    <div class="container margin">
         
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Add summoner</h3>
-            </div>
-            
-            <div class="panel-body">
-                <add-summoner on-add-summoner.call="addSummoner($event)"></add-summoner>
-            </div>
-            
+    <div class="ui container">
+    
+        <div class="ui segment">
+            <h3 class="ui header">Add summoner</h3>
+            <add-summoner on-add-summoner.call="addSummoner($event)"></add-summoner>
         </div>
         
-        <div class="panel panel-default">
+        <div class="ui segment">
+            <h3 class="ui header">Your summoners</h3>
             
-            <div class="panel-heading">
-                <h3 class="panel-title">Your summoners</h3>
+            <div class="ui divided items">
+                <div class="item" repeat.for="summoner of summoners">
+                    <div class="ui tiny circular image">
+                        <img src.bind="summoner.profileIconUri">
+                    </div>
+                    <div class="content">
+                        <div class="ui right floated">               
+                            <button class="ui circular negative icon button" click.trigger="deleteSummoner(summoner)">
+                                <i class="remove user icon"></i>
+                            </button>
+                        </div>   
+                        
+                        <div class="header">
+                            ${summoner.name}
+                        </div>
+                                                
+                        <div class="description">
+                            <b>Region:</b> ${summoner.region.toUpperCase()} <br>
+                            <b>Level:</b> ${summoner.level}
+                        </div>
+                    </div>
+                </div>
             </div>
-        
-            <div class="panel-body">
-                <div class="media" repeat.for="summoner of summoners">            
+          
+          <!--<div class="media" repeat.for="summoner of summoners">            
                     <div class="media-left">          
                         <img src.bind="summoner.profileIconUri" height="60" width="60">
                     </div>
@@ -42,9 +50,9 @@
                             <i class="fa fa-trash-o"></i>
                         </button>
                     </div>
-                </div>
-            </div>
+                </div>  -->
             
-        </div>        
-    </div>    
+        </div>
+        
+    </div>
 </template>

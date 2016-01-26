@@ -1,4 +1,4 @@
-import "bootstrap";
+import "semantic-ui";
 import {Aurelia} from "aurelia-framework";
 import {AuthService} from "services/auth-service";
 

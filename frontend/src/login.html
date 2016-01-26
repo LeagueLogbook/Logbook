@@ -1,84 +1,79 @@
 <template>
     
-    <require from="bootstrap-social/bootstrap-social.css"></require>
-        
-    <style type="text/css">
-    .margin {
-        padding: 15px;
-    }
-    .form-signin input[type="email"] {
-        margin-bottom: -1px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-    .form-signin input[type="password"] {
-        margin-bottom: 15px;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-    .form-register input {
-        margin-bottom: 5px;
-    }
-    </style>
-    
-    <div class="container margin">
-        <div class="row">
-            <div class="col-md-6">                
-    
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Login</h3>
+    <div class="ui stackable grid container">
+        <div class="eight wide column">
+            <div class="ui segment">
+                <form class="ui form">
+                    <h3 class="ui header">Login</h3>
+                    
+                    <div class="field">
+                        <label>Email address:</label>
+                        <input type="email" value.bind="emailAddress" placeholder="Email address">
                     </div>
                     
-                    <div class="panel-body">
-                        <div class="form-signin">                            
-                            <input type="email" value.bind="emailAddress" class="form-control" placeholder="Email address" />
-                            <input type="password" value.bind="password" class="form-control" placeholder="Password" />
-                    
-                            <button click.trigger="login()" class="btn btn-primary btn-block ${canLogin ? '' : 'disabled'}">Login</button>                                                
-                        </div>
-                        
-                        <hr />
-                    
-                        <button click.delegate="loginMicrosoft()" class="btn btn-default btn-block btn-microsoft">
-                            <span class="fa fa-windows"></span>
-                            Login with Microsoft                            
-                        </button>
-                        <button click.delegate="loginFacebook()" class="btn btn-default btn-block btn-facebook">
-                            <span class="fa fa-facebook"></span>
-                            Login with Facebook
-                        </button>
-                        <button click.delegate="loginGoogle()" class="btn btn-default btn-block btn-google">
-                            <span class="fa fa-google"></span>
-                            Login with Google
-                        </button>
-                        <button click.delegate="loginTwitter()" class="btn btn-default btn-block btn-twitter">                            
-                            <span class="fa fa-twitter"></span>
-                            Login with Twitter                            
-                        </button>
+                    <div class="field">
+                        <label>Password:</label>
+                        <input type="password" value.bind="password" placeholder="Password">
                     </div>
+                    <button click.trigger="login()" class="fluid ui ${canLogin ? '' : 'disabled'} primary button">Login</button>
+                </form>
+                
+                <div class="ui horizontal divider">
+                    or login with
                 </div>
                 
-            </div>
-            <div class="col-md-6">
+                <button class="fluid ui microsoft button" click.trigger="loginMicrosoft()">
+                    <i class="windows icon"></i>
+                    Microsoft
+                </button>       
+                         
+                <br>           
+                     
+                <button class="fluid ui facebook button" click.trigger="loginFacebook()">
+                    <i class="facebook icon"></i>
+                    Facebook
+                </button>    
                 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Register</h3>
-                    </div>
-                    
-                    <div class="panel-body">
-                        <div class="form-register">
-                            <input type="email" value.bind="registerEmailAddress" class="form-control" placeholder="Email address" />
-                            <input type="password" value.bind="registerPassword" class="form-control" placeholder="Password" />
-                            <input type="password" value.bind="registerPasswordSecond" class="form-control" placeholder="Password again" />
-                            
-                            <button click.trigger="register()" class="btn btn-primary btn-block ${canRegister ? '' : 'disabled'}">Register</button>
-                        </div>
-                    </div>
+                <br>        
+                
+                <button class="fluid ui google plus button" click.trigger="loginGoogle()">
+                    <i class="google icon"></i>
+                    Google
+                </button>    
+                
+                <br>        
+                
+                <button class="fluid ui twitter button" click.trigger="loginTwitter()" >                            
+                    <i class="twitter icon"></i>
+                    Twitter                            
+                </button>   
+            </div>          
+        </div>
+                
+        <div class="eight wide column">
+            <form class="ui form segment">
+                <h3 class="ui header">Register</h3>
+
+                <div class="field">
+                    <label>Email address:</label>
+                    <input type="email" value.bind="registerEmailAddress" placeholder="Email address">
                 </div>
                 
-            </div>
+                <div class="field">
+                    <label>Password:</label>
+                    <input type="password" value.bind="registerPassword" placeholder="Password">
+                </div>
+                
+                <div class="field">
+                    <label>Repeat password</label>
+                    <input type="password" value.bind="registerPasswordSecond" placeholder="Repeat password">
+                </div>
+                
+                <button class="fluid ui primary ${canRegister ? '' : 'disabled'} button" 
+                        click.trigger="register()">
+                    Register        
+                </button>
+            </form>
         </div>
     </div>
     
