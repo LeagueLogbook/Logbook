@@ -1,6 +1,6 @@
 <template>
     
-    <require from="attributes/button-to-command"></require>
+    <require from="attributes/command"></require>
     
     <div class="ui stackable grid container">
         <div class="eight wide column">
@@ -17,38 +17,38 @@
                         <label>Password:</label>
                         <input type="password" value.bind="password" placeholder="Password">
                     </div>
-                    <button button-to-command.bind="loginCommand" class="fluid ui primary button">Login</button>
+                    <button command.bind="loginCommand" class="fluid ui primary button">Login</button>
                 </form>
                 
                 <div class="ui horizontal divider">
                     or login with
                 </div>
                 
-                <button class="fluid ui microsoft button" button-to-command.bind="loginMicrosoftCommand">
+                <button class="fluid ui microsoft button" command.bind="loginMicrosoftCommand">
                     <i class="windows icon"></i>
                     Microsoft
                 </button>       
                          
                 <br>           
                      
-                <button class="fluid ui facebook button" button-to-command.bind="loginFacebookCommand">
+                <button class="fluid ui facebook button" command.bind="loginFacebookCommand">
                     <i class="facebook icon"></i>
                     Facebook
                 </button>    
                 
                 <br>        
                 
-                <button class="fluid ui google plus button" button-to-command.bind="loginGoogleCommand">
+                <button class="fluid ui google plus button" command.bind="loginGoogleCommand">
                     <i class="google icon"></i>
                     Google
                 </button>    
                 
                 <br>        
                 
-                <button class="fluid ui twitter button" button-to-command.bind="loginTwitterCommand" >                            
+                <button class="fluid ui twitter button" command.bind="loginTwitterCommand" >                            
                     <i class="twitter icon"></i>
                     Twitter                            
-                </button>   
+                </button>
             </div>          
         </div>
                 
@@ -71,7 +71,7 @@
                     <input type="password" value.bind="registerPasswordSecond" placeholder="Repeat password">
                 </div>
                 
-                <button class="fluid ui primary button" button-to-command.bind="registerCommand">
+                <button class="fluid ui primary button" command.bind="registerCommand">
                     Register        
                 </button>
             </form>

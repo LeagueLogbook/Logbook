@@ -4,7 +4,7 @@ import {Command} from "helper/command";
 import {autoinject, ObserverLocator} from "aurelia-framework";
 
 @autoinject()
-export class ButtonToCommandCustomAttribute {
+export class CommandCustomAttribute {
         
     private command: Command;
             
