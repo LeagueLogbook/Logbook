@@ -3,6 +3,7 @@
 import {AuthService} from "services/auth-service";
 import {autoinject, Aurelia} from "aurelia-framework";
 import {BrowserService} from "services/browser-service";
+import {Command} from "helper/command";
 
 @autoinject()
 export class Login {
@@ -13,22 +14,46 @@ export class Login {
     public registerPassword: string;
     public registerPasswordSecond: string;
     
+    public loginCommand: Command;
+    public loginMicrosoftCommand: Command;
+    public loginFacebookCommand: Command;
+    public loginGoogleCommand: Command;
+    public loginTwitterCommand: Command;
+    public registerCommand: Command;
+    
     public constructor(private authService: AuthService, private aurelia: Aurelia, private browserService: BrowserService) {
         this.emailAddress = "";
         this.password = "";
         this.registerEmailAddress = "";
         this.registerPassword = "";
         this.registerPasswordSecond = "";
+        
+        this.loginCommand = new Command(() => this.login(), () => this.canLogin());
+        this.loginMicrosoftCommand = new Command(() => this.loginMicrosoft());
+        this.loginFacebookCommand = new Command(() => this.loginFacebook());
+        this.loginGoogleCommand = new Command(() => this.loginGoogle());
+        this.loginTwitterCommand = new Command(() => this.loginTwitter());
+        this.registerCommand = new Command(() => this.register(), () => this.canRegister());
     }
     
-    public get canLogin() : boolean {
-        return this.emailAddress !== null 
+    private canLogin() : boolean {
+        return this.emailAddress !== null
             && this.emailAddress !== "" 
-            && this.password !== null 
+            && this.password !== null
             && this.password !== "";
     }
+        
+    private async login() : Promise<void> {    
+        try {            
+            await this.authService.loginLogbook(this.emailAddress, this.password);        
+            this.browserService.reload();
+        }
+        catch (error) {
+            alert(error);            
+        }
+    }
     
-    public get canRegister() : boolean {
+    private canRegister() : boolean {
         return this.registerEmailAddress !== null 
             && this.registerEmailAddress !== "" 
             && this.registerPassword !== null 
@@ -38,21 +63,16 @@ export class Login {
             && this.registerPassword === this.registerPasswordSecond;
     }
     
-    public async login() : Promise<void> {    
-        try {
-            if (this.canLogin === false) {
-                return;
-            }
-            
-            await this.authService.loginLogbook(this.emailAddress, this.password);        
-            this.browserService.reload();
+    private async register() : Promise<void> {
+        try {            
+            await this.authService.register(this.registerEmailAddress, this.registerPassword);   
         }
         catch (error) {
-            alert(error);            
+            alert(error);
         }
     }
     
-    public async loginMicrosoft() : Promise<void> {
+    private async loginMicrosoft() : Promise<void> {
         try {
             await this.authService.loginMicrosoft();
             this.browserService.reload();
@@ -61,7 +81,7 @@ export class Login {
             alert(error);
         }
     }
-    public async loginTwitter() : Promise<void> {
+    private async loginTwitter() : Promise<void> {
         try {
             await this.authService.loginTwitter();
             this.browserService.reload();            
@@ -70,7 +90,7 @@ export class Login {
             alert(error);
         }
     }
-    public async loginFacebook() : Promise<void> {
+    private async loginFacebook() : Promise<void> {
         try {
             await this.authService.loginFacebook();
             this.browserService.reload();            
@@ -79,23 +99,10 @@ export class Login {
             alert(error);
         }
     }
-    public async loginGoogle() : Promise<void> {
+    private async loginGoogle() : Promise<void> {
         try {
             await this.authService.loginGoogle();
             this.browserService.reload();   
-        }
-        catch (error) {
-            alert(error);
-        }
-    }
-    
-    public async register() : Promise<void> {
-        try {
-            if (this.canRegister === false) {
-                return;
-            }
-            
-            await this.authService.register(this.registerEmailAddress, this.registerPassword);   
         }
         catch (error) {
             alert(error);

@@ -1,5 +1,7 @@
 <template>
     
+    <require from="attributes/button-to-command"></require>
+    
     <div class="ui stackable grid container">
         <div class="eight wide column">
             <div class="ui segment">
@@ -15,35 +17,35 @@
                         <label>Password:</label>
                         <input type="password" value.bind="password" placeholder="Password">
                     </div>
-                    <button click.delegate="login()" class="fluid ui ${canLogin ? '' : 'disabled'} primary button">Login</button>
+                    <button button-to-command.bind="loginCommand" class="fluid ui primary button">Login</button>
                 </form>
                 
                 <div class="ui horizontal divider">
                     or login with
                 </div>
                 
-                <button class="fluid ui microsoft button" click.delegate="loginMicrosoft()">
+                <button class="fluid ui microsoft button" button-to-command.bind="loginMicrosoftCommand">
                     <i class="windows icon"></i>
                     Microsoft
                 </button>       
                          
                 <br>           
                      
-                <button class="fluid ui facebook button" click.delegate="loginFacebook()">
+                <button class="fluid ui facebook button" button-to-command.bind="loginFacebookCommand">
                     <i class="facebook icon"></i>
                     Facebook
                 </button>    
                 
                 <br>        
                 
-                <button class="fluid ui google plus button" click.delegate="loginGoogle()">
+                <button class="fluid ui google plus button" button-to-command.bind="loginGoogleCommand">
                     <i class="google icon"></i>
                     Google
                 </button>    
                 
                 <br>        
                 
-                <button class="fluid ui twitter button" click.delegate="loginTwitter()" >                            
+                <button class="fluid ui twitter button" button-to-command.bind="loginTwitterCommand" >                            
                     <i class="twitter icon"></i>
                     Twitter                            
                 </button>   
@@ -69,8 +71,7 @@
                     <input type="password" value.bind="registerPasswordSecond" placeholder="Repeat password">
                 </div>
                 
-                <button class="fluid ui primary ${canRegister ? '' : 'disabled'} button" 
-                        click.delegate="register()">
+                <button class="fluid ui primary button" button-to-command.bind="registerCommand">
                     Register        
                 </button>
             </form>
