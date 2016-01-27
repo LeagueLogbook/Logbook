@@ -2,11 +2,10 @@
 
 import * as $ from "jquery";
 import "semantic-ui";
-import {autoinject, customAttribute} from "aurelia-framework";
+import {autoinject} from "aurelia-framework";
 
-@customAttribute("semantic-dropdown")
 @autoinject()
-export class SemanticDropdown {
+export class SemanticDropdownCustomDropdown {
     public constructor(private element: Element) {
         $(element).dropdown();
     }
