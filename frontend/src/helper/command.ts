@@ -9,15 +9,17 @@ export class Command {
     }
     
     public get canExecute(): boolean {
-        let can = this.onCanExecute();
-        return can;
-    }
-    
-    public constructor(private onExecute: () => Promise<void>, private onCanExecute: () => boolean) {        
-    }
-    
-    public async execute(): Promise<void> {
+        if (this.onCanExecute) {
+            return this.onCanExecute();
+        }
         
+        return true;
+    }
+    
+    public constructor(private onExecute: () => Promise<void>, private onCanExecute?: () => boolean) {        
+    }
+    
+    public async execute(): Promise<void> {        
         if (this.isExecuting === true) {
             return;
         }
