@@ -11,7 +11,7 @@ System.config({
     "*": "dist/*",
     "services": "dist/services/*",
     "helper": "dist/helper/*",
-    "attributes":"dist/attributes/*",
+    "attributes": "dist/attributes/*",
     "components": "dist/components/*",
     "api": "dist/api/*",
     "api/models": "dist/api/models/*",
