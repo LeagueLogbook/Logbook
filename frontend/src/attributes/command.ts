@@ -49,9 +49,11 @@ export class CommandCustomAttribute {
     private onCommandIsExecutingChanged(newValue: boolean, oldValue: boolean): void {
         if (newValue === true) {
             this.element.classList.add("loading");
+            this.element.classList.add("disabled");
         }
         if (newValue === false) {
             this.element.classList.remove("loading");
+            this.element.classList.remove("disabled");
         }
     }
     private onCommandCanExecuteChanged(newValue: boolean, oldValue: boolean): void {
