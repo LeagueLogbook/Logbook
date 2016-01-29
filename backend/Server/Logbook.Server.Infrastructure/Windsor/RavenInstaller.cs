@@ -16,40 +16,51 @@ namespace Logbook.Server.Infrastructure.Windsor
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            RavenDbServer server = this.CreateRavenDbServer();
+            DocumentStore documentStore = this.CreateRavenDocumentStore();
+            this.CustomizeRavenDocumentStore(documentStore);
 
             container.Register(
-                Component.For<IDocumentStore>().Instance(server.DocumentStore).LifestyleSingleton(),
+                Component.For<IDocumentStore>().Instance(documentStore).LifestyleSingleton(),
                 Component.For<IAsyncDocumentSession>().UsingFactoryMethod((kernel, context) => kernel.Resolve<IDocumentStore>().OpenAsyncSession()).LifestyleScoped());
         }
 
-        private RavenDbServer CreateRavenDbServer()
+        private DocumentStore CreateRavenDocumentStore()
         {
-            var config = new RavenConfiguration
+            if (Config.RunRavenInEmbeddedMode)
             {
-                Port = Config.RavenHttpServerPort,
-                MaxSecondsForTaskToWaitForDatabaseToLoad = Config.MaxSecondsToWaitForDatabaseToLoad,
-                Settings =
+                var config = new RavenConfiguration
+                {
+                    Port = Config.RavenHttpServerPort,
+                    MaxSecondsForTaskToWaitForDatabaseToLoad = Config.MaxSecondsToWaitForDatabaseToLoad,
+                    Settings =
                 {
                     ["Raven/WorkingDir"] = "~/Raven/",
                     ["Raven/StorageEngine"] = "voron"
                 },
-            };
+                };
 
-            var server = new RavenDbServer(config);
-            server.Initialize();
+                var server = new RavenDbServer(config);
+                server.Initialize();
 
-            server.DocumentStore.DefaultDatabase = Config.RavenName;
-            server.DocumentStore.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(server.DocumentStore.DefaultDatabase);
+                server.DocumentStore.DefaultDatabase = Config.RavenName;
+                server.DocumentStore.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(server.DocumentStore.DefaultDatabase);
 
-            if (Config.EnableRavenHttpServer)
-            {
-                server.EnableHttpServer();
+                if (Config.EnableRavenHttpServer)
+                {
+                    server.EnableHttpServer();
+                }
+
+                return server.DocumentStore;
             }
+            else
+            {
+                var documentStore = new DocumentStore();
+                documentStore.ParseConnectionString(Config.RavenConnectionString);
 
-            this.CustomizeRavenDocumentStore(server.DocumentStore);
+                documentStore.Initialize();
 
-            return server;
+                return documentStore;
+            }
         }
 
         private void CustomizeRavenDocumentStore(DocumentStore store)

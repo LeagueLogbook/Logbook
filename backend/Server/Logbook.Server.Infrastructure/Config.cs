@@ -12,6 +12,8 @@ namespace Logbook.Server.Infrastructure
             CompressResponses = new BoolSetting("Logbook/CompressResponses", true);
             EnableDebugRequestResponseLogging = new BoolSetting("Logbook/EnableDebugRequestResponseLogging", false);
             FormatResponses = new BoolSetting("Logbook/FormatResponses", false);
+            RunRavenInEmbeddedMode = new BoolSetting("Logbook/RunRavenInEmbeddedMode", true);
+            RavenConnectionString = new StringSetting("Logbook/RavenConnectionString", string.Empty);
             RavenHttpServerPort = new IntSetting("Logbook/RavenHttpServerPort", 8000);
             MaxSecondsToWaitForDatabaseToLoad = new IntSetting("Logbook/MaxSecondsToWaitForDatabaseToLoad", 20);
             RavenName = new StringSetting("Logbook/RavenName", "Logbook");
@@ -52,6 +54,8 @@ namespace Logbook.Server.Infrastructure
         public static BoolSetting CompressResponses { get; }
         public static BoolSetting EnableDebugRequestResponseLogging { get; }
         public static BoolSetting FormatResponses { get; }
+        public static BoolSetting RunRavenInEmbeddedMode { get; }
+        public static StringSetting RavenConnectionString { get; }
         public static IntSetting RavenHttpServerPort { get; }
         public static IntSetting MaxSecondsToWaitForDatabaseToLoad { get; }
         public static StringSetting RavenName { get; }
