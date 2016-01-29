@@ -20,9 +20,7 @@ namespace Logbook.Server.Infrastructure.Windsor
 
             container.Register(
                 Component.For<IDocumentStore>().Instance(server.DocumentStore).LifestyleSingleton(),
-                Component.For<IAsyncDocumentSession>().UsingFactoryMethod((kernel, context) => kernel.Resolve<IDocumentStore>().OpenAsyncSession()).LifestyleScoped(),
-                Component.For<IFilesStore>().Instance(server.FilesStore).LifestyleSingleton(),
-                Component.For<IAsyncFilesSession>().UsingFactoryMethod((kernel, context) => kernel.Resolve<IFilesStore>().OpenAsyncSession()).LifestyleScoped());
+                Component.For<IAsyncDocumentSession>().UsingFactoryMethod((kernel, context) => kernel.Resolve<IDocumentStore>().OpenAsyncSession()).LifestyleScoped());
         }
 
         private RavenDbServer CreateRavenDbServer()
@@ -43,9 +41,6 @@ namespace Logbook.Server.Infrastructure.Windsor
 
             server.DocumentStore.DefaultDatabase = Config.RavenName;
             server.DocumentStore.DatabaseCommands.GlobalAdmin.EnsureDatabaseExists(server.DocumentStore.DefaultDatabase);
-
-            server.FilesStore.DefaultFileSystem = Config.RavenName;
-            server.FilesStore.AsyncFilesCommands.Admin.EnsureFileSystemExistsAsync(server.DocumentStore.DefaultDatabase).Wait();
 
             if (Config.EnableRavenHttpServer)
             {
