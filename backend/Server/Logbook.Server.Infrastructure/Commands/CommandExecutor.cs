@@ -27,17 +27,14 @@ namespace Logbook.Server.Infrastructure.Commands
             using (this._container.BeginScope())
             {
                 var documentSession = this._container.Resolve<IAsyncDocumentSession>();
-                var filesSession = this._container.Resolve<IAsyncFilesSession>();
 
                 var scope = this._container.Resolve<ICommandScope>();
 
                 T result = await batchAction(scope).WithCurrentCulture();
 
                 await documentSession.SaveChangesAsync();
-                await filesSession.SaveChangesAsync();
 
                 this._container.Release(documentSession);
-                this._container.Release(filesSession);
 
                 return result;
             }
