@@ -3,6 +3,11 @@
 export class Command {
     
     private _isExecuting: boolean;
+    private _error: string;
+    
+    public get error(): string {
+        return this._error;
+    }    
     
     public get isExecuting(): boolean {
         return this._isExecuting;
@@ -30,8 +35,12 @@ export class Command {
         
         try {
             this._isExecuting = true;
+            this._error = null;
             
             await this.onExecute();
+        }
+        catch (error) {
+            this._error = error;
         }
         finally {
             this._isExecuting = false;

@@ -4,10 +4,10 @@ import {Command} from "helper/command";
 import {autoinject, ObserverLocator} from "aurelia-framework";
 
 @autoinject()
-export class CommandCustomAttribute {
+export class ButtonCommandCustomAttribute {
         
     private command: Command;
-            
+                
     public constructor(private element: Element, private observerLocator: ObserverLocator) {
     }
     

@@ -20,7 +20,7 @@ export class Login {
     public loginGoogleCommand: Command;
     public loginTwitterCommand: Command;
     public registerCommand: Command;
-    
+        
     public constructor(private authService: AuthService, private aurelia: Aurelia, private browserService: BrowserService) {
         this.emailAddress = "";
         this.password = "";
@@ -43,14 +43,9 @@ export class Login {
             && this.password !== "";
     }
         
-    private async login() : Promise<void> {    
-        try {            
-            await this.authService.loginLogbook(this.emailAddress, this.password);        
-            this.browserService.reload();
-        }
-        catch (error) {
-            alert(error);            
-        }
+    private async login() : Promise<void> {
+        await this.authService.loginLogbook(this.emailAddress, this.password);        
+        this.browserService.reload();
     }
     
     private canRegister() : boolean {
