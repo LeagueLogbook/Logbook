@@ -67,9 +67,7 @@
     <Compile Include="ControllerModels\PasswordResetData.cs" />
     <Compile Include="ControllerModels\TwitterLoginData.cs" />
     <Compile Include="Entities\AggregateRoot.cs" />
-    <Compile Include="Entities\Authentication\AuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\AuthenticationKindBase.cs" />
-    <Compile Include="Entities\Authentication\AuthenticationData.cs" />
     <Compile Include="Entities\Authentication\FacebookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\GoogleAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\MicrosoftAuthenticationKind.cs" />
@@ -85,7 +83,6 @@
     <Compile Include="Models\Games\Participant.cs" />
     <Compile Include="Models\Games\Team.cs" />
     <Compile Include="Entities\Summoners\Summoner.cs" />
-    <Compile Include="Entities\Summoners\UserSummoners.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\JsonWebTokenModel.cs" />

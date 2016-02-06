@@ -51,8 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Admin\CreateIndexesCommand.cs" />
-    <Compile Include="Commands\Admin\ResetIndexesCommand.cs" />
     <Compile Include="Commands\Authentication\AuthenticateCommand.cs" />
     <Compile Include="Commands\Authentication\ChangePasswordCommand.cs" />
     <Compile Include="Commands\Authentication\FacebookLoginCommand.cs" />
@@ -68,8 +66,6 @@
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommand.cs" />
-    <Compile Include="Commands\Summoners\GetSummonerModelsCommand.cs" />
-    <Compile Include="Commands\Summoners\GetSummonersCommand.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommand.cs" />
     <Compile Include="Commands\Users\GetUserCommand.cs" />
     <Compile Include="Emails\Email.cs" />

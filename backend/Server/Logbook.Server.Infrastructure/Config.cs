@@ -12,12 +12,8 @@ namespace Logbook.Server.Infrastructure
             CompressResponses = new BoolSetting("Logbook/CompressResponses", true);
             EnableDebugRequestResponseLogging = new BoolSetting("Logbook/EnableDebugRequestResponseLogging", false);
             FormatResponses = new BoolSetting("Logbook/FormatResponses", false);
-            RunRavenInEmbeddedMode = new BoolSetting("Logbook/RunRavenInEmbeddedMode", true);
-            RavenConnectionString = new StringSetting("Logbook/RavenConnectionString", string.Empty);
-            RavenHttpServerPort = new IntSetting("Logbook/RavenHttpServerPort", 8000);
-            MaxSecondsToWaitForDatabaseToLoad = new IntSetting("Logbook/MaxSecondsToWaitForDatabaseToLoad", 20);
-            RavenName = new StringSetting("Logbook/RavenName", "Logbook");
-            EnableRavenHttpServer = new BoolSetting("Logbook/EnableRavenHttpServer", false);
+            SqlServerConnectionString = new StringSetting("Logbook/SqlServerConnectionString", string.Empty);
+            RecreateDatabase = new BoolSetting("Logbook/RecreateDatabase", false);
             IterationCountForPasswordHashing = new IntSetting("Logbook/IterationCountForPasswordHashing", 10000);
             Addresses = new UriListSetting("Logbook/Addresses", new List<Uri> { new Uri("http://localhost") }, "|");
             AuthenticationKeyPhrase = new StringSetting("Logbook/AuthenticationKeyPhrase", string.Empty);
@@ -54,12 +50,8 @@ namespace Logbook.Server.Infrastructure
         public static BoolSetting CompressResponses { get; }
         public static BoolSetting EnableDebugRequestResponseLogging { get; }
         public static BoolSetting FormatResponses { get; }
-        public static BoolSetting RunRavenInEmbeddedMode { get; }
-        public static StringSetting RavenConnectionString { get; }
-        public static IntSetting RavenHttpServerPort { get; }
-        public static IntSetting MaxSecondsToWaitForDatabaseToLoad { get; }
-        public static StringSetting RavenName { get; }
-        public static BoolSetting EnableRavenHttpServer { get; }
+        public static StringSetting SqlServerConnectionString { get; }
+        public static BoolSetting RecreateDatabase { get; }
         public static IntSetting IterationCountForPasswordHashing { get; }
         public static UriListSetting Addresses { get; }
         public static StringSetting AuthenticationKeyPhrase { get; }

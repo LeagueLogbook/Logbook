@@ -6,8 +6,7 @@ using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Shared.Extensions;
-using Raven.Client;
-using Raven.Client.FileSystem;
+using NHibernate;
 
 namespace Logbook.Server.Infrastructure.Commands
 {
@@ -26,17 +25,31 @@ namespace Logbook.Server.Infrastructure.Commands
         {
             using (this._container.BeginScope())
             {
-                var documentSession = this._container.Resolve<IAsyncDocumentSession>();
-
+                var session = this._container.Resolve<ISession>();
                 var scope = this._container.Resolve<ICommandScope>();
 
-                T result = await batchAction(scope).WithCurrentCulture();
+                var transaction = session.BeginTransaction();
 
-                await documentSession.SaveChangesAsync();
+                try
+                {
+                    T result = await batchAction(scope).WithCurrentCulture();
 
-                this._container.Release(documentSession);
+                    transaction.Commit();
 
-                return result;
+                    this._container.Release(session);
+                    this._container.Release(scope);
+
+                    return result;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+                finally
+                {
+                    transaction.Dispose();
+                }
             }
         }
     }

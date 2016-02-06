@@ -1,7 +1,7 @@
 ﻿namespace Logbook.Shared.Entities.Authentication
 {
-    public abstract class AuthenticationKindBase
+    public abstract class AuthenticationKindBase : AggregateRoot
     {
-        public AuthenticationKind Kind { get; set; }
+        public User User { get; set; }
     }
 }

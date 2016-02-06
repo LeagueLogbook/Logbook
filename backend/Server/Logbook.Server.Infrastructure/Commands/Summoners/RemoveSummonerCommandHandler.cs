@@ -11,12 +11,13 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
     {
         public async Task<object> Execute(RemoveSummonerCommand command, ICommandScope scope)
         {
-            var userSummoners = await scope.Execute(new GetSummonersCommand(command.UserId));
+            throw new NotImplementedException();
+            //var userSummoners = await scope.Execute(new GetSummonersCommand(command.UserId));
 
-            var summonerId = Summoner.CreateId(command.SummonerId, command.Region);
-            userSummoners.SummonerIds.Remove(summonerId);
+            //var summonerId = Summoner.CreateId(command.SummonerId, command.Region);
+            //userSummoners.SummonerIds.Remove(summonerId);
 
-            return new object();
+            //return new object();
         }
     }
 }

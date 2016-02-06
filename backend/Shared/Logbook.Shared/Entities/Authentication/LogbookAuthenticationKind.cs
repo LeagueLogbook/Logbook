@@ -2,11 +2,6 @@
 {
     public class LogbookAuthenticationKind : AuthenticationKindBase
     {
-        public LogbookAuthenticationKind()
-        {
-            this.Kind = AuthenticationKind.Logbook;
-        }
-
         /// <summary>
         /// Gets or sets the salt used for hashing the password.
         /// </summary>

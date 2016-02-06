@@ -2,7 +2,6 @@
 using System.Linq;
 using Logbook.Server.Infrastructure;
 using Microsoft.Owin.Hosting;
-using Raven.Abstractions.Extensions;
 
 namespace Logbook.Server.Hosts.Service
 {
@@ -15,7 +14,10 @@ namespace Logbook.Server.Hosts.Service
             try
             {
                 var options = new StartOptions();
-                options.Urls.AddRange(Config.Addresses.GetValue().Select(f => f.ToString()));
+                foreach (var url in Config.Addresses.GetValue())
+                {
+                    options.Urls.Add(url.ToString());
+                }
 
                 this._webApp = WebApp.Start<Startup>(options);
             }

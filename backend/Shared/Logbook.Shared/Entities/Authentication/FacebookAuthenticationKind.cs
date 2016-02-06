@@ -2,11 +2,6 @@
 {
     public class FacebookAuthenticationKind : AuthenticationKindBase
     {
-        public FacebookAuthenticationKind()
-        {
-            this.Kind = AuthenticationKind.Facebook;
-        }
-
         public string FacebookUserId { get; set; }
     }
 }
