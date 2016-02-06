@@ -10,6 +10,7 @@ using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared.ControllerModels;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
 

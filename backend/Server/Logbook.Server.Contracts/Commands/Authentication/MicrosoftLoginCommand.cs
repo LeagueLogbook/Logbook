@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using LiteGuard;
+using Logbook.Server.Contracts.Encryption;
 using Logbook.Shared.Models;
 
 namespace Logbook.Server.Contracts.Commands.Authentication

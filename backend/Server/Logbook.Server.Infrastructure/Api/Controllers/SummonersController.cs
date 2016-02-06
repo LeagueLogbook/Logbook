@@ -7,6 +7,7 @@ using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Infrastructure.Api.Filter;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared.ControllerModels;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
 

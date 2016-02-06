@@ -28,8 +28,8 @@ namespace Logbook.Server.Infrastructure.Encryption
             return new JsonWebToken
             {
                 ExpiresAt = expiresAt,
-                Token = token,
-                ValidDuration = validDuration
+                ValidDuration = validDuration,
+                Token = token
             };
         }
 
