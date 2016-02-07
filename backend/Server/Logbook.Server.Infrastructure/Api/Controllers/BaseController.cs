@@ -22,20 +22,18 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         {
             get { return this.Request.GetOwinContext(); }
         }
-
         /// <summary>
         /// Gets or sets the current user identifier.
         /// </summary>
-        public int? CurrentUserId
+        public int CurrentUserId
         {
             get
             {
                 var id = Thread.CurrentPrincipal?.Identity?.Name;
 
-                if (id == null)
-                    return null;
-
-                return int.Parse(id);
+                return id != null
+                    ? int.Parse(id)
+                    : 0;
             }
         }
         #endregion

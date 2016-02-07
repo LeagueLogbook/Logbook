@@ -223,6 +223,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Mapping\MapperExtensions.cs" />
     <Compile Include="Mapping\SummonerToSummonerModelMapper.cs" />
+    <Compile Include="Mapping\UserToUserModelMapper.cs" />
     <Compile Include="NHibernate\Extensions\PropertyPartExtensions.cs" />
     <Compile Include="NHibernate\Mappings\Authentication\AuthenticationKindBaseMaps.cs" />
     <Compile Include="NHibernate\Mappings\Authentication\FacebookAuthenticationKindMaps.cs" />
