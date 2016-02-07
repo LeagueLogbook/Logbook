@@ -17,18 +17,4 @@ namespace Logbook.Shared.Entities.Summoners
         public virtual string ProfileIconUri { get; set; }
         public virtual IList<User> WatchedByUsers { get; set; } 
     }
-
-    public enum Region
-    {
-        Br,
-        Eune,
-        Euw,
-        Na,
-        Kr,
-        Lan,
-        Las,
-        Oce,
-        Ru,
-        Tr,
-    }
 }

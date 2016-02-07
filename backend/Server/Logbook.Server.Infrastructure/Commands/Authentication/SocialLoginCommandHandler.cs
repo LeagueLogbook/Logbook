@@ -12,6 +12,7 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
+using Logbook.Shared.Models.Authentication;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {

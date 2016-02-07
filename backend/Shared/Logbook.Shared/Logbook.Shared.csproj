@@ -74,6 +74,7 @@
     <Compile Include="Entities\Authentication\LogbookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\TwitterAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\User.cs" />
+    <Compile Include="Entities\Summoners\Region.cs" />
     <Compile Include="Models\Authentication\UserModel.cs" />
     <Compile Include="Models\Games\BannedChampion.cs" />
     <Compile Include="Models\Games\CurrentGame.cs" />
@@ -86,9 +87,9 @@
     <Compile Include="Entities\Summoners\Summoner.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\TaskExtensions.cs" />
-    <Compile Include="Models\JsonWebTokenModel.cs" />
+    <Compile Include="Models\Authentication\JsonWebTokenModel.cs" />
     <Compile Include="ControllerModels\RegisterData.cs" />
-    <Compile Include="Models\SummonerModel.cs" />
+    <Compile Include="Models\Summoners\SummonerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

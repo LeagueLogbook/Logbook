@@ -1,6 +1,6 @@
 ﻿using Logbook.Shared.Entities.Summoners;
 
-namespace Logbook.Shared.Models
+namespace Logbook.Shared.Models.Summoners
 {
     public class SummonerModel
     {

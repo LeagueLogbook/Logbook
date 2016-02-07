@@ -2,6 +2,7 @@
 using Logbook.Server.Contracts.Mapping;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models;
+using Logbook.Shared.Models.Summoners;
 
 namespace Logbook.Server.Infrastructure.Mapping
 {

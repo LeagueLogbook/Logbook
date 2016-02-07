@@ -9,7 +9,7 @@ using Logbook.Shared.Models;
 using Metrics.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using JsonWebToken = Logbook.Shared.Models.JsonWebToken;
+using JsonWebToken = Logbook.Shared.Models.Authentication.JsonWebToken;
 
 namespace Logbook.Server.Infrastructure.Encryption
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using Logbook.Shared;
 using Logbook.Shared.Models;
+using Logbook.Shared.Models.Authentication;
 
 namespace Logbook.Server.Contracts.Encryption
 {

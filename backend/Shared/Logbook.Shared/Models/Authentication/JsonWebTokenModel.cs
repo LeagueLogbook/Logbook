@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Logbook.Shared.Models
+namespace Logbook.Shared.Models.Authentication
 {
     public class JsonWebToken
     {

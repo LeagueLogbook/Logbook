@@ -2,6 +2,7 @@
 using LiteGuard;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Shared.Models;
+using Logbook.Shared.Models.Authentication;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
