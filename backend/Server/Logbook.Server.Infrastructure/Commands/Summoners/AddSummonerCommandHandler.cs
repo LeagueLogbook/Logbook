@@ -40,7 +40,6 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
             if (userAlreadyHasSummoner == false)
             {
                 var existingSummoner = this._session.Query<Summoner>()
-                    .FetchMany(f => f.WatchedByUsers)
                     .FirstOrDefault(f => f.RiotSummonerId == summoner.RiotSummonerId && f.Region == summoner.Region);
 
                 if (existingSummoner == null)

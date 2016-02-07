@@ -22,9 +22,7 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
 
         public Task<IList<Summoner>> Execute(GetSummonersCommand command, ICommandScope scope)
         {
-            var user = this._session.Query<User>()
-                .FetchMany(f => f.WatchSummoners)
-                .FirstOrDefault(f => f.Id == command.UserId);
+            var user = this._session.Get<User>(command.UserId);
 
             if (user == null)
                 throw new UserNotFoundException();

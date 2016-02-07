@@ -65,19 +65,19 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         [LogbookAuthentication]
         public async Task<HttpResponseMessage> DeleteSummoner(DeleteSummonerData data)
         {
-            throw new NotImplementedException();
-            //if (data?.SummonerId == null)
-            //    throw new DataMissingException();
+            if (data?.SummonerId == null)
+                throw new DataMissingException();
 
-            //var summoners = await this.CommandExecutor
-            //    .Batch(async scope =>
-            //    {
-            //        await scope.Execute(new RemoveSummonerCommand(this.CurrentUserId, data.Region, data.SummonerId));
-            //        return await scope.Execute(new GetSummonerModelsCommand(this.CurrentUserId));
-            //    })
-            //    .WithCurrentCulture();
+            var result = await this.CommandExecutor.Batch(async scope =>
+            {
+                await scope.Execute(new RemoveSummonerCommand(this.CurrentUserId, data.Region, data.SummonerId));
+                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var models = await scope.MapList<Summoner, SummonerModel>(summoners);
 
-            //return this.Request.GetMessageWithObject(HttpStatusCode.OK, summoners);
+                return models;
+            });
+
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, result);
         }
     }
 }
