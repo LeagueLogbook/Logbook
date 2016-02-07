@@ -36,6 +36,7 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
                 .ParentKeyColumn("SummonerId")
                 .ChildKeyColumn("UserId")
                 .Cascade.None()
+                .Inverse()
                 .LazyLoad();
         }
     }

@@ -5,46 +5,55 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Contracts.Riot;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Entities.Summoners;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Summoners
 {
     public class AddSummonerCommandHandler : ICommandHandler<AddSummonerCommand, object>
     {
-        //private readonly ILeagueService _leagueService;
-        //private readonly IAsyncDocumentSession _documentSession;
+        private readonly ILeagueService _leagueService;
+        private readonly ISession _session;
 
-        //public AddSummonerCommandHandler(ILeagueService leagueService, IAsyncDocumentSession documentSession)
-        //{
-        //    this._leagueService = leagueService;
-        //    this._documentSession = documentSession;
-        //}
+        public AddSummonerCommandHandler(ILeagueService leagueService, ISession session)
+        {
+            this._leagueService = leagueService;
+            this._session = session;
+        }
 
         public async Task<object> Execute(AddSummonerCommand command, ICommandScope scope)
         {
-            throw new NotImplementedException();
-            //var userSummoners = await scope.Execute(new GetSummonersCommand(command.UserId));
-            //var summoner = await this._leagueService.GetSummonerAsync(command.Region, command.SummonerName);
+            var summoner = await this._leagueService.GetSummonerAsync(command.Region, command.SummonerName);
 
-            //if (summoner == null)
-            //    throw new SummonerNotFoundException();
+            if (summoner == null)
+                throw new SummonerNotFoundException();
 
-            //var summonerId = Summoner.CreateId(summoner.RiotSummonerId, summoner.Region);
+            var user = this._session.Get<User>(command.UserId);
 
-            //bool userAlreadyHasSummoner = userSummoners.SummonerIds.Any(f => f == summonerId);
+            if (user == null)
+                throw new UserNotFoundException();
+            
+            bool userAlreadyHasSummoner = user.WatchSummoners.Any(f => f.RiotSummonerId == summoner.RiotSummonerId && f.Region == summoner.Region);
 
-            //if (userAlreadyHasSummoner == false)
-            //{
-            //    userSummoners.SummonerIds.Add(summonerId);
-            //}
+            if (userAlreadyHasSummoner == false)
+            {
+                var existingSummoner = this._session.Query<Summoner>()
+                    .FetchMany(f => f.WatchedByUsers)
+                    .FirstOrDefault(f => f.RiotSummonerId == summoner.RiotSummonerId && f.Region == summoner.Region);
 
-            //var existing = await this._documentSession.LoadAsync<Summoner>(summonerId);
-            //if (existing == null)
-            //{
-            //    await this._documentSession.StoreAsync(summoner);
-            //}
+                if (existingSummoner == null)
+                {
+                    existingSummoner = summoner;
+                    this._session.SaveOrUpdate(existingSummoner);
+                }
 
-            //return new object();
+                existingSummoner.WatchedByUsers.Add(user);
+                user.WatchSummoners.Add(existingSummoner);
+            }
+            
+            return new object();
         }
     }
 }

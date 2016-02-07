@@ -44,19 +44,19 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         [LogbookAuthentication]
         public async Task<HttpResponseMessage> AddSummoner(AddSummonerData data)
         {
-            throw new NotImplementedException();
-            //if (data?.SummonerName == null)
-            //    throw new DataMissingException();
+            if (data?.SummonerName == null)
+                throw new DataMissingException();
 
-            //var summoners = await this.CommandExecutor
-            //    .Batch(async scope =>
-            //    {
-            //        await scope.Execute(new AddSummonerCommand(this.CurrentUserId, data.Region, data.SummonerName));
-            //        return await scope.Execute(new GetSummonerModelsCommand(this.CurrentUserId));
-            //    })
-            //    .WithCurrentCulture();
+            var result = await this.CommandExecutor.Batch(async scope =>
+            {
+                await scope.Execute(new AddSummonerCommand(this.CurrentUserId, data.Region, data.SummonerName));
+                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var models = await scope.MapList<Summoner, SummonerModel>(summoners);
 
-            //return this.Request.GetMessageWithObject(HttpStatusCode.Found, summoners);
+                return models;
+            });
+
+            return this.Request.GetMessageWithObject(HttpStatusCode.Found, result);
         }
 
 
