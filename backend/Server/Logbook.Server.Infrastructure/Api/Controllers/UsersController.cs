@@ -23,7 +23,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         public async Task<HttpResponseMessage> GetMeAsync()
         {
             var user = await this.CommandExecutor
-                .Execute(new GetUserCommand(this.CurrentUserId))
+                .Execute(new GetUserCommand(this.CurrentUserId.ToString()))
                 .WithCurrentCulture();
 
             return this.Request.GetMessageWithObject(HttpStatusCode.Found, user);

@@ -5,7 +5,7 @@ namespace Logbook.Server.Infrastructure.Extensions
 {
     public static class JsonWebTokenServiceExtensions
     {
-        public static JsonWebToken GenerateForLogin(this IJsonWebTokenService self, string userId)
+        public static JsonWebToken GenerateForLogin(this IJsonWebTokenService self, int userId)
         {
             var payload = new ForLogin
             {
@@ -15,14 +15,14 @@ namespace Logbook.Server.Infrastructure.Extensions
             return self.Generate(payload, Config.LoginIsValidForDuration, Config.AuthenticationKeyPhrase);
         }
 
-        public static string ValidateAndDecodeForLogin(this IJsonWebTokenService self, string jsonWebToken)
+        public static int ValidateAndDecodeForLogin(this IJsonWebTokenService self, string jsonWebToken)
         {
             return self.ValidateAndDecode<ForLogin>(jsonWebToken, Config.AuthenticationKeyPhrase).UserId;
         }
 
         public class ForLogin
         {
-            public string UserId { get; set; }
+            public int UserId { get; set; }
         }
     }
 }

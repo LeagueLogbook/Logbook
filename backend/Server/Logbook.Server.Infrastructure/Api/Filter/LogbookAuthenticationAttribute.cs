@@ -36,9 +36,9 @@ namespace Logbook.Server.Infrastructure.Api.Filter
                 .Execute(new AuthenticateCommand(context.Request.GetOwinContext()))
                 .WithCurrentCulture();
 
-            if (userId != null)
+            if (userId > 0)
             {
-                context.Principal = new GenericPrincipal(new GenericIdentity(userId), new string[0]);
+                context.Principal = new GenericPrincipal(new GenericIdentity(userId.ToString()), new string[0]);
             }
             else
             {

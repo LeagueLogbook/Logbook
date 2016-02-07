@@ -5,7 +5,7 @@ using Microsoft.Owin;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
-    public class AuthenticateCommand : ICommand<string>
+    public class AuthenticateCommand : ICommand<int>
     {
         public AuthenticateCommand([NotNull]IOwinContext context)
         {

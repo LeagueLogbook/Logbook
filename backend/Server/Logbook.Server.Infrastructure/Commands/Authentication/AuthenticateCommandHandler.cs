@@ -15,7 +15,7 @@ using Microsoft.Owin;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
-    public class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, string>
+    public class AuthenticateCommandHandler : ICommandHandler<AuthenticateCommand, int>
     {
         #region Fields
         private readonly IJsonWebTokenService _jsonWebTokenService;
@@ -40,7 +40,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        public async Task<string> Execute(AuthenticateCommand command, ICommandScope scope)
+        public async Task<int> Execute(AuthenticateCommand command, ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);
