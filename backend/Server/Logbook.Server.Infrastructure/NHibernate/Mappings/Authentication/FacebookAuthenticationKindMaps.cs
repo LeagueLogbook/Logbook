@@ -10,7 +10,7 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Authentication
             this.DiscriminatorValue("Facebook");
 
             this.Map(f => f.FacebookUserId)
-                .Not.Nullable();
+                .Nullable();
         }
     }
 }

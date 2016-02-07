@@ -5,6 +5,6 @@
         /// <summary>
         /// Gets or sets the microsoft user identifier.
         /// </summary>
-        public string MicrosoftUserId { get; set; }
+        public virtual string MicrosoftUserId { get; set; }
     }
 }

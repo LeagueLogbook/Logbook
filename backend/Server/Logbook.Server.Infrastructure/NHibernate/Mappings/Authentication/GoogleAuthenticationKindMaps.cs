@@ -10,7 +10,7 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Authentication
             this.DiscriminatorValue("Google");
 
             this.Map(f => f.GoogleUserId)
-                .Not.Nullable();
+                .Nullable();
         }
     }
 }

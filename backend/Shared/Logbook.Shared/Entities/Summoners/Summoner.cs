@@ -5,12 +5,17 @@ namespace Logbook.Shared.Entities.Summoners
 {
     public class Summoner : AggregateRoot
     {
-        public Region Region { get; set; }
-        public long RiotSummonerId { get; set; }
-        public string Name { get; set; }
-        public int Level { get; set; }
-        public string ProfileIconUri { get; set; }
-        public IList<User> WatchedByUsers { get; set; } 
+        public Summoner()
+        {
+            this.WatchedByUsers = new List<User>();
+        }
+
+        public virtual Region Region { get; set; }
+        public virtual long RiotSummonerId { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int Level { get; set; }
+        public virtual string ProfileIconUri { get; set; }
+        public virtual IList<User> WatchedByUsers { get; set; } 
     }
 
     public enum Region

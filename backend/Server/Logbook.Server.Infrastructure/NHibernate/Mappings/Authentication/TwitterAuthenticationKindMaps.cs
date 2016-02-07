@@ -10,7 +10,7 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Authentication
             this.DiscriminatorValue("Twitter");
 
             this.Map(f => f.TwitterUserId)
-                .Not.Nullable();
+                .Nullable();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Authentication
             this.DiscriminatorValue("Microsoft");
 
             this.Map(f => f.MicrosoftUserId)
-                .Not.Nullable();
+                .Nullable();
         }
     }
 }

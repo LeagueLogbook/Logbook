@@ -11,14 +11,14 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Authentication
             this.DiscriminatorValue("Logbook");
 
             this.Map(f => f.Hash)
-                .Not.Nullable()
+                .Nullable()
                 .MaxLength();
 
             this.Map(f => f.IterationCount)
-                .Not.Nullable();
+                .Nullable();
 
             this.Map(f => f.Salt)
-                .Not.Nullable()
+                .Nullable()
                 .MaxLength();
         }
     }

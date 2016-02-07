@@ -2,6 +2,6 @@
 {
     public class FacebookAuthenticationKind : AuthenticationKindBase
     {
-        public string FacebookUserId { get; set; }
+        public virtual string FacebookUserId { get; set; }
     }
 }

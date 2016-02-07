@@ -2,6 +2,6 @@
 {
     public class GoogleAuthenticationKind : AuthenticationKindBase
     {
-        public string GoogleUserId { get; set; }
+        public virtual string GoogleUserId { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class TwitterAuthenticationKind : AuthenticationKindBase
     {
-        public string TwitterUserId { get; set; }
+        public virtual string TwitterUserId { get; set; }
     }
 }

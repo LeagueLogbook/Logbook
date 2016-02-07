@@ -2,6 +2,6 @@
 {
     public abstract class AuthenticationKindBase : AggregateRoot
     {
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -5,14 +5,14 @@
         /// <summary>
         /// Gets or sets the salt used for hashing the password.
         /// </summary>
-        public byte[] Salt { get; set; }
+        public virtual byte[] Salt { get; set; }
         /// <summary>
         /// Gets or sets the iteration count for the hash algorithm.
         /// </summary>
-        public int IterationCount { get; set; }
+        public virtual int IterationCount { get; set; }
         /// <summary>
         /// Gets or sets the resulting hash.
         /// </summary>
-        public byte[] Hash { get; set; }
+        public virtual byte[] Hash { get; set; }
     }
 }
