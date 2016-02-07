@@ -183,6 +183,7 @@
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\GetSummonersCommandHandler.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommandHandler.cs" />
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
     <Compile Include="Commands\Users\UserToUserModelMapCommandHandler.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Exceptions\SummonerNotFoundException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Extensions\CommandScopeExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\HashingServiceExtensions.cs" />
     <Compile Include="Extensions\IDependencyResolverExtensions.cs" />
@@ -222,7 +224,6 @@
     <Compile Include="Extensions\HttpRequestMessageExtensions.cs" />
     <Compile Include="Extensions\SecretGeneratorExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Mapping\MapperExtensions.cs" />
     <Compile Include="Mapping\SummonerToSummonerModelMapper.cs" />
     <Compile Include="Mapping\UserToUserModelMapper.cs" />
     <Compile Include="NHibernate\Extensions\PropertyPartExtensions.cs" />

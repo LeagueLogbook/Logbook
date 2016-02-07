@@ -66,6 +66,7 @@
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommand.cs" />
+    <Compile Include="Commands\Summoners\GetSummonersCommand.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommand.cs" />
     <Compile Include="Commands\Users\GetUserCommand.cs" />
     <Compile Include="Emails\Email.cs" />

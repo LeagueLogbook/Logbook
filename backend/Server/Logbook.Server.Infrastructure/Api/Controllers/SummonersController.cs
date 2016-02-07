@@ -9,8 +9,10 @@ using Logbook.Server.Infrastructure.Api.Filter;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.ControllerModels;
+using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
+using Logbook.Shared.Models.Summoners;
 
 namespace Logbook.Server.Infrastructure.Api.Controllers
 {
@@ -26,12 +28,15 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
         [LogbookAuthentication]
         public async Task<HttpResponseMessage> GetSummoners()
         {
-            throw new NotImplementedException();
-            //var summoners = await this.CommandExecutor
-            //    .Execute(new GetSummonerModelsCommand(this.CurrentUserId))
-            //    .WithCurrentCulture();
+            var result = await this.CommandExecutor.Batch(async scope =>
+            {
+                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var models = await scope.MapList<Summoner, SummonerModel>(summoners);
 
-            //return this.Request.GetMessageWithObject(HttpStatusCode.OK, summoners);
+                return models;
+            });
+
+            return this.Request.GetMessageWithObject(HttpStatusCode.OK, result);
         }
 
         [HttpPatch]
