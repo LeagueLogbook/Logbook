@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands.Authentication;
@@ -6,50 +7,59 @@ using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Shared.Entities.Authentication;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
     public class TwitterLoginCommandHandler : SocialLoginCommandHandler<TwitterLoginCommand>
     {
-        //private readonly ITwitterService _twitterService;
+        private readonly ISession _session;
+        private readonly ITwitterService _twitterService;
 
-        //public TwitterLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService, ITwitterService twitterService)
-        //    : base(documentSession, jsonWebTokenService)
-        //{
-        //    this._twitterService = twitterService;
-        //}
 
-        //protected override async Task<SocialLoginUser> GetMeAsync(TwitterLoginCommand command)
-        //{
-        //    var token = await this._twitterService.ExchangeForToken(command.Payload, command.OAuthVerifier);
+        public TwitterLoginCommandHandler(ISession session, IJsonWebTokenService jsonWebTokenService, ITwitterService twitterService)
+            : base(session, jsonWebTokenService)
+        {
+            this._session = session;
+            this._twitterService = twitterService;
+        }
 
-        //    if (token == null)
-        //        throw new InternalServerErrorException();
+        protected override async Task<SocialLoginUser> GetMeAsync(TwitterLoginCommand command)
+        {
+            var token = await this._twitterService.ExchangeForToken(command.Payload, command.OAuthVerifier);
 
-        //    var user = await this._twitterService.GetMeAsync(token);
+            if (token == null)
+                throw new InternalServerErrorException();
 
-        //    if (user == null)
-        //        return null;
+            var user = await this._twitterService.GetMeAsync(token);
 
-        //    return new SocialLoginUser
-        //    {
-        //        Id = user.Id,
-        //        Locale = user.Locale,
-        //        EmailAddress = user.Email
-        //    };
-        //}
+            if (user == null)
+                return null;
 
-        //protected override Expression<Func<AuthenticationData_ByAllFields.Result, bool>> GetExpressionForSocialUserId(SocialLoginUser user)
-        //{
-        //    return f => f.TwitterUserId == user.Id;
-        //}
+            return new SocialLoginUser
+            {
+                Id = user.Id,
+                Locale = user.Locale,
+                EmailAddress = user.Email
+            };
+        }
 
-        //protected override AuthenticationKindBase CreateAuthentication(SocialLoginUser user)
-        //{
-        //    return new TwitterAuthenticationKind
-        //    {
-        //        TwitterUserId = user.Id
-        //    };
-        //}
+        protected override User GetUserForSocialUser(SocialLoginUser user)
+        {
+            var authentication = this._session.Query<TwitterAuthenticationKind>()
+                .Fetch(f => f.User)
+                .FirstOrDefault(f => f.TwitterUserId == user.Id);
+
+            return authentication?.User;
+        }
+
+        protected override AuthenticationKindBase CreateAuthentication(SocialLoginUser user)
+        {
+            return new TwitterAuthenticationKind
+            {
+                TwitterUserId = user.Id
+            };
+        }
     }
 }

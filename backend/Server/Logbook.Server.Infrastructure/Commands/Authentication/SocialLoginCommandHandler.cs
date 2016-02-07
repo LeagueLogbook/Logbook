@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
@@ -11,8 +10,9 @@ using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
-using Logbook.Shared.Models;
 using Logbook.Shared.Models.Authentication;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
@@ -20,119 +20,106 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         where TCommand : ICommand<JsonWebToken>
     {
         #region Fields
-        //private readonly IAsyncDocumentSession _documentSession;
-        //private readonly IJsonWebTokenService _jsonWebTokenService;
+        private readonly ISession _session;
+        private readonly IJsonWebTokenService _jsonWebTokenService;
         #endregion
 
         #region Constructors
-        //protected SocialLoginCommandHandler(IAsyncDocumentSession documentSession, IJsonWebTokenService jsonWebTokenService)
-        //{
-        //    Guard.AgainstNullArgument(nameof(documentSession), documentSession);
-        //    Guard.AgainstNullArgument(nameof(jsonWebTokenService), jsonWebTokenService);
+        protected SocialLoginCommandHandler(ISession session, IJsonWebTokenService jsonWebTokenService)
+        {
+            Guard.AgainstNullArgument(nameof(session), session);
+            Guard.AgainstNullArgument(nameof(jsonWebTokenService), jsonWebTokenService);
 
-        //    this._documentSession = documentSession;
-        //    this._jsonWebTokenService = jsonWebTokenService;
-        //}
+            this._session = session;
+            this._jsonWebTokenService = jsonWebTokenService;
+        }
         #endregion
 
         #region Methods
         public async Task<JsonWebToken> Execute(TCommand command, ICommandScope scope)
         {
-            throw new NotImplementedException();
-            //var socialLoginUser = await this.GetMeAsync(command).WithCurrentCulture();
+            var socialLoginUser = await this.GetMeAsync(command).WithCurrentCulture();
 
-            //if (socialLoginUser == null)
-            //    throw new InternalServerErrorException();
+            if (socialLoginUser == null)
+                throw new InternalServerErrorException();
 
-            //IList<Func<SocialLoginUser, Task<string>>> casesToCheck = new List<Func<SocialLoginUser, Task<string>>>
-            //{
-            //    this.FindUserIdBySocialLoginUserId,
-            //    this.FindUserIdByEmailAddress,
-            //    this.CreateNewUser
-            //};
+            IList<Func<SocialLoginUser, Task<int?>>> casesToCheck = new List<Func<SocialLoginUser, Task<int?>>>
+            {
+                this.FindUserIdBySocialLoginUserId,
+                this.FindUserIdByEmailAddress,
+                this.CreateNewUser
+            };
 
-            //foreach (var caseToCheck in casesToCheck)
-            //{
-            //    var userId = await caseToCheck(socialLoginUser).WithCurrentCulture();
-            //    if (userId != null)
-            //    {
-            //        return this._jsonWebTokenService.GenerateForLogin(userId);
-            //    }
-            //}
+            foreach (var caseToCheck in casesToCheck)
+            {
+                var userId = await caseToCheck(socialLoginUser).WithCurrentCulture();
+                if (userId != null)
+                {
+                    return this._jsonWebTokenService.GenerateForLogin(userId.Value);
+                }
+            }
 
-            //throw new InternalServerErrorException();
+            throw new InternalServerErrorException();
         }
         #endregion
 
         #region Private Methods
-        //private async Task<string> FindUserIdBySocialLoginUserId(SocialLoginUser socialLoginUser)
-        //{
-        //    var authenticationData = await this._documentSession.Query<AuthenticationData_ByAllFields.Result, AuthenticationData_ByAllFields>()
-        //        .Where(this.GetExpressionForSocialUserId(socialLoginUser))
-        //        .OfType<AuthenticationData>()
-        //        .FirstOrDefaultAsync()
-        //        .WithCurrentCulture();
+        private Task<int?> FindUserIdBySocialLoginUserId(SocialLoginUser socialLoginUser)
+        {
+            var user = this.GetUserForSocialUser(socialLoginUser);
+            return Task.FromResult(user?.Id);
+        }
 
-        //    return authenticationData?.ForUserId;
-        //}
+        private Task<int?> FindUserIdByEmailAddress(SocialLoginUser socialLoginUser)
+        {
+            var user = this._session.Query<User>()
+                .FetchMany(f => f.Authentications)
+                .FirstOrDefault(f => f.EmailAddress.ToUpper() == socialLoginUser.EmailAddress.Trim().ToUpper());
 
-        //private async Task<string> FindUserIdByEmailAddress(SocialLoginUser socialLoginUser)
-        //{
-        //    var user = await this._documentSession.Query<User, Users_ByEmailAddress>()
-        //        .Where(f => f.EmailAddress == socialLoginUser.EmailAddress)
-        //        .FirstOrDefaultAsync()
-        //        .WithCurrentCulture();
+            if (user == null)
+                return Task.FromResult((int?)null);
 
-        //    if (user == null)
-        //        return null;
+            var authentication = this.CreateAuthentication(socialLoginUser);
+            user.Authentications.Add(authentication);
+            authentication.User = user;
 
-        //    var authenticationData = await this._documentSession
-        //        .LoadAsync<AuthenticationData>(AuthenticationData.CreateId(user.Id))
-        //        .WithCurrentCulture();
+            return Task.FromResult((int?)user.Id);
+        }
 
-        //    authenticationData.Authentications.Add(this.CreateAuthentication(socialLoginUser));
+        private Task<int?> CreateNewUser(SocialLoginUser socialLoginUser)
+        {
+            var authentication = this.CreateAuthentication(socialLoginUser);
 
-        //    return user.Id;
-        //}
+            var user = new User
+            {
+                EmailAddress = socialLoginUser.EmailAddress,
+                PreferredLanguage = new CultureInfo(socialLoginUser.Locale).Parent.TwoLetterISOLanguageName,
+                Authentications =
+                {
+                    authentication
+                }
+            };
+            authentication.User = user;
 
-        //private async Task<string> CreateNewUser(SocialLoginUser socialLoginUser)
-        //{
-        //    var user = new User
-        //    {
-        //        EmailAddress = socialLoginUser.EmailAddress,
-        //        PreferredLanguage = new CultureInfo(socialLoginUser.Locale).Parent.TwoLetterISOLanguageName
-        //    };
+            this._session.SaveOrUpdate(user);
 
-        //    await this._documentSession.StoreAsync(user).WithCurrentCulture();
+            return Task.FromResult((int?)user.Id);
+        }
 
-        //    var authenticationData = new AuthenticationData
-        //    {
-        //        ForUserId = user.Id,
-        //        Authentications =
-        //        {
-        //            this.CreateAuthentication(socialLoginUser),
-        //        }
-        //    };
+        protected abstract Task<SocialLoginUser> GetMeAsync(TCommand command);
 
-        //    await this._documentSession.StoreAsync(authenticationData).WithCurrentCulture();
+        protected abstract User GetUserForSocialUser(SocialLoginUser user);
 
-        //    return user.Id;
-        //}
-        
-        //protected abstract Task<SocialLoginUser> GetMeAsync(TCommand command);
-
-        //protected abstract Expression<Func<AuthenticationData_ByAllFields.Result, bool>> GetExpressionForSocialUserId(SocialLoginUser user);
-
-        //protected abstract AuthenticationKindBase CreateAuthentication(SocialLoginUser user);
+        protected abstract AuthenticationKindBase CreateAuthentication(SocialLoginUser user);
         #endregion
 
         #region Internal
-        //protected class SocialLoginUser
-        //{
-        //    public string Id { get; set; }
-        //    public string EmailAddress { get; set; }
-        //    public string Locale { get; set; }
-        //}
+        protected class SocialLoginUser
+        {
+            public string Id { get; set; }
+            public string EmailAddress { get; set; }
+            public string Locale { get; set; }
+        }
         #endregion
     }
 }
