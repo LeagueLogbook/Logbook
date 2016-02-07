@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using LiteGuard;
@@ -14,6 +15,7 @@ using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
@@ -56,9 +58,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="scope">The scope.</param>
         public async Task<object> Execute(RegisterCommand command, ICommandScope scope)
         {
-            var emailAddressAlreadyInUse = this._session.QueryOver<User>()
-                .WhereRestrictionOn(f => f.EmailAddress).IsInsensitiveLike(command.EmailAddress)
-                .RowCount() > 0;
+            var emailAddressAlreadyInUse = this._session.Query<User>()
+                .Any(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper());
 
             if (emailAddressAlreadyInUse)
                 throw new EmailIsNotAvailableException();

@@ -12,6 +12,7 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
@@ -38,10 +39,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         {
             var emailAddress = this._encryptionService.ValidateAndDecodeForPasswordReset(command.Token);
 
-            var user = this._session.QueryOver<User>()
-                .WhereRestrictionOn(f => f.EmailAddress).IsInsensitiveLike(emailAddress)
-                .List()
-                .First();
+            var user = this._session.Query<User>()
+                .FetchMany(f => f.Authentications)
+                .First(f => f.EmailAddress.ToUpper() == emailAddress.Trim().ToUpper());
 
             var newPassword = this._secretGenerator.GenerateString(Config.PasswordResetNewPasswordLength);
             var newPasswordSHA256Hash = this._hashingService.ComputeSHA256Hash(newPassword);

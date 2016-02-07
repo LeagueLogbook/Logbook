@@ -11,6 +11,7 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
@@ -31,10 +32,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         public async Task<object> Execute(ResetPasswordCommand command, ICommandScope scope)
         {
-            var user = this._session.QueryOver<User>()
-                .WhereRestrictionOn(f => f.EmailAddress).IsInsensitiveLike(command.EmailAddress)
-                .List()
-                .First();
+            var user = this._session.Query<User>()
+                .FetchMany(f => f.Authentications)
+                .First(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper());
             
             if (user.Authentications.Any(f => f is LogbookAuthenticationKind) == false)
                 throw new NoLogbookLoginToResetPasswordException();

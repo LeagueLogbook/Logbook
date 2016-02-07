@@ -26,7 +26,7 @@ namespace Logbook.Server.Infrastructure.Windsor
 
             var factory = Fluently.Configure()
                 .Mappings(f => f.FluentMappings.AddFromAssembly(this.GetType().Assembly))
-                .Database(() => MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
+                .Database(() => MsSqlConfiguration.MsSql2012.ShowSql().FormatSql().ConnectionString(connectionString))
                 .ExposeConfiguration(this.WorkWithConfiguration)
                 .BuildSessionFactory();
 

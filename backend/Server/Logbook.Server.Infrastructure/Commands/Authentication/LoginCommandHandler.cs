@@ -14,6 +14,7 @@ using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
 using Logbook.Shared.Models.Authentication;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
@@ -55,9 +56,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);
 
-            var user = this._session.QueryOver<User>()
-                .WhereRestrictionOn(f => f.EmailAddress).IsInsensitiveLike(command.EmailAddress)
-                .List()
+            var user = this._session.Query<User>()
+                .Where(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper())
+                .FetchMany(f => f.Authentications)
                 .FirstOrDefault();
             
             if (user == null)

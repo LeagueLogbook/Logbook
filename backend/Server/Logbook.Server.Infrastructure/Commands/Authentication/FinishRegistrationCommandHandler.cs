@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
@@ -8,6 +9,7 @@ using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
@@ -26,16 +28,15 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         {
             var decryptedToken = this._encryptionService.ValidateAndDecodeForConfirmEmail(command.Token);
 
-            var emailAddressAlreadyInUse = this._session.QueryOver<User>()
-                .WhereRestrictionOn(f => f.EmailAddress).IsInsensitiveLike(decryptedToken.EmailAddress)
-                .RowCount() > 0;
+            var emailAddressAlreadyInUse = this._session.Query<User>()
+                .Any(f => f.EmailAddress.ToUpper() == decryptedToken.EmailAddress.Trim().ToUpper());
 
             if (emailAddressAlreadyInUse)
                 throw new EmailIsNotAvailableException();
 
             var user = new User
             {
-                EmailAddress = decryptedToken.EmailAddress,
+                EmailAddress = decryptedToken.EmailAddress.Trim(),
                 PreferredLanguage = decryptedToken.PreferredLanguage
             };
 
