@@ -10,56 +10,50 @@ using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
+using NHibernate;
 
 namespace Logbook.Server.Infrastructure.Commands.Authentication
 {
     public class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, object>
     {
-        //private readonly IAsyncDocumentSession _documentSession;
-        //private readonly IEncryptionService _encryptionService;
-        //private readonly IEmailTemplateService _emailTemplateService;
-        //private readonly IEmailSender _emailSender;
+        private readonly ISession _session;
+        private readonly IEncryptionService _encryptionService;
+        private readonly IEmailTemplateService _emailTemplateService;
+        private readonly IEmailSender _emailSender;
 
-        //public ResetPasswordCommandHandler(IAsyncDocumentSession documentSession, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
-        //{
-        //    this._documentSession = documentSession;
-        //    this._encryptionService = encryptionService;
-        //    this._emailTemplateService = emailTemplateService;
-        //    this._emailSender = emailSender;
-        //}
+        public ResetPasswordCommandHandler(ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
+        {
+            this._session = session;
+            this._encryptionService = encryptionService;
+            this._emailTemplateService = emailTemplateService;
+            this._emailSender = emailSender;
+        }
 
         public async Task<object> Execute(ResetPasswordCommand command, ICommandScope scope)
         {
-            throw new NotImplementedException();
+            var user = this._session.QueryOver<User>()
+                .WhereRestrictionOn(f => f.EmailAddress).IsInsensitiveLike(command.EmailAddress)
+                .List()
+                .First();
+            
+            if (user.Authentications.Any(f => f is LogbookAuthenticationKind) == false)
+                throw new NoLogbookLoginToResetPasswordException();
 
-            //var user = await this._documentSession
-            //    .Query<User, Users_ByEmailAddress>()
-            //    .Where(f => f.EmailAddress == command.EmailAddress)
-            //    .FirstOrDefaultAsync()
-            //    .WithCurrentCulture();
+            var token = this._encryptionService.GenerateForPasswordReset(command.EmailAddress);
 
-            //var authenticationData = await this._documentSession
-            //    .LoadAsync<AuthenticationData>(AuthenticationData.CreateId(user.Id))
-            //    .WithCurrentCulture();
+            var emailTemplate = new ResetPasswordEmailTemplate
+            {
+                Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/PasswordReset/Finish?token={token}",
+            };
 
-            //if (authenticationData.Authentications.Any(f => f.Kind == AuthenticationKind.Logbook) == false)
-            //    throw new NoLogbookLoginToResetPasswordException();
+            var email = this._emailTemplateService.GetTemplate(emailTemplate);
+            email.Receiver = user.EmailAddress;
 
-            //var token = this._encryptionService.GenerateForPasswordReset(command.EmailAddress);
+            await this._emailSender
+                .SendMailAsync(email)
+                .WithCurrentCulture();
 
-            //var emailTemplate = new ResetPasswordEmailTemplate
-            //{
-            //    Url = $"{command.OwinContext.Request.Scheme}://{command.OwinContext.Request.Host}/Authentication/PasswordReset/Finish?token={token}",
-            //};
-
-            //var email = this._emailTemplateService.GetTemplate(emailTemplate);
-            //email.Receiver = user.EmailAddress;
-
-            //await this._emailSender
-            //    .SendMailAsync(email)
-            //    .WithCurrentCulture();
-
-            //return new object();
+            return new object();
         }
     }
 }
