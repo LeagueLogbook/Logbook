@@ -7,5 +7,8 @@ namespace Logbook.Server.Contracts.Commands
     {
         [NotNull]
         Task<TResult> Execute<TResult>([NotNull]ICommand<TResult> command);
+
+        [NotNull]
+        Task<TTarget> Map<TSource, TTarget>([NotNull]TSource source);
     }
 }

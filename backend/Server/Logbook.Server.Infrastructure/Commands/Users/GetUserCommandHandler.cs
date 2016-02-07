@@ -11,29 +11,24 @@ using NHibernate;
 
 namespace Logbook.Server.Infrastructure.Commands.Users
 {
-    public class GetUserCommandHandler : ICommandHandler<GetUserCommand, UserModel>
+    public class GetUserCommandHandler : ICommandHandler<GetUserCommand, User>
     {
         private readonly ISession _session;
-        private readonly IMapper<User, UserModel> _userMapper;
 
-        public GetUserCommandHandler([NotNull]ISession session, [NotNull]IMapper<User, UserModel> userMapper)
+        public GetUserCommandHandler([NotNull]ISession session)
         {
             Guard.AgainstNullArgument(nameof(session), session);
-            Guard.AgainstNullArgument(nameof(userMapper), userMapper);
 
             this._session = session;
-            this._userMapper = userMapper;
         }
 
-        public async Task<UserModel> Execute([NotNull]GetUserCommand command, [NotNull]ICommandScope scope)
+        public Task<User> Execute([NotNull]GetUserCommand command, [NotNull]ICommandScope scope)
         {
             Guard.AgainstNullArgument(nameof(command), command);
             Guard.AgainstNullArgument(nameof(scope), scope);
 
             var user = this._session.Get<User>(command.UserId);
-            var model = await this._userMapper.MapAsync(user);
-
-            return model;
+            return Task.FromResult(user);
         }
     }
 }

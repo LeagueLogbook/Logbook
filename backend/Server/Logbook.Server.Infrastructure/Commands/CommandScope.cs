@@ -5,6 +5,7 @@ using Castle.Windsor;
 using JetBrains.Annotations;
 using LiteGuard;
 using Logbook.Server.Contracts.Commands;
+using Logbook.Server.Contracts.Mapping;
 using Logbook.Shared.Extensions;
 using Metrics;
 
@@ -50,6 +51,22 @@ namespace Logbook.Server.Infrastructure.Commands
             var result = await ((Task<TResult>)method.Invoke(actualCommandHandler, new object[] {command, this})).WithCurrentCulture();
 
             this._commandsCounter.Decrement();
+
+            return result;
+        }
+        /// <summary>
+        /// Maps the specified source element to a element of type <typeparamref name="TTarget"/>.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TTarget">The type of the target.</typeparam>
+        /// <param name="source">The source.</param>
+        public async Task<TTarget> Map<TSource, TTarget>(TSource source)
+        {
+            Type mapperType = typeof (IMapper<,>).MakeGenericType(typeof (TSource), typeof (TTarget));
+            var actualMapper = this._container.Resolve(mapperType);
+
+            var method = actualMapper.GetType().GetMethod(nameof(IMapper<object, object>.MapAsync));
+            var result = await ((Task<TTarget>)method.Invoke(actualMapper, new object[] {source})).WithCurrentCulture();
 
             return result;
         }

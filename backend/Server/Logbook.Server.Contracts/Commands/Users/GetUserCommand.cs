@@ -4,7 +4,7 @@ using Logbook.Shared.Models.Authentication;
 
 namespace Logbook.Server.Contracts.Commands.Users
 {
-    public class GetUserCommand : ICommand<UserModel>
+    public class GetUserCommand : ICommand<User>
     {
         public GetUserCommand(int userId)
         {
