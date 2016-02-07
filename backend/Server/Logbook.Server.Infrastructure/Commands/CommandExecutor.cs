@@ -36,9 +36,6 @@ namespace Logbook.Server.Infrastructure.Commands
 
                     transaction.Commit();
 
-                    this._container.Release(session);
-                    this._container.Release(scope);
-
                     return result;
                 }
                 catch
@@ -48,6 +45,9 @@ namespace Logbook.Server.Infrastructure.Commands
                 }
                 finally
                 {
+                    this._container.Release(session);
+                    this._container.Release(scope);
+
                     transaction.Dispose();
                 }
             }
