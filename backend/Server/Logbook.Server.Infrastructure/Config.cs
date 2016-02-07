@@ -14,6 +14,7 @@ namespace Logbook.Server.Infrastructure
             FormatResponses = new BoolSetting("Logbook/FormatResponses", false);
             SqlServerConnectionString = new StringSetting("Logbook/SqlServerConnectionString", string.Empty);
             RecreateDatabase = new BoolSetting("Logbook/RecreateDatabase", false);
+            UpdateDatabase = new BoolSetting("Logbook/UpdateDatabase", true);
             IterationCountForPasswordHashing = new IntSetting("Logbook/IterationCountForPasswordHashing", 10000);
             Addresses = new UriListSetting("Logbook/Addresses", new List<Uri> { new Uri("http://localhost") }, "|");
             AuthenticationKeyPhrase = new StringSetting("Logbook/AuthenticationKeyPhrase", string.Empty);
@@ -52,6 +53,7 @@ namespace Logbook.Server.Infrastructure
         public static BoolSetting FormatResponses { get; }
         public static StringSetting SqlServerConnectionString { get; }
         public static BoolSetting RecreateDatabase { get; }
+        public static BoolSetting UpdateDatabase { get; }
         public static IntSetting IterationCountForPasswordHashing { get; }
         public static UriListSetting Addresses { get; }
         public static StringSetting AuthenticationKeyPhrase { get; }

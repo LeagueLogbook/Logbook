@@ -22,21 +22,29 @@ namespace Logbook.Server.Infrastructure.Windsor
 
         private ISessionFactory CreateSessionFactory()
         {
+            var connectionString = Config.SqlServerConnectionString.GetValue();
+
             var factory = Fluently.Configure()
                 .Mappings(f => f.FluentMappings.AddFromAssembly(this.GetType().Assembly))
-                .Database(() => MsSqlConfiguration.MsSql2012.ConnectionString(f => f.Is(Config.SqlServerConnectionString)))
-                .ExposeConfiguration(this.TryRecreateDatabase)
+                .Database(() => MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
+                .ExposeConfiguration(this.WorkWithConfiguration)
                 .BuildSessionFactory();
 
             return factory;
         }
 
-        private void TryRecreateDatabase(Configuration configuration)
+        private void WorkWithConfiguration(Configuration configuration)
         {
             if (Config.RecreateDatabase)
             {
                 new SchemaExport(configuration)
                     .Execute(false, true, false);
+            }
+
+            if (Config.UpdateDatabase)
+            {
+                new SchemaUpdate(configuration)
+                    .Execute(false, true);
             }
         }
     }
