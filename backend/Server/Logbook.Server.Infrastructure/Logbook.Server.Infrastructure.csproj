@@ -186,7 +186,6 @@
     <Compile Include="Commands\Summoners\GetSummonersCommandHandler.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommandHandler.cs" />
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
-    <Compile Include="Commands\Users\UserToUserModelMapCommandHandler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Emails\EmailTemplateService.cs" />
     <Compile Include="Emails\SmtpEmailSender.cs" />
