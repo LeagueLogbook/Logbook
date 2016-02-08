@@ -33,9 +33,14 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         public async Task<object> Execute(ResetPasswordCommand command, ICommandScope scope)
         {
             var user = this._session.Query<User>()
+                .Where(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper())
                 .FetchMany(f => f.Authentications)
-                .First(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper());
+                .AsEnumerable() //I need this call here because FirstOrDefault will use SQL paging which doesnt correctly work with FetchMany
+                .FirstOrDefault();
             
+            if (user == null)
+                throw new UserNotFoundException();
+
             if (user.Authentications.Any(f => f is LogbookAuthenticationKind) == false)
                 throw new NoLogbookLoginToResetPasswordException();
 

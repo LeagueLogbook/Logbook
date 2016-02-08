@@ -8,6 +8,7 @@ using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Emails;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Emails.Templates;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
@@ -40,8 +41,13 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var emailAddress = this._encryptionService.ValidateAndDecodeForPasswordReset(command.Token);
 
             var user = this._session.Query<User>()
+                .Where(f => f.EmailAddress.ToUpper() == emailAddress.Trim().ToUpper())
                 .FetchMany(f => f.Authentications)
-                .First(f => f.EmailAddress.ToUpper() == emailAddress.Trim().ToUpper());
+                .AsEnumerable() //I need this call here because FirstOrDefault will use SQL paging which doesnt correctly work with FetchMany
+                .FirstOrDefault();
+
+            if (user == null)
+                throw new UserNotFoundException();
 
             var newPassword = this._secretGenerator.GenerateString(Config.PasswordResetNewPasswordLength);
             var newPasswordSHA256Hash = this._hashingService.ComputeSHA256Hash(newPassword);

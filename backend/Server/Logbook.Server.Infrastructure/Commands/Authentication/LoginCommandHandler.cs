@@ -59,6 +59,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var user = this._session.Query<User>()
                 .Where(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper())
                 .FetchMany(f => f.Authentications)
+                .AsEnumerable() //I need this call here because FirstOrDefault will use SQL paging which doesnt correctly work with FetchMany
                 .FirstOrDefault();
             
             if (user == null)

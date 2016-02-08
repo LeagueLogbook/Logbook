@@ -73,8 +73,10 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         private Task<int?> FindUserIdByEmailAddress(SocialLoginUser socialLoginUser)
         {
             var user = this._session.Query<User>()
+                .Where(f => f.EmailAddress.ToUpper() == socialLoginUser.EmailAddress.Trim().ToUpper())
                 .FetchMany(f => f.Authentications)
-                .FirstOrDefault(f => f.EmailAddress.ToUpper() == socialLoginUser.EmailAddress.Trim().ToUpper());
+                .AsEnumerable() //I need this call here because FirstOrDefault will use SQL paging which doesnt correctly work with FetchMany
+                .FirstOrDefault();
 
             if (user == null)
                 return Task.FromResult((int?)null);
