@@ -1,8 +1,8 @@
-﻿namespace Logbook.Shared.Entities.Games
+﻿namespace Logbook.Shared.Models.Games
 {
     public class BannedChampion
     {
-        public int ChampionId { get; set; }
+        public long ChampionId { get; set; }
         public string ChampionName { get; set; }
         public int PickTurn { get; set; }
     }

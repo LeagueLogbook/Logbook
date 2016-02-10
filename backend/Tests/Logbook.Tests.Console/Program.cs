@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Logbook.Server.Infrastructure.Emails;
 using Logbook.Server.Infrastructure.Emails.Templates;
 using Logbook.Server.Infrastructure.Encryption;
+using Logbook.Server.Infrastructure.Riot;
 using Logbook.Server.Infrastructure.Social;
+using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Tests.Console
 {
@@ -15,19 +17,9 @@ namespace Logbook.Tests.Console
     {
         static void Main(string[] args)
         {
-            var twitterService = new TwitterService(new EncryptionService());
+            var leagueService = new LeagueService();
 
-            var url = twitterService.GetLoginUrlAsync("http://localhost/twitter-redirect").Result;
-            Process.Start(url.Url);
-
-            string verifier = System.Console.ReadLine();
-
-            var token = twitterService.ExchangeForToken(url.Payload, verifier).Result;
-            var me = twitterService.GetMeAsync(token).Result;
-
-            System.Console.WriteLine(me.Id);
-            System.Console.WriteLine(me.Locale);
-            System.Console.WriteLine(me.Email);
+            var game = leagueService.GetCurrentGameAsync(Region.Euw, 24606316).Result;
 
             System.Console.ReadLine();
         }

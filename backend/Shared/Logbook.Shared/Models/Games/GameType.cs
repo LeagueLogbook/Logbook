@@ -1,4 +1,4 @@
-﻿namespace Logbook.Shared.Entities.Games
+﻿namespace Logbook.Shared.Models.Games
 {
     public enum GameType
     {

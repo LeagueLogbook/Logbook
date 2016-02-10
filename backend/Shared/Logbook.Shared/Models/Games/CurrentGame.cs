@@ -1,7 +1,7 @@
 ﻿using System;
 using Logbook.Shared.Entities.Summoners;
 
-namespace Logbook.Shared.Entities.Games
+namespace Logbook.Shared.Models.Games
 {
     public class CurrentGame
     {

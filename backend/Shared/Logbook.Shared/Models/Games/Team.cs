@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Logbook.Shared.Entities.Games
+namespace Logbook.Shared.Models.Games
 {
     public class Team
     {
