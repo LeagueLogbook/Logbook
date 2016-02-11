@@ -148,12 +148,19 @@ namespace Logbook.Server.Infrastructure.Riot
 
         public async Task<CurrentGame> GetCurrentGameAsync(Region region, long riotSummonerId)
         {
-            var result = await this._api.GetCurrentGameAsync(this.ConvertRegionToPlatform(region), riotSummonerId);
+            try
+            {
+                var result = await this._api.GetCurrentGameAsync(this.ConvertRegionToPlatform(region), riotSummonerId);
 
-            if (result == null)
+                if (result == null)
+                    return null;
+
+                return this.ConvertCurrentGame(result, region);
+            }
+            catch (RiotSharpException e) when (e.Message.StartsWith("404"))
+            {
                 return null;
-
-            return this.ConvertCurrentGame(result, region);
+            }
         }
         #endregion
 
