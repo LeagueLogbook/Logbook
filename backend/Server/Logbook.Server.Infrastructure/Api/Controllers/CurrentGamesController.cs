@@ -50,7 +50,7 @@ namespace Logbook.Server.Infrastructure.Api.Controllers
             if (result.Any() == false)
                 throw new LogbookException("Noone is currently ingame.");
 
-            return this.Request.GetMessageWithObject(HttpStatusCode.Found, result);
+            return this.Request.GetMessageWithObject(HttpStatusCode.Found, result.Select(f => new { Summoner = f.Key, CurrentGame = f.Value }).ToList());
         }
     }
 }
