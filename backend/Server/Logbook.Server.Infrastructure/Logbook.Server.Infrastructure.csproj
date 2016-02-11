@@ -158,6 +158,7 @@
     <Compile Include="Api\Controllers\AdminController.cs" />
     <Compile Include="Api\Controllers\AuthenticationController.cs" />
     <Compile Include="Api\Controllers\BaseController.cs" />
+    <Compile Include="Api\Controllers\CurrentGamesController.cs" />
     <Compile Include="Api\Controllers\MetricsController.cs" />
     <Compile Include="Api\Controllers\SummonersController.cs" />
     <Compile Include="Api\Controllers\UsersController.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Commands\Authentication\TwitterLoginCommandHandler.cs" />
     <Compile Include="Commands\CommandExecutor.cs" />
     <Compile Include="Commands\CommandScope.cs" />
+    <Compile Include="Commands\CurrentGames\GetCurrentGameCommandHandler.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommandHandler.cs" />

@@ -61,6 +61,7 @@
     <Compile Include="Commands\Authentication\LoginCommand.cs" />
     <Compile Include="Commands\Authentication\ResetPasswordCommand.cs" />
     <Compile Include="Commands\Authentication\TwitterLoginCommand.cs" />
+    <Compile Include="Commands\CurrentGames\GetCurrentGameCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
