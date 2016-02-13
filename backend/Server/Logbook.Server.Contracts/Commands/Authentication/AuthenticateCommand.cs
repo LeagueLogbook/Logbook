@@ -1,15 +1,13 @@
-﻿using System;
-using JetBrains.Annotations;
-using LiteGuard;
+﻿using Logbook.Shared;
 using Microsoft.Owin;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
     public class AuthenticateCommand : ICommand<int>
     {
-        public AuthenticateCommand([NotNull]IOwinContext context)
+        public AuthenticateCommand(IOwinContext context)
         {
-            Guard.AgainstNullArgument(nameof(context), context);
+            Guard.NotNull(context, nameof(context));
 
             this.Context = context;
         }

@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace Logbook.Server.Contracts.Encryption
+﻿namespace Logbook.Server.Contracts.Encryption
 {
     public interface ISaltCombiner : IService
     {
@@ -10,7 +8,6 @@ namespace Logbook.Server.Contracts.Encryption
         /// <param name="salt">The salt.</param>
         /// <param name="iterationCount">The iteration count.</param>
         /// <param name="password">The password.</param>
-        [NotNull]
-        byte[] Combine([NotNull]byte[] salt, int iterationCount, [NotNull]string password);
+        byte[] Combine(byte[] salt, int iterationCount, string password);
     }
 }

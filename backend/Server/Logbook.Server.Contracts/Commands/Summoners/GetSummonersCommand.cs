@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Server.Contracts.Commands.Summoners
@@ -7,6 +8,8 @@ namespace Logbook.Server.Contracts.Commands.Summoners
     {
         public GetSummonersCommand(int userId)
         {
+            Guard.NotZeroOrNegative(userId, nameof(userId));
+
             this.UserId = userId;
         }
 

@@ -1,4 +1,4 @@
-﻿using LiteGuard;
+﻿using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
@@ -7,7 +7,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
     {
         public FinishRegistrationCommand(string token)
         {
-            Guard.AgainstNullArgument(nameof(token), token);
+            Guard.NotNullOrWhiteSpace(token, nameof(token));
 
             this.Token = token;
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using LiteGuard;
 using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
@@ -26,9 +25,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// Initializes a new instance of the <see cref="AuthenticateCommandHandler"/> class.
         /// </summary>
         /// <param name="jsonWebTokenService">The json web token service.</param>
-        public AuthenticateCommandHandler([NotNull]IJsonWebTokenService jsonWebTokenService)
+        public AuthenticateCommandHandler(IJsonWebTokenService jsonWebTokenService)
         {
-            Guard.AgainstNullArgument(nameof(jsonWebTokenService), jsonWebTokenService);
+            Guard.NotNull(jsonWebTokenService, nameof(jsonWebTokenService));
 
             this._jsonWebTokenService = jsonWebTokenService;
         }
@@ -42,8 +41,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="scope">The scope.</param>
         public async Task<int> Execute(AuthenticateCommand command, ICommandScope scope)
         {
-            Guard.AgainstNullArgument(nameof(command), command);
-            Guard.AgainstNullArgument(nameof(scope), scope);
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
 
             string token = this.GetToken(command.Context);
 

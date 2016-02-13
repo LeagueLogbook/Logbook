@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using LiteGuard;
+﻿using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
@@ -8,8 +7,8 @@ namespace Logbook.Server.Contracts.Commands.Authentication
     {
         public ChangePasswordCommand(User user, byte[] newPasswordSHA256Hash)
         {
-            Guard.AgainstNullArgument(nameof(user), user);
-            Guard.AgainstNullArgument(nameof(newPasswordSHA256Hash), newPasswordSHA256Hash);
+            Guard.NotNull(user, nameof(user));
+            Guard.NotNullOrEmpty(newPasswordSHA256Hash, nameof(newPasswordSHA256Hash));
 
             this.User = user;
             this.NewPasswordSHA256Hash = newPasswordSHA256Hash;

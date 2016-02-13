@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Castle.MicroKernel.Lifestyle;
 using Castle.Windsor;
 using JetBrains.Annotations;
-using LiteGuard;
 using Logbook.Server.Contracts.Commands;
+using Logbook.Shared;
 using Logbook.Shared.Extensions;
 using NHibernate;
 
@@ -14,9 +14,9 @@ namespace Logbook.Server.Infrastructure.Commands
     {
         private readonly IWindsorContainer _container;
 
-        public CommandExecutor([NotNull]IWindsorContainer container)
+        public CommandExecutor(IWindsorContainer container)
         {
-            Guard.AgainstNullArgument(nameof(container), container);
+            Guard.NotNull(container, nameof(container));
 
             this._container = container;
         }

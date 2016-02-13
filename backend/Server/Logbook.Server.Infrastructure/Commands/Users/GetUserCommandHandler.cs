@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Users;
 using Logbook.Server.Contracts.Mapping;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Models.Authentication;
 using NHibernate;
@@ -15,17 +15,17 @@ namespace Logbook.Server.Infrastructure.Commands.Users
     {
         private readonly ISession _session;
 
-        public GetUserCommandHandler([NotNull]ISession session)
+        public GetUserCommandHandler(ISession session)
         {
-            Guard.AgainstNullArgument(nameof(session), session);
+            Guard.NotNull(session, nameof(session));
 
             this._session = session;
         }
 
-        public Task<User> Execute([NotNull]GetUserCommand command, [NotNull]ICommandScope scope)
+        public Task<User> Execute(GetUserCommand command, ICommandScope scope)
         {
-            Guard.AgainstNullArgument(nameof(command), command);
-            Guard.AgainstNullArgument(nameof(scope), scope);
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
 
             var user = this._session.Get<User>(command.UserId);
             return Task.FromResult(user);

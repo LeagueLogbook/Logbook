@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using LiteGuard;
 using Logbook.Localization.Server;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models;
@@ -33,11 +33,11 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="session">The database session.</param>
         /// <param name="saltCombiner">The salt combiner.</param>
         /// <param name="jsonWebTokenService">The json web token service.</param>
-        public LoginCommandHandler([NotNull]ISession session, [NotNull] ISaltCombiner saltCombiner, [NotNull]IJsonWebTokenService jsonWebTokenService)
+        public LoginCommandHandler(ISession session, ISaltCombiner saltCombiner, IJsonWebTokenService jsonWebTokenService)
         {
-            Guard.AgainstNullArgument(nameof(session), session);
-            Guard.AgainstNullArgument(nameof(saltCombiner), saltCombiner);
-            Guard.AgainstNullArgument(nameof(jsonWebTokenService), jsonWebTokenService);
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(saltCombiner, nameof(saltCombiner));
+            Guard.NotNull(jsonWebTokenService, nameof(jsonWebTokenService));
 
             this._session = session;
             this._saltCombiner = saltCombiner;
@@ -53,8 +53,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="scope">The scope.</param>
         public async Task<JsonWebToken> Execute(LoginCommand command, ICommandScope scope)
         {
-            Guard.AgainstNullArgument(nameof(command), command);
-            Guard.AgainstNullArgument(nameof(scope), scope);
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
 
             var user = this._session.Query<User>()
                 .Where(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper())

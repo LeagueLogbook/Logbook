@@ -1,6 +1,5 @@
-﻿using JetBrains.Annotations;
-using LiteGuard;
-using Logbook.Server.Contracts.Encryption;
+﻿using Logbook.Server.Contracts.Encryption;
+using Logbook.Shared;
 using Logbook.Shared.Models;
 using Logbook.Shared.Models.Authentication;
 
@@ -8,10 +7,10 @@ namespace Logbook.Server.Contracts.Commands.Authentication
 {
     public class MicrosoftLoginCommand : ICommand<JsonWebToken>
     {
-        public MicrosoftLoginCommand([NotNull]string code, [NotNull]string redirectUrl)
+        public MicrosoftLoginCommand(string code, string redirectUrl)
         {
-            Guard.AgainstNullArgument(nameof(code), code);
-            Guard.AgainstNullArgument(nameof(redirectUrl), redirectUrl);
+            Guard.NotNullOrWhiteSpace(code, nameof(code));
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
 
             this.Code = code;
             this.RedirectUrl = redirectUrl;

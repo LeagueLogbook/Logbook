@@ -1,4 +1,4 @@
-﻿using LiteGuard;
+﻿using Logbook.Shared;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
 {
@@ -6,7 +6,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
     {
         public FinishPasswordResetCommand(string token)
         {
-            Guard.AgainstNullArgument(nameof(token), token);
+            Guard.NotNullOrWhiteSpace(token, nameof(token));
 
             this.Token = token;
         }

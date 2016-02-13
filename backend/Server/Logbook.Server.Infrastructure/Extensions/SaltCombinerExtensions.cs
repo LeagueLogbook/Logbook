@@ -13,8 +13,7 @@ namespace Logbook.Server.Infrastructure.Extensions
         /// <param name="salt">The salt.</param>
         /// <param name="iterationCount">The iteration count.</param>
         /// <param name="password">The password.</param>
-        [NotNull]
-        public static byte[] Combine([NotNull]this ISaltCombiner self, [NotNull]byte[] salt, int iterationCount, [NotNull]byte[] password)
+        public static byte[] Combine(this ISaltCombiner self, byte[] salt, int iterationCount, byte[] password)
         {
             return self.Combine(salt, iterationCount, BitConverter.ToString(password));
         }

@@ -12,7 +12,6 @@ namespace Logbook.Server.Infrastructure.Commands
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="scope">The scope.</param>
-        [NotNull]
-        Task<TResult> Execute([NotNull]TCommand command, [NotNull]ICommandScope scope);
+        Task<TResult> Execute(TCommand command, ICommandScope scope);
     }
 }

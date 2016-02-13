@@ -1,4 +1,4 @@
-﻿using LiteGuard;
+﻿using Logbook.Shared;
 using Microsoft.Owin;
 
 namespace Logbook.Server.Contracts.Commands.Authentication
@@ -7,14 +7,14 @@ namespace Logbook.Server.Contracts.Commands.Authentication
     {
         public ResetPasswordCommand(string emailAddress, IOwinContext owinContext)
         {
-            Guard.AgainstNullArgument(nameof(emailAddress), emailAddress);
-            Guard.AgainstNullArgument(nameof(owinContext), owinContext);
+            Guard.NotNullOrWhiteSpace(emailAddress, nameof(emailAddress));
+            Guard.NotNull(owinContext, nameof(owinContext));
 
             this.EmailAddress = emailAddress;
             this.OwinContext = owinContext;
         }
 
-        public string EmailAddress { get; set; }
-        public IOwinContext OwinContext { get; set; }
+        public string EmailAddress { get; }
+        public IOwinContext OwinContext { get; }
     }
 }

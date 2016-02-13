@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4B4E6DB9-CF63-46B3-85E7-37D254CDEF54}"
 EndProject
@@ -11,10 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37B6EC50
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Server.Contracts", "Server\Logbook.Server.Contracts\Logbook.Server.Contracts.csproj", "{3481B019-5905-4247-8D3D-3CD9B0B39FC0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{5745F976-2793-453A-BAF4-FDDDA052C3AC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Server.Hosts.Service", "Server\Hosts\Logbook.Server.Hosts.Service\Logbook.Server.Hosts.Service.csproj", "{7B5D9AE6-DF2C-409C-83DA-49886B21991E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Server.Infrastructure", "Server\Logbook.Server.Infrastructure\Logbook.Server.Infrastructure.csproj", "{9E3581CC-A81C-4959-AD91-7656AD7DE7AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Shared", "Shared\Logbook.Shared\Logbook.Shared.csproj", "{5F503260-9E39-4C39-9E08-F3C883229B1C}"
@@ -22,6 +18,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Tests.Console", "Tests\Logbook.Tests.Console\Logbook.Tests.Console.csproj", "{465E9984-4A4E-4558-A481-33FBEEFF2297}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Localization", "Shared\Logbook.Localization\Logbook.Localization.csproj", "{67586854-B26A-4E66-9BFD-AAFDB5417D39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Worker", "Worker", "{7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{D53F1F81-2FBA-477E-8472-CEE8F3EF96A5}"
+EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "Logbook.Azure", "Azure\Logbook.Azure\Logbook.Azure.ccproj", "{675585F2-A81B-4197-B849-83F75F481CE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Azure.Worker", "Azure\Logbook.Azure.Worker\Logbook.Azure.Worker.csproj", "{9D11CEF6-475F-4DAB-8738-199EF91FC14F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.Api", "Worker\Logbook.Worker.Api\Logbook.Worker.Api.csproj", "{23E49A75-E2D8-4C1F-87D9-366237AFB849}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +39,6 @@ Global
 		{3481B019-5905-4247-8D3D-3CD9B0B39FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3481B019-5905-4247-8D3D-3CD9B0B39FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3481B019-5905-4247-8D3D-3CD9B0B39FC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B5D9AE6-DF2C-409C-83DA-49886B21991E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B5D9AE6-DF2C-409C-83DA-49886B21991E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B5D9AE6-DF2C-409C-83DA-49886B21991E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B5D9AE6-DF2C-409C-83DA-49886B21991E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E3581CC-A81C-4959-AD91-7656AD7DE7AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E3581CC-A81C-4959-AD91-7656AD7DE7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E3581CC-A81C-4959-AD91-7656AD7DE7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,17 +55,30 @@ Global
 		{67586854-B26A-4E66-9BFD-AAFDB5417D39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67586854-B26A-4E66-9BFD-AAFDB5417D39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67586854-B26A-4E66-9BFD-AAFDB5417D39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{675585F2-A81B-4197-B849-83F75F481CE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{675585F2-A81B-4197-B849-83F75F481CE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{675585F2-A81B-4197-B849-83F75F481CE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{675585F2-A81B-4197-B849-83F75F481CE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D11CEF6-475F-4DAB-8738-199EF91FC14F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D11CEF6-475F-4DAB-8738-199EF91FC14F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D11CEF6-475F-4DAB-8738-199EF91FC14F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D11CEF6-475F-4DAB-8738-199EF91FC14F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23E49A75-E2D8-4C1F-87D9-366237AFB849}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23E49A75-E2D8-4C1F-87D9-366237AFB849}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23E49A75-E2D8-4C1F-87D9-366237AFB849}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23E49A75-E2D8-4C1F-87D9-366237AFB849}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3481B019-5905-4247-8D3D-3CD9B0B39FC0} = {5B791E87-C29D-421B-AB7A-C63D7A9801EE}
-		{5745F976-2793-453A-BAF4-FDDDA052C3AC} = {5B791E87-C29D-421B-AB7A-C63D7A9801EE}
-		{7B5D9AE6-DF2C-409C-83DA-49886B21991E} = {5745F976-2793-453A-BAF4-FDDDA052C3AC}
 		{9E3581CC-A81C-4959-AD91-7656AD7DE7AD} = {5B791E87-C29D-421B-AB7A-C63D7A9801EE}
 		{5F503260-9E39-4C39-9E08-F3C883229B1C} = {4B4E6DB9-CF63-46B3-85E7-37D254CDEF54}
 		{465E9984-4A4E-4558-A481-33FBEEFF2297} = {37B6EC50-1054-467F-82E9-1C33D27F256F}
 		{67586854-B26A-4E66-9BFD-AAFDB5417D39} = {4B4E6DB9-CF63-46B3-85E7-37D254CDEF54}
+		{675585F2-A81B-4197-B849-83F75F481CE0} = {D53F1F81-2FBA-477E-8472-CEE8F3EF96A5}
+		{9D11CEF6-475F-4DAB-8738-199EF91FC14F} = {D53F1F81-2FBA-477E-8472-CEE8F3EF96A5}
+		{23E49A75-E2D8-4C1F-87D9-366237AFB849} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
 	EndGlobalSection
 EndGlobal

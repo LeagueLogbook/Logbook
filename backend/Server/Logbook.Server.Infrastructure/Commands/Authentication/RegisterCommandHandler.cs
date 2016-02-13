@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using LiteGuard;
 using Logbook.Localization.Server;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Server.Contracts.Commands;
@@ -12,6 +11,7 @@ using Logbook.Server.Contracts.Emails;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Emails.Templates;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
@@ -36,12 +36,12 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="encryptionService">The encryption service.</param>
         /// <param name="emailTemplateService">The email template service.</param>
         /// <param name="emailSender">The email sender.</param>
-        public RegisterCommandHandler([NotNull]ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
+        public RegisterCommandHandler(ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
         {
-            Guard.AgainstNullArgument(nameof(session), session);
-            Guard.AgainstNullArgument(nameof(encryptionService), encryptionService);
-            Guard.AgainstNullArgument(nameof(emailTemplateService), emailTemplateService);
-            Guard.AgainstNullArgument(nameof(emailSender), emailSender);
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(encryptionService, nameof(encryptionService));
+            Guard.NotNull(emailTemplateService, nameof(emailTemplateService));
+            Guard.NotNull(emailSender, nameof(emailSender));
 
             this._session = session;
             this._encryptionService = encryptionService;

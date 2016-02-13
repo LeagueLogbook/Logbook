@@ -7,9 +7,7 @@ namespace Logbook.Server.Infrastructure.Extensions
 {
     public static class CommandScopeExtensions
     {
-
-        [NotNull]
-        public static async Task<IList<TTarget>> MapList<TSource, TTarget>([NotNull]this ICommandScope scope, [NotNull]IList<TSource> sources)
+        public static async Task<IList<TTarget>> MapList<TSource, TTarget>(this ICommandScope scope, IList<TSource> sources)
         {
             var result = new List<TTarget>();
 

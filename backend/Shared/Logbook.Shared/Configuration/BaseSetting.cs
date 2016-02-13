@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using JetBrains.Annotations;
 
 namespace Logbook.Shared.Configuration
 {
@@ -20,7 +19,7 @@ namespace Logbook.Shared.Configuration
         /// </summary>
         /// <param name="appSettingsKey">The application settings key.</param>
         /// <param name="defaultValue">The default value.</param>
-        protected BaseSetting([NotNull]string appSettingsKey, [NotNull]T defaultValue)
+        protected BaseSetting(string appSettingsKey, T defaultValue)
         {
             this._appSettingsKey = appSettingsKey;
             this._defaultValue = defaultValue;
@@ -31,7 +30,6 @@ namespace Logbook.Shared.Configuration
         /// <summary>
         /// Returns the settings value.
         /// </summary>
-        [NotNull]
         public T GetValue()
         {
             string stringValue = ConfigurationManager.AppSettings.Get(this._appSettingsKey) ?? string.Empty;

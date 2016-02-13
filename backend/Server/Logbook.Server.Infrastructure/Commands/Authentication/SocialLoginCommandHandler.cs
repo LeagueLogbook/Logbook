@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using LiteGuard;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using Logbook.Shared.Models.Authentication;
@@ -27,8 +27,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         #region Constructors
         protected SocialLoginCommandHandler(ISession session, IJsonWebTokenService jsonWebTokenService)
         {
-            Guard.AgainstNullArgument(nameof(session), session);
-            Guard.AgainstNullArgument(nameof(jsonWebTokenService), jsonWebTokenService);
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(jsonWebTokenService, nameof(jsonWebTokenService));
 
             this._session = session;
             this._jsonWebTokenService = jsonWebTokenService;

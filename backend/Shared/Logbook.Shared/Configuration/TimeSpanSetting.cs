@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 
 namespace Logbook.Shared.Configuration
 {
@@ -13,7 +12,7 @@ namespace Logbook.Shared.Configuration
         /// </summary>
         /// <param name="appSettingsKey">The application settings key.</param>
         /// <param name="defaultValue">The default value.</param>
-        public TimeSpanSetting([NotNull] string appSettingsKey, TimeSpan defaultValue)
+        public TimeSpanSetting(string appSettingsKey, TimeSpan defaultValue)
             : base(appSettingsKey, defaultValue)
         {
         }

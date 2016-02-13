@@ -1,5 +1,5 @@
-﻿using LiteGuard;
-using Logbook.Server.Contracts.Encryption;
+﻿using Logbook.Server.Contracts.Encryption;
+using Logbook.Shared;
 using Logbook.Shared.Models;
 using Logbook.Shared.Models.Authentication;
 
@@ -9,8 +9,8 @@ namespace Logbook.Server.Contracts.Commands.Authentication
     {
         public TwitterLoginCommand(string oAuthVerifier, string payload)
         {
-            Guard.AgainstNullArgument(nameof(oAuthVerifier), oAuthVerifier);
-            Guard.AgainstNullArgument(nameof(payload), payload);
+            Guard.NotNullOrWhiteSpace(oAuthVerifier, nameof(oAuthVerifier));
+            Guard.NotNullOrWhiteSpace(payload, nameof(payload));
 
             this.OAuthVerifier = oAuthVerifier;
             this.Payload = payload;

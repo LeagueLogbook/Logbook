@@ -6,7 +6,6 @@ using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
 using Logbook.Shared.Models;
-using Metrics.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JsonWebToken = Logbook.Shared.Models.Authentication.JsonWebToken;
@@ -21,7 +20,7 @@ namespace Logbook.Server.Infrastructure.Encryption
 
             var actualPayload = this.ToDictionary(payload);
             actualPayload["iss"] = Constants.Authentication.JWTIssuer;
-            actualPayload["exp"] = expiresAt.ToUnixTime();
+            actualPayload["exp"] = new DateTimeOffset(expiresAt).ToUnixTimeSeconds();
 
             var token = JWT.JsonWebToken.Encode(actualPayload, password, JwtHashAlgorithm.HS256);
 
