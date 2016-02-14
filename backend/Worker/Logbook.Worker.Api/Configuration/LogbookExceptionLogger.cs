@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Web.Http.ExceptionHandling;
 using Logbook.Server.Infrastructure;
+using Logbook.Server.Infrastructure.Configuration;
 
 namespace Logbook.Worker.Api.Configuration
 {
@@ -13,7 +14,7 @@ namespace Logbook.Worker.Api.Configuration
         public override void Log(ExceptionLoggerContext context)
         {
 #if DEBUG
-            if (Debugger.IsAttached && Config.InDebugHoldOnException)
+            if (Debugger.IsAttached && Config.App.InDebugHoldOnException)
                 Debugger.Break();
 #endif
             

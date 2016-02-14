@@ -13,6 +13,7 @@ using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Logbook.Server.Contracts;
 using Logbook.Server.Infrastructure;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Windsor;
 using Logbook.Shared;
 using Logbook.Worker.Api.Configuration;
@@ -56,12 +57,7 @@ namespace Logbook.Worker.Api
         /// <returns></returns>
         public Task StartAsync()
         {
-            var startOptions = new StartOptions();
-            foreach (var url in Config.Addresses.GetValue())
-            {
-                startOptions.Urls.Add(url.ToString());
-            }
-
+            var startOptions = new StartOptions(Config.Http.Address);
             this._webApp = WebApp.Start(startOptions, this.ConfigureHttpApi);
 
             return Task.CompletedTask;
@@ -151,14 +147,14 @@ namespace Logbook.Worker.Api
         {
             Guard.NotNull(config, nameof(config));
 
-            if (Config.CompressResponses.GetValue())
+            if (Config.Http.CompressResponses)
             {
                 config.MessageHandlers.Add(new ServerCompressionHandler(new GZipCompressor(), new DeflateCompressor()));
             }
 
             config.MessageHandlers.Add(new LocalizationMessageHandler());
 
-            if (Config.EnableDebugRequestResponseLogging.GetValue())
+            if (Config.Http.EnableDebugRequestResponseLogging)
             {
                 config.MessageHandlers.Add(new LoggingMessageHandler());
             }
@@ -193,7 +189,7 @@ namespace Logbook.Worker.Api
         {
             Guard.NotNull(config, nameof(config));
 
-            if (Config.FormatResponses.GetValue())
+            if (Config.Http.FormatResponses)
             {
                 config.Formatters.JsonFormatter.SerializerSettings.Formatting = Formatting.Indented;
             }

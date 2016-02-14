@@ -7,6 +7,7 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Emails;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Emails.Templates;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
@@ -49,7 +50,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             if (user == null)
                 throw new UserNotFoundException();
 
-            var newPassword = this._secretGenerator.GenerateString(Config.PasswordResetNewPasswordLength);
+            var newPassword = this._secretGenerator.GenerateString(Config.Security.PasswordResetNewPasswordLength);
             var newPasswordSHA256Hash = this._hashingService.ComputeSHA256Hash(newPassword);
 
             await scope

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Social;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Shared;
 using Newtonsoft.Json.Linq;
 
@@ -18,7 +19,7 @@ namespace Logbook.Server.Infrastructure.Social
 
             var url = $"https://accounts.google.com/o/oauth2/v2/auth" +
                       $"?response_type=code" +
-                      $"&client_id={Config.GoogleClientId.GetValue()}" +
+                      $"&client_id={Config.Security.GoogleClientId}" +
                       $"&redirect_uri={redirectUrl}" +
                       $"&scope={scope}";
 
@@ -30,8 +31,8 @@ namespace Logbook.Server.Infrastructure.Social
             var data = new Dictionary<string, string>
             {
                 ["code"] = code,
-                ["client_id"] = Config.GoogleClientId,
-                ["client_secret"] = Config.GoogleClientSecret,
+                ["client_id"] = Config.Security.GoogleClientId,
+                ["client_secret"] = Config.Security.GoogleClientSecret,
                 ["redirect_uri"] = redirectUrl,
                 ["grant_type"] = "authorization_code"
             };

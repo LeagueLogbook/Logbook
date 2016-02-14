@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared.Entities.Authentication;
@@ -38,7 +39,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             var salt = this._secretGenerator.Generate();
 
-            logbookAuthentication.IterationCount = Config.IterationCountForPasswordHashing;
+            logbookAuthentication.IterationCount = Config.Security.IterationCountForPasswordHashing;
             logbookAuthentication.Salt = salt;
             logbookAuthentication.Hash = this._saltCombiner.Combine(salt, logbookAuthentication.IterationCount, command.NewPasswordSHA256Hash);
 

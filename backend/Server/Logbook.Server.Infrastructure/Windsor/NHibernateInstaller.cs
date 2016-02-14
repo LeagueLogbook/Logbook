@@ -3,8 +3,8 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using Logbook.Server.Infrastructure.Configuration;
 using NHibernate;
-using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 
 namespace Logbook.Server.Infrastructure.Windsor
@@ -22,26 +22,24 @@ namespace Logbook.Server.Infrastructure.Windsor
 
         private ISessionFactory CreateSessionFactory()
         {
-            var connectionString = Config.SqlServerConnectionString.GetValue();
-
             var factory = Fluently.Configure()
                 .Mappings(f => f.FluentMappings.AddFromAssembly(this.GetType().Assembly))
-                .Database(() => MsSqlConfiguration.MsSql2012.ShowSql().FormatSql().ConnectionString(connectionString))
+                .Database(() => MsSqlConfiguration.MsSql2012.ShowSql().FormatSql().ConnectionString(Config.Database.SqlServerConnectionString))
                 .ExposeConfiguration(this.WorkWithConfiguration)
                 .BuildSessionFactory();
 
             return factory;
         }
 
-        private void WorkWithConfiguration(Configuration configuration)
+        private void WorkWithConfiguration(global::NHibernate.Cfg.Configuration configuration)
         {
-            if (Config.RecreateDatabase)
+            if (Config.Database.RecreateDatabase)
             {
                 new SchemaExport(configuration)
                     .Execute(false, true, false);
             }
 
-            if (Config.UpdateDatabase)
+            if (Config.Database.UpdateDatabase)
             {
                 new SchemaUpdate(configuration)
                     .Execute(false, true);

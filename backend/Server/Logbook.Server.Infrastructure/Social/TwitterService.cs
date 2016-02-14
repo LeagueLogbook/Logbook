@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Extensions;
 using Newtonsoft.Json.Linq;
 
@@ -136,7 +137,7 @@ namespace Logbook.Server.Infrastructure.Social
             Dictionary<string, string> keysAndValuesDictionary = new Dictionary<string, string>
             {
                 { "oauth_callback", callback },
-                { "oauth_consumer_key", Config.TwitterConsumerKey },
+                { "oauth_consumer_key", Config.Security.TwitterConsumerKey },
                 { "oauth_nonce", nonce },
                 { "oauth_signature_method", "HMAC-SHA1" },
                 { "oauth_timestamp", timestamp },
@@ -170,7 +171,7 @@ namespace Logbook.Server.Infrastructure.Social
             string baseUrl = $"{request.RequestUri.Scheme}://{request.RequestUri.Host}{request.RequestUri.AbsolutePath}";
 
             string signatureBaseString = $"{request.Method.Method.ToUpper()}&{Uri.EscapeDataString(baseUrl)}&{Uri.EscapeDataString(output.ToString())}";
-            string signingKey = $"{Uri.EscapeDataString(Config.TwitterConsumerSecret)}&{Uri.EscapeDataString(tokenSecret)}";
+            string signingKey = $"{Uri.EscapeDataString(Config.Security.TwitterConsumerSecret)}&{Uri.EscapeDataString(tokenSecret)}";
 
             var hash = new HMACSHA1(Encoding.ASCII.GetBytes(signingKey));
             byte[] computedHash = hash.ComputeHash(Encoding.ASCII.GetBytes(signatureBaseString));
@@ -183,7 +184,7 @@ namespace Logbook.Server.Infrastructure.Social
             Dictionary<string, string> keysAndValuesDictionary = new Dictionary<string, string>
             {
                 { "oauth_callback", Uri.EscapeDataString(callback) },
-                { "oauth_consumer_key", Config.TwitterConsumerKey },
+                { "oauth_consumer_key", Config.Security.TwitterConsumerKey },
                 { "oauth_nonce", nonce },
                 { "oauth_signature", signature },
                 { "oauth_signature_method", "HMAC-SHA1" },

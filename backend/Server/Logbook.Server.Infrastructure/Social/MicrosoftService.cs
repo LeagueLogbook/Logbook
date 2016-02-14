@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Social;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Shared;
 using Logbook.Shared.Extensions;
 using Newtonsoft.Json.Linq;
@@ -18,7 +19,7 @@ namespace Logbook.Server.Infrastructure.Social
             var scopes = string.Join(" ", Constants.Authentication.MicrosoftRequiredScopes);
 
             var url = $"https://login.live.com/oauth20_authorize.srf" +
-                      $"?client_id={Config.MicrosoftClientId.GetValue()}" +
+                      $"?client_id={Config.Security.MicrosoftClientId}" +
                       $"&scope={scopes}" +
                       $"&response_type=code" +
                       $"&redirect_uri={redirectUrl}";
@@ -30,9 +31,9 @@ namespace Logbook.Server.Infrastructure.Social
         {
             var data = new Dictionary<string, string>
             {
-                ["client_id"] = Config.MicrosoftClientId,
+                ["client_id"] = Config.Security.MicrosoftClientId,
                 ["redirect_uri"] = redirectUrl,
-                ["client_secret"] = Config.MicrosoftClientSecret,
+                ["client_secret"] = Config.Security.MicrosoftClientSecret,
                 ["code"] = code,
                 ["grant_type"] = "authorization_code",
             };

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Riot;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models.Games;
 using RiotSharp;
@@ -31,8 +32,8 @@ namespace Logbook.Server.Infrastructure.Riot
         #region Constructors
         public LeagueService()
         {
-            this._api = RiotApi.GetInstance(Config.RiotApiKey, Config.RiotApiRateLimitPer10Seconds, Config.RiotApiRateLimitPer10Minutes);
-            this._staticApi = StaticRiotApi.GetInstance(Config.RiotApiKey);
+            this._api = RiotApi.GetInstance(Config.Riot.RiotApiKey, Config.Riot.RiotApiRateLimitPer10Seconds, Config.Riot.RiotApiRateLimitPer10Minutes);
+            this._staticApi = StaticRiotApi.GetInstance(Config.Riot.RiotApiKey);
 
             this._regionMapping = new Dictionary<Region, RiotSharp.Region>
             {

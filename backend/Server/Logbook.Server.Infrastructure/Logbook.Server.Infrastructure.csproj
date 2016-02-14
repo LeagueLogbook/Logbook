@@ -117,7 +117,14 @@
     <Compile Include="Commands\Summoners\GetSummonersCommandHandler.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommandHandler.cs" />
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Configuration\Config.cs" />
+    <Compile Include="Configuration\IAppConfig.cs" />
+    <Compile Include="Configuration\IDatabaseConfig.cs" />
+    <Compile Include="Configuration\IEmailConfig.cs" />
+    <Compile Include="Configuration\IEmailTemplateConfig.cs" />
+    <Compile Include="Configuration\IHttpConfig.cs" />
+    <Compile Include="Configuration\IRiotConfig.cs" />
+    <Compile Include="Configuration\ISecurityConfig.cs" />
     <Compile Include="Emails\EmailTemplateService.cs" />
     <Compile Include="Emails\SmtpEmailSender.cs" />
     <Compile Include="Emails\Templates\ConfirmEmailEmailTemplate.cs" />

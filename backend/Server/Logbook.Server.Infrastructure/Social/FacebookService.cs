@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Logbook.Server.Contracts.Social;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Shared;
 using Newtonsoft.Json.Linq;
 
@@ -16,7 +17,7 @@ namespace Logbook.Server.Infrastructure.Social
             string scope = string.Join(",", Constants.Authentication.FacebookRequiredScopes);
 
             var url = $"https://www.facebook.com/dialog/oauth" +
-                      $"?client_id={Config.FacebookAppId.GetValue()}" +
+                      $"?client_id={Config.Security.FacebookAppId}" +
                       $"&redirect_uri={redirectUrl}" +
                       $"&scope={scope}" +
                       $"&response_type=code";
@@ -27,7 +28,11 @@ namespace Logbook.Server.Infrastructure.Social
         public async Task<string> ExchangeCodeForTokenAsync(string redirectURl, string code)
         {
             var client = new HttpClient();
-            var response = await client.GetAsync($"https://graph.facebook.com/oauth/access_token?client_id={Config.FacebookAppId.GetValue()}&redirect_uri={redirectURl}&client_secret={Config.FacebookAppSecret.GetValue()}&code={code}");
+            var response = await client.GetAsync($"https://graph.facebook.com/oauth/access_token" +
+                                                 $"?client_id={Config.Security.FacebookAppId}" +
+                                                 $"&redirect_uri={redirectURl}" +
+                                                 $"&client_secret={Config.Security.FacebookAppSecret}" +
+                                                 $"&code={code}");
 
             if (response.StatusCode != HttpStatusCode.OK)
                 return null;
@@ -44,7 +49,9 @@ namespace Logbook.Server.Infrastructure.Social
         private async Task<bool> HasRequiredScopes(string token)
         {
             var client = new HttpClient();
-            var response = await client.GetAsync($"https://graph.facebook.com/debug_token?input_token={token}&access_token={Config.FacebookAppId.GetValue()}|{Config.FacebookAppSecret.GetValue()}");
+            var response = await client.GetAsync($"https://graph.facebook.com/debug_token" +
+                                                 $"?input_token={token}" +
+                                                 $"&access_token={Config.Security.FacebookAppId}|{Config.Security.FacebookAppSecret}");
 
             if (response.StatusCode != HttpStatusCode.OK)
                 return false;

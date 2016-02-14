@@ -2,6 +2,7 @@
 using System.Security.Policy;
 using System.Web;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Exceptions;
 
 namespace Logbook.Server.Infrastructure.Extensions
@@ -25,15 +26,15 @@ namespace Logbook.Server.Infrastructure.Extensions
                 EmailAddress = emailAddress,
                 PreferredLanguage = preferredLanauge,
                 PasswordSHA256Hash = passwordSHA256Hash,
-                Timeout = DateTimeOffset.UtcNow.Add(Config.ConfirmEmailIsValidForDuration)
+                Timeout = DateTimeOffset.UtcNow.AddMinutes(Config.Security.ConfirmEmailIsValidForMinutes)
             };
 
-            return Encrypt(self, payload, Config.ConfirmEmailKeyPhrase);
+            return Encrypt(self, payload, Config.Security.ConfirmEmailKeyPhrase);
         }
 
         public static ForConfirmEmail ValidateAndDecodeForConfirmEmail(this IEncryptionService self, string data)
         {
-            var result = self.Decrypt<ForConfirmEmail>(data, Config.ConfirmEmailKeyPhrase);
+            var result = self.Decrypt<ForConfirmEmail>(data, Config.Security.ConfirmEmailKeyPhrase);
 
             if (DateTimeOffset.UtcNow > result.Timeout)
                 throw new ConfirmEmailTimedOutException();
@@ -46,15 +47,15 @@ namespace Logbook.Server.Infrastructure.Extensions
             var payload = new ForPasswordReset
             {
                 EmailAddress = emailAddress,
-                Timeout = DateTimeOffset.UtcNow.Add(Config.PasswordResetIsValidForDuration)
+                Timeout = DateTimeOffset.UtcNow.AddMinutes(Config.Security.PasswordResetIsValidForMinutes)
             };
 
-            return Encrypt(self, payload, Config.PasswordResetKeyPhrase);
+            return Encrypt(self, payload, Config.Security.PasswordResetKeyPhrase);
         }
 
         public static string ValidateAndDecodeForPasswordReset(this IEncryptionService self, string jsonWebToken)
         {
-            var result = self.Decrypt<ForPasswordReset>(jsonWebToken, Config.PasswordResetKeyPhrase);
+            var result = self.Decrypt<ForPasswordReset>(jsonWebToken, Config.Security.PasswordResetKeyPhrase);
 
             if (DateTimeOffset.UtcNow > result.Timeout)
                 throw new PasswordResetTimedOutException();
@@ -70,12 +71,12 @@ namespace Logbook.Server.Infrastructure.Extensions
                 OAuthTokenSecret = oauthTokenSecret
             };
 
-            return Encrypt(self, payload, Config.TwitterLoginKeyPhrase);
+            return Encrypt(self, payload, Config.Security.TwitterLoginKeyPhrase);
         }
 
         public static ForTwitterLogin DecodeForTwitterLogin(this IEncryptionService self, string encrypted)
         {
-            return self.Decrypt<ForTwitterLogin>(encrypted, Config.TwitterLoginKeyPhrase);
+            return self.Decrypt<ForTwitterLogin>(encrypted, Config.Security.TwitterLoginKeyPhrase);
         }
 
         public class ForConfirmEmail

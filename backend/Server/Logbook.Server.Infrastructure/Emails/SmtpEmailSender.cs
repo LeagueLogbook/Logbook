@@ -2,6 +2,8 @@
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Emails;
+using Logbook.Server.Infrastructure.Configuration;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Emails
 {
@@ -25,14 +27,14 @@ namespace Logbook.Server.Infrastructure.Emails
         }
         private SmtpClient CreateSmtpClient()
         {
-            var client = new SmtpClient(Config.SmtpHost, Config.SmtpPort)
+            var client = new SmtpClient(Config.Email.SmtpHost, Config.Email.SmtpPort)
             {
-                UseDefaultCredentials = Config.SmtpUseDefaultCredentials,
-                EnableSsl = Config.SmtpUseSsl,
+                UseDefaultCredentials = Config.Email.SmtpUseDefaultCredentials,
+                EnableSsl = Config.Email.SmtpUseSsl,
             };
             
             if (client.UseDefaultCredentials == false)
-                client.Credentials = new NetworkCredential(Config.SmtpUsername, Config.SmtpPassword);
+                client.Credentials = new NetworkCredential(Config.Email.SmtpUsername, Config.Email.SmtpPassword);
 
             return client;
         }
