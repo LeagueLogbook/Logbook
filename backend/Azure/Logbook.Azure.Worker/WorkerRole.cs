@@ -5,6 +5,7 @@ using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Logbook.Worker.Api;
 using Logbook.Worker.EmailSender;
+using Logbook.Worker.UpdateSummoners;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace Logbook.Azure.Worker
@@ -15,6 +16,7 @@ namespace Logbook.Azure.Worker
 
         private ApiWorker _apiWoker;
         private EmailSenderWorker _emailSenderWorker;
+        private UpdateSummonersWorker _updateSummonersWorker;
 
         public override bool OnStart()
         {
@@ -28,10 +30,12 @@ namespace Logbook.Azure.Worker
 
             this._apiWoker = container.Resolve<ApiWorker>();
             this._emailSenderWorker = container.Resolve<EmailSenderWorker>();
+            this._updateSummonersWorker = container.Resolve<UpdateSummonersWorker>();
 
             Task.WaitAll(
                 this._apiWoker.StartAsync(),
-                this._emailSenderWorker.StartAsync());
+                this._emailSenderWorker.StartAsync(),
+                this._updateSummonersWorker.StartAsync());
 
             return true;
         }
@@ -40,7 +44,8 @@ namespace Logbook.Azure.Worker
         {
             Task.WaitAll(
                 this._apiWoker.RunAsync(this._cancellationTokenSource.Token),
-                this._emailSenderWorker.RunAsync(this._cancellationTokenSource.Token));
+                this._emailSenderWorker.RunAsync(this._cancellationTokenSource.Token),
+                this._updateSummonersWorker.RunAsync(this._cancellationTokenSource.Token));
         }
 
         public override void OnStop()

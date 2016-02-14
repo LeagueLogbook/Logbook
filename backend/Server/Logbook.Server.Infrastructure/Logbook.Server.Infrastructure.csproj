@@ -137,9 +137,11 @@
     <Compile Include="Commands\CurrentGames\GetCurrentGameCommandHandler.cs" />
     <Compile Include="Commands\ICommandHandler.cs" />
     <Compile Include="Commands\Authentication\RegisterCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\AddNewSummonerCommandHandler.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommandHandler.cs" />
     <Compile Include="Commands\Summoners\GetSummonersCommandHandler.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommandHandler.cs" />
+    <Compile Include="Commands\Summoners\UpdateSummonerCommandHandler.cs" />
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\IAppConfig.cs" />
@@ -198,6 +200,7 @@
     <Compile Include="NHibernate\Mappings\Summoners\SummonerMaps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Riot\LeagueService.cs" />
+    <Compile Include="Riot\UpdateSummonerQueue.cs" />
     <Compile Include="Social\FacebookService.cs" />
     <Compile Include="Social\GoogleService.cs" />
     <Compile Include="Social\MicrosoftService.cs" />

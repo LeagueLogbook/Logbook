@@ -56,12 +56,11 @@ namespace Logbook.Server.Infrastructure.Emails
         public async Task RemoveAsync(Email email)
         {
             Guard.NotNull(email, nameof(email));
-
-            var queue = await this.GetQueueAsync();
-
+            
             CloudQueueMessage message;
             if (this._dequeuedMessages.TryRemove(email, out message))
             {
+                var queue = await this.GetQueueAsync();
                 await queue.DeleteMessageAsync(message);
             }
         }
@@ -70,20 +69,13 @@ namespace Logbook.Server.Infrastructure.Emails
         #region Private Methods
         private async Task<CloudQueue> GetQueueAsync()
         {
-            try
-            {
-                if (this._queue != null)
-                    return this._queue;
-
-                this._queue = this._queueClient.GetQueueReference(Config.Azure.EmailQueueName);
-                await this._queue.CreateIfNotExistsAsync();
-
+            if (this._queue != null)
                 return this._queue;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+
+            this._queue = this._queueClient.GetQueueReference(Config.Azure.EmailQueueName);
+            await this._queue.CreateIfNotExistsAsync();
+
+            return this._queue;
         }
         #endregion
     }

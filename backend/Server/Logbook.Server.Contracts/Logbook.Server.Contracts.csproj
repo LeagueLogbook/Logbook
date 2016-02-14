@@ -58,9 +58,11 @@
     <Compile Include="Commands\ICommandExecutor.cs" />
     <Compile Include="Commands\ICommandScope.cs" />
     <Compile Include="Commands\Authentication\RegisterCommand.cs" />
+    <Compile Include="Commands\Summoners\AddNewSummonerCommand.cs" />
     <Compile Include="Commands\Summoners\AddSummonerCommand.cs" />
     <Compile Include="Commands\Summoners\GetSummonersCommand.cs" />
     <Compile Include="Commands\Summoners\RemoveSummonerCommand.cs" />
+    <Compile Include="Commands\Summoners\UpdateSummonerCommand.cs" />
     <Compile Include="Commands\Users\GetUserCommand.cs" />
     <Compile Include="Emails\Email.cs" />
     <Compile Include="Emails\IEmailQueue.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Mapping\IMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Riot\ILeagueService.cs" />
+    <Compile Include="Riot\IUpdateSummonerQueue.cs" />
     <Compile Include="Social\FacebookUser.cs" />
     <Compile Include="Social\GoogleUser.cs" />
     <Compile Include="Social\IFacebookService.cs" />

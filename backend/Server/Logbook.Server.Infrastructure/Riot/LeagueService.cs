@@ -131,6 +131,27 @@ namespace Logbook.Server.Infrastructure.Riot
         #endregion
 
         #region Implementation of ILeagueService
+
+        public async Task<Summoner> GetSummonerAsync(Region region, long riotSummonerId)
+        {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotZeroOrNegative(riotSummonerId, nameof(riotSummonerId));
+
+            try
+            {
+                var result = await this._api.GetSummonerAsync(this.ConvertRegion(region), (int)riotSummonerId);
+
+                if (result == null)
+                    return null;
+
+                return this.ConvertSummoner(result);
+            }
+            catch (RiotSharpException e) when (e.Message.StartsWith("404"))
+            {
+                return null;
+            }
+        }
+
         public async Task<Summoner> GetSummonerAsync(Region region, string name)
         {
             Guard.NotInvalidEnum(region, nameof(region));

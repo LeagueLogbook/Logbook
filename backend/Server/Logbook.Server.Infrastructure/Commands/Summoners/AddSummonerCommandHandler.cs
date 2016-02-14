@@ -52,7 +52,7 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
                 if (existingSummoner == null)
                 {
                     existingSummoner = summoner;
-                    this._session.SaveOrUpdate(existingSummoner);
+                    await scope.Execute(new AddNewSummonerCommand(existingSummoner));
                 }
 
                 existingSummoner.WatchedByUsers.Add(user);

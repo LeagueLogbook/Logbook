@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.Api", "Worke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.EmailSender", "Worker\Logbook.Worker.EmailSender\Logbook.Worker.EmailSender.csproj", "{6680E422-EC00-485F-845E-5DF57079830D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.UpdateSummoners", "Worker\Logbook.Worker.UpdateSummoners\Logbook.Worker.UpdateSummoners.csproj", "{235A9F4B-2954-4634-BCE6-D7280A590054}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{6680E422-EC00-485F-845E-5DF57079830D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6680E422-EC00-485F-845E-5DF57079830D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6680E422-EC00-485F-845E-5DF57079830D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{235A9F4B-2954-4634-BCE6-D7280A590054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{235A9F4B-2954-4634-BCE6-D7280A590054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{235A9F4B-2954-4634-BCE6-D7280A590054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{235A9F4B-2954-4634-BCE6-D7280A590054}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +93,6 @@ Global
 		{9D11CEF6-475F-4DAB-8738-199EF91FC14F} = {D53F1F81-2FBA-477E-8472-CEE8F3EF96A5}
 		{23E49A75-E2D8-4C1F-87D9-366237AFB849} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
 		{6680E422-EC00-485F-845E-5DF57079830D} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
+		{235A9F4B-2954-4634-BCE6-D7280A590054} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
 	EndGlobalSection
 EndGlobal

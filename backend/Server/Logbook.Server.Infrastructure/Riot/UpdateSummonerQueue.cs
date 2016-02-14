@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Threading.Tasks;
+using Logbook.Server.Contracts.Emails;
+using Logbook.Server.Contracts.Riot;
+using Logbook.Server.Infrastructure.Configuration;
+using Logbook.Shared;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Newtonsoft.Json;
+
+namespace Logbook.Server.Infrastructure.Riot
+{
+    public class UpdateSummonerQueue : IUpdateSummonerQueue
+    {
+        private readonly CloudQueueClient _queueClient;
+        private readonly ConcurrentDictionary<int, CloudQueueMessage> _dequeuedMessages; 
+        private CloudQueue _queue;
+        
+        public UpdateSummonerQueue(CloudQueueClient queueClient)
+        {
+            Guard.NotNull(queueClient, nameof(queueClient));
+
+            this._queueClient = queueClient;
+
+            this._dequeuedMessages = new ConcurrentDictionary<int, CloudQueueMessage>();
+        }
+
+        public async Task EnqueueSummonerAsync(int summonerId)
+        {
+            Guard.NotZeroOrNegative(summonerId, nameof(summonerId));
+
+            var queue = await this.GetQueueAsync();
+            var message = new CloudQueueMessage(JsonConvert.SerializeObject(summonerId));
+
+            await queue.AddMessageAsync(message, null, TimeSpan.FromMinutes(Config.Riot.UpdateSummonersEveryMinutes), null, null);
+        }
+
+        public async Task<int?> TryDequeueSummonerAsync()
+        {
+            var queue = await this.GetQueueAsync();
+            var message = await queue.GetMessageAsync();
+
+            if (message == null)
+                return null;
+
+            var summonerId = JsonConvert.DeserializeObject<int>(message.AsString);
+            this._dequeuedMessages.TryAdd(summonerId, message);
+
+            return summonerId;
+        }
+
+        public async Task RemoveAsync(int summonerId)
+        {
+            Guard.NotZeroOrNegative(summonerId, nameof(summonerId));
+            
+            CloudQueueMessage message;
+            if (this._dequeuedMessages.TryRemove(summonerId, out message))
+            {
+                var queue = await this.GetQueueAsync();
+                await queue.DeleteMessageAsync(message);
+            }
+        }
+
+        private async Task<CloudQueue> GetQueueAsync()
+        {
+            if (this._queue != null)
+                return this._queue;
+
+            this._queue = this._queueClient.GetQueueReference(Config.Azure.SummonerUpdateQueueName);
+            await this._queue.CreateIfNotExistsAsync();
+
+            return this._queue;
+        }
+    }
+}
