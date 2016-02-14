@@ -6,6 +6,7 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using Logbook.Server.Contracts;
+using Logbook.Server.Infrastructure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace Logbook.Azure.Worker
@@ -37,7 +38,7 @@ namespace Logbook.Azure.Worker
         public override void Run()
         {
             Task.WaitAll(this._workers
-                .Select(f => f.RunAsync(this._cancellationTokenSource.Token))
+                .Select(f => FailureResilientWorkerRunner.RunAsync(f, this._cancellationTokenSource.Token))
                 .ToArray());;
         }
 
