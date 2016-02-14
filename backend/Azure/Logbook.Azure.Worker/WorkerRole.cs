@@ -1,11 +1,11 @@
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
-using Logbook.Worker.Api;
-using Logbook.Worker.EmailSender;
-using Logbook.Worker.UpdateSummoners;
+using Logbook.Server.Contracts;
 using Microsoft.WindowsAzure.ServiceRuntime;
 
 namespace Logbook.Azure.Worker
@@ -13,10 +13,7 @@ namespace Logbook.Azure.Worker
     public class WorkerRole : RoleEntryPoint
     {
         private CancellationTokenSource _cancellationTokenSource;
-
-        private ApiWorker _apiWoker;
-        private EmailSenderWorker _emailSenderWorker;
-        private UpdateSummonersWorker _updateSummonersWorker;
+        private IWorker[] _workers;
 
         public override bool OnStart()
         {
@@ -24,28 +21,24 @@ namespace Logbook.Azure.Worker
             ServicePointManager.DefaultConnectionLimit = 100;
 
             var container = new WindsorContainer();
-            container.Install(FromAssembly.InThisApplication());
+            container.Install(FromAssembly.InDirectory(new AssemblyFilter(".")));
 
             this._cancellationTokenSource = new CancellationTokenSource();
 
-            this._apiWoker = container.Resolve<ApiWorker>();
-            this._emailSenderWorker = container.Resolve<EmailSenderWorker>();
-            this._updateSummonersWorker = container.Resolve<UpdateSummonersWorker>();
+            this._workers = container.ResolveAll<IWorker>();
 
-            Task.WaitAll(
-                this._apiWoker.StartAsync(),
-                this._emailSenderWorker.StartAsync(),
-                this._updateSummonersWorker.StartAsync());
+            Task.WaitAll(this._workers
+                .Select(f => f.StartAsync())
+                .ToArray());
 
             return true;
         }
 
         public override void Run()
         {
-            Task.WaitAll(
-                this._apiWoker.RunAsync(this._cancellationTokenSource.Token),
-                this._emailSenderWorker.RunAsync(this._cancellationTokenSource.Token),
-                this._updateSummonersWorker.RunAsync(this._cancellationTokenSource.Token));
+            Task.WaitAll(this._workers
+                .Select(f => f.RunAsync(this._cancellationTokenSource.Token))
+                .ToArray());;
         }
 
         public override void OnStop()
