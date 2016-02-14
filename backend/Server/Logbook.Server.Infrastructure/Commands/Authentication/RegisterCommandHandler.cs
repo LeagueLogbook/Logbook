@@ -25,7 +25,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         private readonly ISession _session;
         private readonly IEncryptionService _encryptionService;
         private readonly IEmailTemplateService _emailTemplateService;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailQueue _emailQueue;
         #endregion
 
         #region Constructors
@@ -35,18 +35,18 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="session">The database session.</param>
         /// <param name="encryptionService">The encryption service.</param>
         /// <param name="emailTemplateService">The email template service.</param>
-        /// <param name="emailSender">The email sender.</param>
-        public RegisterCommandHandler(ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
+        /// <param name="emailQueue">The email queue.</param>
+        public RegisterCommandHandler(ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailQueue emailQueue)
         {
             Guard.NotNull(session, nameof(session));
             Guard.NotNull(encryptionService, nameof(encryptionService));
             Guard.NotNull(emailTemplateService, nameof(emailTemplateService));
-            Guard.NotNull(emailSender, nameof(emailSender));
+            Guard.NotNull(emailQueue, nameof(emailQueue));
 
             this._session = session;
             this._encryptionService = encryptionService;
             this._emailTemplateService = emailTemplateService;
-            this._emailSender = emailSender;
+            this._emailQueue = emailQueue;
         }
         #endregion
 
@@ -74,9 +74,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var email = this._emailTemplateService.GetTemplate(emailTemplate);
             email.Receiver = command.EmailAddress;
 
-            await this._emailSender
-                .SendMailAsync(email)
-                .WithCurrentCulture();
+            await this._emailQueue.EnqueueMailAsync(email);
 
             return new object();
         }

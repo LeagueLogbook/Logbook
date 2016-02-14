@@ -11,6 +11,7 @@ using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Emails.Templates;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
@@ -24,16 +25,23 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         private readonly ISecretGenerator _secretGenerator;
         private readonly IEncryptionService _encryptionService;
         private readonly IEmailTemplateService _emailTemplateService;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailQueue _emailQueue;
         private readonly IHashingService _hashingService;
 
-        public FinishPasswordResetCommandHandler(ISession session, ISecretGenerator secretGenerator, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender, IHashingService hashingService)
+        public FinishPasswordResetCommandHandler(ISession session, ISecretGenerator secretGenerator, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailQueue emailQueue, IHashingService hashingService)
         {
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(secretGenerator, nameof(secretGenerator));
+            Guard.NotNull(encryptionService, nameof(encryptionService));
+            Guard.NotNull(emailTemplateService, nameof(emailTemplateService));
+            Guard.NotNull(emailQueue, nameof(emailQueue));
+            Guard.NotNull(hashingService, nameof(hashingService));
+
             this._session = session;
             this._secretGenerator = secretGenerator;
             this._encryptionService = encryptionService;
             this._emailTemplateService = emailTemplateService;
-            this._emailSender = emailSender;
+            this._emailQueue = emailQueue;
             this._hashingService = hashingService;
         }
 
@@ -64,9 +72,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var email = this._emailTemplateService.GetTemplate(emailTemplate);
             email.Receiver = emailAddress;
 
-            await this._emailSender
-                .SendMailAsync(email)
-                .WithCurrentCulture();
+            await this._emailQueue.EnqueueMailAsync(email);
 
             return new object();
         }

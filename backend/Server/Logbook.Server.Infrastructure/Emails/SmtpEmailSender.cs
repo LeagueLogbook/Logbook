@@ -3,7 +3,6 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Emails;
 using Logbook.Server.Infrastructure.Configuration;
-using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Emails
 {

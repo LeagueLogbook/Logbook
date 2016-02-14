@@ -4,7 +4,7 @@
     <ConfigurationSettings>
     </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="HTTP" protocol="http" port="80" />
+      <InputEndpoint name="HTTP" protocol="http" port="8081" />
     </Endpoints>
   </WorkerRole>
 </ServiceDefinition>

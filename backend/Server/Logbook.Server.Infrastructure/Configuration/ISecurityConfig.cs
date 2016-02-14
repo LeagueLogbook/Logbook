@@ -26,5 +26,7 @@ namespace Logbook.Server.Infrastructure.Configuration
         int PasswordResetIsValidForMinutes { get; }
 
         int PasswordResetNewPasswordLength { get; }
+
+        string AzureStorageConnectionString { get; }
     }
 }

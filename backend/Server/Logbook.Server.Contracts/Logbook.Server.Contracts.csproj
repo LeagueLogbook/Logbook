@@ -63,6 +63,7 @@
     <Compile Include="Commands\Summoners\RemoveSummonerCommand.cs" />
     <Compile Include="Commands\Users\GetUserCommand.cs" />
     <Compile Include="Emails\Email.cs" />
+    <Compile Include="Emails\IEmailQueue.cs" />
     <Compile Include="Emails\IEmailTemplate.cs" />
     <Compile Include="Emails\IEmailSender.cs" />
     <Compile Include="Emails\IEmailTemplateService.cs" />

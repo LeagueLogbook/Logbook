@@ -20,14 +20,14 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         private readonly ISession _session;
         private readonly IEncryptionService _encryptionService;
         private readonly IEmailTemplateService _emailTemplateService;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailQueue _emailQueue;
 
-        public ResetPasswordCommandHandler(ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailSender emailSender)
+        public ResetPasswordCommandHandler(ISession session, IEncryptionService encryptionService, IEmailTemplateService emailTemplateService, IEmailQueue emailQueue)
         {
             this._session = session;
             this._encryptionService = encryptionService;
             this._emailTemplateService = emailTemplateService;
-            this._emailSender = emailSender;
+            this._emailQueue = emailQueue;
         }
 
         public async Task<object> Execute(ResetPasswordCommand command, ICommandScope scope)
@@ -54,9 +54,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var email = this._emailTemplateService.GetTemplate(emailTemplate);
             email.Receiver = user.EmailAddress;
 
-            await this._emailSender
-                .SendMailAsync(email)
-                .WithCurrentCulture();
+            await this._emailQueue.EnqueueMailAsync(email);
 
             return new object();
         }
