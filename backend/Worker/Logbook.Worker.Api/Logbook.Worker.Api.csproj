@@ -156,6 +156,7 @@
     <Compile Include="Windsor\ControllerInstaller.cs" />
     <Compile Include="Windsor\WindsorDependencyScope.cs" />
     <Compile Include="Windsor\WindsorResolver.cs" />
+    <Compile Include="Windsor\WorkerInstaller.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
