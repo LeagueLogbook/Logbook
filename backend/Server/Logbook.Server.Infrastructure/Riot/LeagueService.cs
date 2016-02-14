@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Riot;
 using Logbook.Server.Infrastructure.Configuration;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models.Games;
 using RiotSharp;
@@ -132,6 +133,9 @@ namespace Logbook.Server.Infrastructure.Riot
         #region Implementation of ILeagueService
         public async Task<Summoner> GetSummonerAsync(Region region, string name)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotNullOrWhiteSpace(name, nameof(name));
+
             try
             {
                 var result = await this._api.GetSummonerAsync(this.ConvertRegion(region), name);
@@ -149,6 +153,9 @@ namespace Logbook.Server.Infrastructure.Riot
 
         public async Task<CurrentGame> GetCurrentGameAsync(Region region, long riotSummonerId)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotZeroOrNegative(riotSummonerId, nameof(riotSummonerId));
+
             try
             {
                 var result = await this._api.GetCurrentGameAsync(this.ConvertRegionToPlatform(region), riotSummonerId);
@@ -171,11 +178,15 @@ namespace Logbook.Server.Infrastructure.Riot
 
         private ChampionListStatic GetChampionList(Region region)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return this._cachedChampions.GetOrAdd(region, f => this._staticApi.GetChampions(this.ConvertRegion(f), ChampionData.info));
         }
 
         private SummonerSpellListStatic GetSummonerSpells(Region region)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return this._cachedSummonerSpells.GetOrAdd(region, f => this._staticApi.GetSummonerSpells(this.ConvertRegion(f), SummonerSpellData.image));
         }
         #endregion
@@ -183,11 +194,16 @@ namespace Logbook.Server.Infrastructure.Riot
         #region Uris
         private string GetSummonerSpellImageUri(Region region, long id)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotZeroOrNegative(id, nameof(id));
+
             var name = this.GetSummonerSpells(region).SummonerSpells.FirstOrDefault(f => f.Value.Id == id).Value?.Image?.Full;
             return $"http://ddragon.leagueoflegends.com/cdn/6.3.1/img/spell/{name}";
         }
         private string GetProfileIconUri(long id)
         {
+            Guard.NotZeroOrNegative(id, nameof(id));
+
             return $"http://ddragon.leagueoflegends.com/cdn/6.3.1/img/profileicon/{id}.png";
         }
         #endregion
@@ -195,6 +211,9 @@ namespace Logbook.Server.Infrastructure.Riot
         #region Class Conversion
         private CurrentGame ConvertCurrentGame(RiotSharp.CurrentGameEndpoint.CurrentGame currentGame, Region region)
         {
+            Guard.NotNull(currentGame, nameof(currentGame));
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return new CurrentGame
             {
                 GameId = currentGame.GameId,
@@ -231,6 +250,9 @@ namespace Logbook.Server.Infrastructure.Riot
 
         private BannedChampion ConvertBannedChampion(RiotSharp.CurrentGameEndpoint.BannedChampion bannedChampion, Region region)
         {
+            Guard.NotNull(bannedChampion, nameof(bannedChampion));
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return new BannedChampion
             {
                 ChampionId = bannedChampion.ChampionId,
@@ -241,6 +263,9 @@ namespace Logbook.Server.Infrastructure.Riot
 
         private Participant ConvertParticipant(RiotSharp.CurrentGameEndpoint.Participant participant, Region region)
         {
+            Guard.NotNull(participant, nameof(participant));
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return new Participant
             {
                 IsBot = participant.Bot,
@@ -260,6 +285,8 @@ namespace Logbook.Server.Infrastructure.Riot
 
         private Summoner ConvertSummoner(RiotSharp.SummonerEndpoint.Summoner summoner)
         {
+            Guard.NotNull(summoner, nameof(summoner));
+
             return new Summoner
             {
                 RiotSummonerId = summoner.Id,
@@ -274,36 +301,50 @@ namespace Logbook.Server.Infrastructure.Riot
         #region Enum Conversion
         private MapType ConvertMapType(RiotSharp.MapType mapType)
         {
+            Guard.NotInvalidEnum(mapType, nameof(mapType));
+
             return this._mapTypeMapping.First(f => f.Value == mapType).Key;
         }
 
         private GameMode ConvertGameMode(RiotSharp.GameMode gameMode)
         {
+            Guard.NotInvalidEnum(gameMode, nameof(gameMode));
+
             return this._gameModeMapping.First(f => f.Value == gameMode).Key;
         }
 
         private GameType ConvertGameType(RiotSharp.GameType gameType)
         {
+            Guard.NotInvalidEnum(gameType, nameof(gameType));
+
             return this._gameTypeMapping.First(f => f.Value == gameType).Key;
         }
 
         private GameQueueType ConvertGameQueueType(RiotSharp.CurrentGameEndpoint.Converters.GameQueueType gameQueueType)
         {
+            Guard.NotInvalidEnum(gameQueueType, nameof(gameQueueType));
+
             return this._gameQueueTypeMapping.First(f => f.Value == gameQueueType).Key;
         }
 
         private Platform ConvertRegionToPlatform(Region region)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return this._regionToPlatformMapping[region];
         }
 
         private RiotSharp.Region ConvertRegion(Region region)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return this._regionMapping[region];
         }
 
         private Region ConvertRegion(RiotSharp.Region region)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+
             return this._regionMapping.First(f => f.Value == region).Key;
         }
         #endregion

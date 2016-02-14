@@ -16,6 +16,8 @@ namespace Logbook.Server.Infrastructure.Social
     {
         public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+
             var scopes = string.Join(" ", Constants.Authentication.MicrosoftRequiredScopes);
 
             var url = $"https://login.live.com/oauth20_authorize.srf" +
@@ -29,6 +31,9 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+            Guard.NotNullOrWhiteSpace(code, nameof(code));
+
             var data = new Dictionary<string, string>
             {
                 ["client_id"] = Config.Security.MicrosoftClientId,
@@ -39,12 +44,12 @@ namespace Logbook.Server.Infrastructure.Social
             };
 
             var client = new HttpClient();
-            var response = await client.PostAsync("https://login.live.com/oauth20_token.srf", new FormUrlEncodedContent(data)).WithCurrentCulture();
+            var response = await client.PostAsync("https://login.live.com/oauth20_token.srf", new FormUrlEncodedContent(data));
 
             if (response.StatusCode != HttpStatusCode.OK)
                 return null;
 
-            var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
+            var responseJsonString = await response.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseJsonString);
 
             var actualScopes = responseJson.Value<string>("scope").Split(' ');
@@ -57,15 +62,17 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<MicrosoftUser> GetMeAsync(string token)
         {
+            Guard.NotNullOrWhiteSpace(token, nameof(token));
+
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync("https://apis.live.net/v5.0/me").WithCurrentCulture();
+            var response = await client.GetAsync("https://apis.live.net/v5.0/me");
 
             if (response.StatusCode != HttpStatusCode.OK)
                 return null;
 
-            var responseJsonString = await response.Content.ReadAsStringAsync().WithCurrentCulture();
+            var responseJsonString = await response.Content.ReadAsStringAsync();
             var responseJson = JObject.Parse(responseJsonString);
 
             var user = new MicrosoftUser

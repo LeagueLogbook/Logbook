@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Logbook.Shared;
 
 namespace Logbook.Worker.Api.MessageHandlers
 {
@@ -14,6 +15,8 @@ namespace Logbook.Worker.Api.MessageHandlers
         /// <param name="cancellationToken">A cancellation token to cancel operation.</param>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            Guard.NotNull(request, nameof(request));
+
             HttpResponseMessage result = await base.SendAsync(request, cancellationToken);
             
             return result;

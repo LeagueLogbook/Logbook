@@ -12,6 +12,7 @@ using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Newtonsoft.Json.Linq;
 
 namespace Logbook.Server.Infrastructure.Social
@@ -22,11 +23,15 @@ namespace Logbook.Server.Infrastructure.Social
 
         public TwitterService(IEncryptionService encryptionService)
         {
+            Guard.NotNull(encryptionService, nameof(encryptionService));
+
             this._encryptionService = encryptionService;
         }
 
         public async Task<TwitterLoginUrl> GetLoginUrlAsync(string redirectUrl)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+
             var request = new HttpRequestMessage(HttpMethod.Post, "https://api.twitter.com/oauth/request_token");
 
             var nonce = this.CreateNonce();
@@ -54,6 +59,9 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<TwitterToken> ExchangeForToken(string payload, string oauthVerifier)
         {
+            Guard.NotNullOrWhiteSpace(payload, nameof(payload));
+            Guard.NotNullOrWhiteSpace(oauthVerifier, nameof(oauthVerifier));
+
             var data = new Dictionary<string, string>
             {
                 ["oauth_verifier"] = oauthVerifier
@@ -89,6 +97,8 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<TwitterUser> GetMeAsync(TwitterToken token)
         {
+            Guard.NotNull(token, nameof(token));
+
             var data = new Dictionary<string, string>
             {
                 ["include_email"] = "true"
@@ -131,6 +141,10 @@ namespace Logbook.Server.Infrastructure.Social
 
         private string CreateSignature(HttpRequestMessage request, string nonce, string timestamp, string token, string tokenSecret, string callback, Dictionary<string, string> additionalData)
         {
+            Guard.NotNull(request, nameof(request));
+            Guard.NotNullOrWhiteSpace(nonce, nameof(nonce));
+            Guard.NotNullOrWhiteSpace(timestamp, nameof(timestamp));
+
             if (additionalData == null)
                 additionalData = new Dictionary<string, string>();
 
@@ -181,6 +195,11 @@ namespace Logbook.Server.Infrastructure.Social
 
         private void ApplySignature(HttpRequestMessage request, string signature, string nonce, string timestamp, string token, string callback)
         {
+            Guard.NotNull(request, nameof(request));
+            Guard.NotNullOrWhiteSpace(signature, nameof(signature));
+            Guard.NotNullOrWhiteSpace(nonce, nameof(nonce));
+            Guard.NotNullOrWhiteSpace(timestamp, nameof(timestamp));
+
             Dictionary<string, string> keysAndValuesDictionary = new Dictionary<string, string>
             {
                 { "oauth_callback", Uri.EscapeDataString(callback) },

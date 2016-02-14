@@ -1,4 +1,5 @@
 ﻿using System;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Extensions
 {

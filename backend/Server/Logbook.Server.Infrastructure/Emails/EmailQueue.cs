@@ -31,10 +31,12 @@ namespace Logbook.Server.Infrastructure.Emails
         #region Implementation of IEmailQueue
         public async Task EnqueueMailAsync(Email email)
         {
+            Guard.NotNull(email, nameof(email));
+
             var queue = await this.GetQueueAsync();
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(email));
 
-            await queue.AddMessageAsync(message);
+            await queue.AddMessageAsync(message, null, TimeSpan.FromSeconds(20), null, null);
         }
 
         public async Task<Email> TryDequeueMailAsync()
@@ -53,6 +55,8 @@ namespace Logbook.Server.Infrastructure.Emails
 
         public async Task RemoveAsync(Email email)
         {
+            Guard.NotNull(email, nameof(email));
+
             var queue = await this.GetQueueAsync();
 
             CloudQueueMessage message;
@@ -71,7 +75,7 @@ namespace Logbook.Server.Infrastructure.Emails
                 if (this._queue != null)
                     return this._queue;
 
-                this._queue = this._queueClient.GetQueueReference(Config.Email.EmailQueueName);
+                this._queue = this._queueClient.GetQueueReference(Config.Azure.EmailQueueName);
                 await this._queue.CreateIfNotExistsAsync();
 
                 return this._queue;

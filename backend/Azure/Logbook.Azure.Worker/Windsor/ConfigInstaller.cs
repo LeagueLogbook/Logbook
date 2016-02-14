@@ -16,6 +16,7 @@ namespace Logbook.Azure.Worker.Windsor
             container.AddFacility<AppConfigFacility.AppConfigFacility>(f => f.FromAzure());
             container.Register(
                 Component.For<IHttpConfig>().FromAppConfig(f => f.WithPrefix("Logbook/Http/").Computed(d => d.Address, d => this.GetAddress())),
+                Component.For<IAzureConfig>().FromAppConfig(f => f.WithPrefix("Logbook/Azure/")),
                 Component.For<IEmailConfig>().FromAppConfig(f => f.WithPrefix("Logbook/Email/")),
                 Component.For<IAppConfig>().FromAppConfig(f => f.WithPrefix("Logbook/App/")),
                 Component.For<IEmailTemplateConfig>().FromAppConfig(f => f.WithPrefix("Logbook/EmailTemplate/")),
@@ -24,6 +25,7 @@ namespace Logbook.Azure.Worker.Windsor
                 Component.For<IDatabaseConfig>().FromAppConfig(f => f.WithPrefix("Logbook/Database/")));
 
             Config.Http = container.Resolve<IHttpConfig>();
+            Config.Azure = container.Resolve<IAzureConfig>();
             Config.Email = container.Resolve<IEmailConfig>();
             Config.App = container.Resolve<IAppConfig>();
             Config.EmailTemplate = container.Resolve<IEmailTemplateConfig>();

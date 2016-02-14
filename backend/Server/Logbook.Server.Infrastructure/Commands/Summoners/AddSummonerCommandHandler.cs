@@ -5,6 +5,7 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Contracts.Riot;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Entities.Summoners;
 using NHibernate;
@@ -19,12 +20,18 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
 
         public AddSummonerCommandHandler(ILeagueService leagueService, ISession session)
         {
+            Guard.NotNull(leagueService, nameof(leagueService));
+            Guard.NotNull(session, nameof(session));
+
             this._leagueService = leagueService;
             this._session = session;
         }
 
         public async Task<object> Execute(AddSummonerCommand command, ICommandScope scope)
         {
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
+
             var summoner = await this._leagueService.GetSummonerAsync(command.Region, command.SummonerName);
 
             if (summoner == null)

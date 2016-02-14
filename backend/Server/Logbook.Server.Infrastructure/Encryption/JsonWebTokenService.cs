@@ -16,6 +16,10 @@ namespace Logbook.Server.Infrastructure.Encryption
     {
         public JsonWebToken Generate<T>(T payload, TimeSpan validDuration, string password)
         {
+            Guard.NotNull(payload, nameof(payload));
+            Guard.NotZeroOrNegative(validDuration, nameof(validDuration));
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             var expiresAt = DateTime.UtcNow.Add(validDuration).StripEverythingAfterSeconds();
 
             var actualPayload = this.ToDictionary(payload);
@@ -34,6 +38,9 @@ namespace Logbook.Server.Infrastructure.Encryption
 
         public T ValidateAndDecode<T>(string jsonWebToken, string password)
         {
+            Guard.NotNullOrWhiteSpace(jsonWebToken, nameof(jsonWebToken));
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             try
             {
                 var decodedTokenAsJsonString = JWT.JsonWebToken.Decode(jsonWebToken, password, verify: true);
@@ -51,6 +58,8 @@ namespace Logbook.Server.Infrastructure.Encryption
 
         private Dictionary<string, object> ToDictionary(object payload)
         {
+            Guard.NotNull(payload, nameof(payload));
+
             string json = JsonConvert.SerializeObject(payload);
             return JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
         }

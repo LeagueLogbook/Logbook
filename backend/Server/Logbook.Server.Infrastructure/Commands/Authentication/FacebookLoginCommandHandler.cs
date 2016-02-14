@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Contracts.Social;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 using NHibernate;
@@ -20,16 +21,21 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         public FacebookLoginCommandHandler(ISession session, IJsonWebTokenService jsonWebTokenService, IFacebookService facebookService)
             : base(session, jsonWebTokenService)
         {
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(jsonWebTokenService, nameof(jsonWebTokenService));
+            Guard.NotNull(facebookService, nameof(facebookService));
+
             this._session = session;
             this._facebookService = facebookService;
         }
 
-
         protected override async Task<SocialLoginUser> GetMeAsync(FacebookLoginCommand command)
         {
-            var token = await this._facebookService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code).WithCurrentCulture();
+            Guard.NotNull(command, nameof(command));
 
-            var user = await this._facebookService.GetMeAsync(token).WithCurrentCulture();
+            var token = await this._facebookService.ExchangeCodeForTokenAsync(command.RedirectUrl, command.Code);
+
+            var user = await this._facebookService.GetMeAsync(token);
 
             if (user == null)
                 return null;
@@ -44,6 +50,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         protected override User GetUserForSocialUser(SocialLoginUser user)
         {
+            Guard.NotNull(user, nameof(user));
+
             var authentication = this._session.Query<FacebookAuthenticationKind>()
                 .Fetch(f => f.User)
                 .FirstOrDefault(f => f.FacebookUserId == user.Id);
@@ -53,6 +61,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         protected override AuthenticationKindBase CreateAuthentication(SocialLoginUser user)
         {
+            Guard.NotNull(user, nameof(user));
+
             return new FacebookAuthenticationKind
             {
                 FacebookUserId = user.Id

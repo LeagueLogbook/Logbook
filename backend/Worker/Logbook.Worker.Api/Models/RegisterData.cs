@@ -1,4 +1,4 @@
-﻿namespace Logbook.Shared.ControllerModels
+﻿namespace Logbook.Worker.Api.Models
 {
     public class RegisterData
     {

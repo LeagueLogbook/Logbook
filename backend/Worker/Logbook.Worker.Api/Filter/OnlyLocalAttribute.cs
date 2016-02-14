@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared;
 
 namespace Logbook.Worker.Api.Filter
 {
@@ -23,6 +24,8 @@ namespace Logbook.Worker.Api.Filter
         /// <param name="cancellationToken">The cancellation token.</param>
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
+            Guard.NotNull(context, nameof(context));
+
             if (context.ActionContext.RequestContext.IsLocal == false)
             {
                 throw new OnlyLocalException();

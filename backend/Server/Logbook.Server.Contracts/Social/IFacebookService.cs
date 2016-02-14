@@ -6,7 +6,7 @@ namespace Logbook.Server.Contracts.Social
     {
         Task<string> GetLoginUrlAsync(string redirectUrl);
 
-        Task<string> ExchangeCodeForTokenAsync(string redirectURl, string code);
+        Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code);
 
         Task<FacebookUser> GetMeAsync(string token);
     }

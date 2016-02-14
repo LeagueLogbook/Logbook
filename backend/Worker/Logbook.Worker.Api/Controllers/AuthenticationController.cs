@@ -9,9 +9,9 @@ using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
-using Logbook.Shared.ControllerModels;
 using Logbook.Shared.Extensions;
 using Logbook.Worker.Api.Extensions;
+using Logbook.Worker.Api.Models;
 
 namespace Logbook.Worker.Api.Controllers
 {
@@ -26,6 +26,7 @@ namespace Logbook.Worker.Api.Controllers
         public AuthenticationController(ICommandExecutor commandExecutor, IMicrosoftService microsoftService, IFacebookService facebookService, IGoogleService googleService, ITwitterService twitterService)
             : base(commandExecutor)
         {
+            Guard.NotNull(commandExecutor, nameof(commandExecutor));
             Guard.NotNull(microsoftService, nameof(microsoftService));
             Guard.NotNull(facebookService, nameof(facebookService));
             Guard.NotNull(googleService, nameof(googleService));
@@ -44,9 +45,8 @@ namespace Logbook.Worker.Api.Controllers
             if (data?.EmailAddress == null || data?.PasswordSHA256Hash == null)
                 throw new DataMissingException();
 
-             await this.CommandExecutor
-                .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage, this.OwinContext))
-                .WithCurrentCulture();
+            await this.CommandExecutor
+                .Execute(new RegisterCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash), data.PreferredLanguage, this.OwinContext));
 
             return this.Request.GetMessage(HttpStatusCode.OK);
         }
@@ -59,8 +59,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             await this.CommandExecutor
-                .Execute(new FinishRegistrationCommand(token))
-                .WithCurrentCulture();
+                .Execute(new FinishRegistrationCommand(token));
 
             return this.Request.GetMessage(HttpStatusCode.Created);
         }
@@ -73,8 +72,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             await this.CommandExecutor
-                .Execute(new ResetPasswordCommand(data.EmailAddress, this.OwinContext))
-                .WithCurrentCulture();
+                .Execute(new ResetPasswordCommand(data.EmailAddress, this.OwinContext));
 
             return this.Request.GetMessage(HttpStatusCode.OK);
         }
@@ -87,8 +85,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             await this.CommandExecutor
-                .Execute(new FinishPasswordResetCommand(token))
-                .WithCurrentCulture();
+                .Execute(new FinishPasswordResetCommand(token));
 
             return this.Request.GetMessage(HttpStatusCode.OK);
         }
@@ -101,8 +98,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             var token = await this.CommandExecutor
-                .Execute(new LoginCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash)))
-                .WithCurrentCulture();
+                .Execute(new LoginCommand(data.EmailAddress, Convert.FromBase64String(data.PasswordSHA256Hash)));
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
@@ -114,7 +110,7 @@ namespace Logbook.Worker.Api.Controllers
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new DataMissingException();
 
-            var url = await this._microsoftService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            var url = await this._microsoftService.GetLoginUrlAsync(redirectUrl);
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
         }
 
@@ -126,8 +122,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             var token = await this.CommandExecutor
-                .Execute(new MicrosoftLoginCommand(data.Code, data.RedirectUrl))
-                .WithCurrentCulture();
+                .Execute(new MicrosoftLoginCommand(data.Code, data.RedirectUrl));
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
@@ -139,7 +134,7 @@ namespace Logbook.Worker.Api.Controllers
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new DataMissingException();
 
-            var url = await this._facebookService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            var url = await this._facebookService.GetLoginUrlAsync(redirectUrl);
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
         }
 
@@ -151,8 +146,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             var token = await this.CommandExecutor
-                .Execute(new FacebookLoginCommand(data.Code, data.RedirectUrl))
-                .WithCurrentCulture();
+                .Execute(new FacebookLoginCommand(data.Code, data.RedirectUrl));
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
@@ -164,7 +158,7 @@ namespace Logbook.Worker.Api.Controllers
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new DataMissingException();
 
-            var url = await this._googleService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            var url = await this._googleService.GetLoginUrlAsync(redirectUrl);
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, new {Url = url});
         }
 
@@ -176,8 +170,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             var token = await this.CommandExecutor
-                .Execute(new GoogleLoginCommand(data.Code, data.RedirectUrl))
-                .WithCurrentCulture();
+                .Execute(new GoogleLoginCommand(data.Code, data.RedirectUrl));
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }
@@ -189,7 +182,7 @@ namespace Logbook.Worker.Api.Controllers
             if (string.IsNullOrWhiteSpace(redirectUrl))
                 throw new DataMissingException();
 
-            var url = await this._twitterService.GetLoginUrlAsync(redirectUrl).WithCurrentCulture();
+            var url = await this._twitterService.GetLoginUrlAsync(redirectUrl);
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, url);
         }
 
@@ -201,8 +194,7 @@ namespace Logbook.Worker.Api.Controllers
                 throw new DataMissingException();
 
             var token = await this.CommandExecutor
-                .Execute(new TwitterLoginCommand(data.OAuthVerifier, data.Payload))
-                .WithCurrentCulture();
+                .Execute(new TwitterLoginCommand(data.OAuthVerifier, data.Payload));
 
             return this.Request.GetMessageWithObject(HttpStatusCode.OK, token);
         }

@@ -1,25 +1,37 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Logbook.Shared;
 
 namespace Logbook.Worker.Api.Extensions
 {
     public static class HttpRequestMessageExtensions
     {
         
-        public static HttpResponseMessage GetMessageWithError(this HttpRequestMessage request, HttpStatusCode statusCode, string message)
+        public static HttpResponseMessage GetMessageWithError(this HttpRequestMessage self, HttpStatusCode statusCode, string message)
         {
-            return request.CreateErrorResponse(statusCode, new HttpError(message));
+            Guard.NotNull(self, nameof(self));
+            Guard.NotInvalidEnum(statusCode, nameof(statusCode));
+            Guard.NotNullOrWhiteSpace(message, nameof(message));
+
+            return self.CreateErrorResponse(statusCode, new HttpError(message));
         }
         
-        public static HttpResponseMessage GetMessageWithObject<T>(this HttpRequestMessage request, HttpStatusCode statusCode, T obj)
+        public static HttpResponseMessage GetMessageWithObject<T>(this HttpRequestMessage self, HttpStatusCode statusCode, T obj)
         {
-            return request.CreateResponse(statusCode, obj);
+            Guard.NotNull(self, nameof(self));
+            Guard.NotInvalidEnum(statusCode, nameof(statusCode));
+            Guard.NotNull(obj, nameof(obj));
+
+            return self.CreateResponse(statusCode, obj);
         }
         
-        public static HttpResponseMessage GetMessage(this HttpRequestMessage request, HttpStatusCode statusCode)
+        public static HttpResponseMessage GetMessage(this HttpRequestMessage self, HttpStatusCode statusCode)
         {
-            return request.CreateResponse(statusCode);
+            Guard.NotNull(self, nameof(self));
+            Guard.NotInvalidEnum(statusCode, nameof(statusCode));
+
+            return self.CreateResponse(statusCode);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace Logbook.Server.Infrastructure.Commands
 
         public async Task<T> Batch<T>(Func<ICommandScope, Task<T>> batchAction)
         {
+            Guard.NotNull(batchAction, nameof(batchAction));
+
             using (this._container.BeginScope())
             {
                 var session = this._container.Resolve<ISession>();
@@ -32,7 +34,7 @@ namespace Logbook.Server.Infrastructure.Commands
 
                 try
                 {
-                    T result = await batchAction(scope).WithCurrentCulture();
+                    T result = await batchAction(scope);
 
                     transaction.Commit();
 

@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Shared;
 using Newtonsoft.Json;
 
 namespace Logbook.Server.Infrastructure.Encryption
@@ -10,6 +11,9 @@ namespace Logbook.Server.Infrastructure.Encryption
     {
         public byte[] Encrypt<T>(T payload, string password)
         {
+            Guard.NotNull(payload, nameof(payload));
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             using (var algorithm = this.CreateAlgorithm(password))
             using (var stream = new MemoryStream())
             using (var cryptoStream = new CryptoStream(stream, algorithm.CreateEncryptor(), CryptoStreamMode.Write))
@@ -26,6 +30,9 @@ namespace Logbook.Server.Infrastructure.Encryption
 
         public T Decrypt<T>(byte[] data, string password)
         {
+            Guard.NotNullOrEmpty(data, nameof(data));
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             using (var algorithm = this.CreateAlgorithm(password))
             using (var stream = new MemoryStream())
             using (var cryptoStream = new CryptoStream(stream, algorithm.CreateDecryptor(), CryptoStreamMode.Write))
@@ -42,6 +49,8 @@ namespace Logbook.Server.Infrastructure.Encryption
 
         private SymmetricAlgorithm CreateAlgorithm(string password)
         {
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             if (password.Length < 8)
                 password = password.PadRight(8);
 

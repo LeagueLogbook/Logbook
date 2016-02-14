@@ -47,6 +47,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         public async Task<object> Execute(FinishPasswordResetCommand command, ICommandScope scope)
         {
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
+
             var emailAddress = this._encryptionService.ValidateAndDecodeForPasswordReset(command.Token);
 
             var user = this._session.Query<User>()
@@ -61,9 +64,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
             var newPassword = this._secretGenerator.GenerateString(Config.Security.PasswordResetNewPasswordLength);
             var newPasswordSHA256Hash = this._hashingService.ComputeSHA256Hash(newPassword);
 
-            await scope
-                .Execute(new ChangePasswordCommand(user, newPasswordSHA256Hash))
-                .WithCurrentCulture();
+            await scope.Execute(new ChangePasswordCommand(user, newPasswordSHA256Hash));
 
             var emailTemplate = new PasswordResettedEmailTemplate
             {

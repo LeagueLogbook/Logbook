@@ -17,7 +17,7 @@ namespace Logbook.Server.Infrastructure.Windsor
 
         private CloudStorageAccount GetStorageAccount()
         {
-            return CloudStorageAccount.Parse(Config.Security.AzureStorageConnectionString);
+            return CloudStorageAccount.Parse(Config.Azure.AzureStorageConnectionString);
         }
 
         private CloudQueueClient CreateQueueClient()

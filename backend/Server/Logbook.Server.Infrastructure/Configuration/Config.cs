@@ -3,6 +3,7 @@ namespace Logbook.Server.Infrastructure.Configuration
     public static class Config
     {
         public static IHttpConfig Http { get; set; }
+        public static IAzureConfig Azure { get; set; }
         public static IEmailConfig Email { get; set; }
         public static IAppConfig App { get; set; }
         public static IEmailTemplateConfig EmailTemplate { get; set; }

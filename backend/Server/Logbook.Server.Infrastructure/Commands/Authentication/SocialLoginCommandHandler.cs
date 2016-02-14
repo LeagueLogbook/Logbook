@@ -38,7 +38,10 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         #region Methods
         public async Task<JsonWebToken> Execute(TCommand command, ICommandScope scope)
         {
-            var socialLoginUser = await this.GetMeAsync(command).WithCurrentCulture();
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
+
+            var socialLoginUser = await this.GetMeAsync(command);
 
             if (socialLoginUser == null)
                 throw new InternalServerErrorException();
@@ -52,7 +55,7 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
             foreach (var caseToCheck in casesToCheck)
             {
-                var userId = await caseToCheck(socialLoginUser).WithCurrentCulture();
+                var userId = await caseToCheck(socialLoginUser);
                 if (userId != null)
                 {
                     return this._jsonWebTokenService.GenerateForLogin(userId.Value);
@@ -66,12 +69,16 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         #region Private Methods
         private Task<int?> FindUserIdBySocialLoginUserId(SocialLoginUser socialLoginUser)
         {
+            Guard.NotNull(socialLoginUser, nameof(socialLoginUser));
+
             var user = this.GetUserForSocialUser(socialLoginUser);
             return Task.FromResult(user?.Id);
         }
 
         private Task<int?> FindUserIdByEmailAddress(SocialLoginUser socialLoginUser)
         {
+            Guard.NotNull(socialLoginUser, nameof(socialLoginUser));
+
             var user = this._session.Query<User>()
                 .Where(f => f.EmailAddress.ToUpper() == socialLoginUser.EmailAddress.Trim().ToUpper())
                 .FetchMany(f => f.Authentications)
@@ -90,6 +97,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         private Task<int?> CreateNewUser(SocialLoginUser socialLoginUser)
         {
+            Guard.NotNull(socialLoginUser, nameof(socialLoginUser));
+
             var authentication = this.CreateAuthentication(socialLoginUser);
 
             var user = new User

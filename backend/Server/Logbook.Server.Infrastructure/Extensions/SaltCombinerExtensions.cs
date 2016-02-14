@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Extensions
 {
@@ -15,6 +16,11 @@ namespace Logbook.Server.Infrastructure.Extensions
         /// <param name="password">The password.</param>
         public static byte[] Combine(this ISaltCombiner self, byte[] salt, int iterationCount, byte[] password)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrEmpty(salt, nameof(salt));
+            Guard.NotZeroOrNegative(iterationCount, nameof(iterationCount));
+            Guard.NotNullOrEmpty(password, nameof(password));
+
             return self.Combine(salt, iterationCount, BitConverter.ToString(password));
         }
     }

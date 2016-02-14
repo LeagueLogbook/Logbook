@@ -9,6 +9,7 @@ using Logbook.Server.Contracts.Commands.CurrentGames;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models.Games;
 using Logbook.Shared.Models.Summoners;
@@ -22,6 +23,7 @@ namespace Logbook.Worker.Api.Controllers
         public CurrentGamesController(ICommandExecutor commandExecutor)
             : base(commandExecutor)
         {
+            Guard.NotNull(commandExecutor, nameof(commandExecutor));
         }
 
         [HttpGet]

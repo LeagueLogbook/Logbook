@@ -43,23 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\CultureAwaiter.cs" />
     <Compile Include="Common\NullDisposable.cs" />
-    <Compile Include="Configuration\BaseSetting.cs" />
-    <Compile Include="Configuration\BoolSetting.cs" />
-    <Compile Include="Configuration\IntSetting.cs" />
-    <Compile Include="Configuration\StringSetting.cs" />
-    <Compile Include="Configuration\TimeSpanSetting.cs" />
-    <Compile Include="Configuration\UriListSetting.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="ControllerModels\AddSummonerData.cs" />
-    <Compile Include="ControllerModels\DeleteSummonerData.cs" />
-    <Compile Include="ControllerModels\FacebookLoginData.cs" />
-    <Compile Include="ControllerModels\GoogleLoginData.cs" />
-    <Compile Include="ControllerModels\LoginData.cs" />
-    <Compile Include="ControllerModels\MicrosoftLoginData.cs" />
-    <Compile Include="ControllerModels\PasswordResetData.cs" />
-    <Compile Include="ControllerModels\TwitterLoginData.cs" />
     <Compile Include="Entities\AggregateRoot.cs" />
     <Compile Include="Entities\Authentication\AuthenticationKindBase.cs" />
     <Compile Include="Entities\Authentication\FacebookAuthenticationKind.cs" />
@@ -81,9 +66,7 @@
     <Compile Include="Models\Games\Team.cs" />
     <Compile Include="Entities\Summoners\Summoner.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Extensions\TaskExtensions.cs" />
     <Compile Include="Models\Authentication\JsonWebTokenModel.cs" />
-    <Compile Include="ControllerModels\RegisterData.cs" />
     <Compile Include="Models\Summoners\SummonerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

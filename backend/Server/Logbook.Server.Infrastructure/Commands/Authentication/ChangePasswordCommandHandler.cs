@@ -7,6 +7,7 @@ using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Authentication;
 using Logbook.Shared.Extensions;
 
@@ -19,12 +20,18 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
 
         public ChangePasswordCommandHandler(ISecretGenerator secretGenerator, ISaltCombiner saltCombiner)
         {
+            Guard.NotNull(secretGenerator, nameof(secretGenerator));
+            Guard.NotNull(saltCombiner, nameof(saltCombiner));
+
             this._secretGenerator = secretGenerator;
             this._saltCombiner = saltCombiner;
         }
 
         public async Task<object> Execute(ChangePasswordCommand command, ICommandScope scope)
         {
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
+
             var logbookAuthentication = command.User.Authentications
                 .OfType<LogbookAuthenticationKind>()
                 .FirstOrDefault();

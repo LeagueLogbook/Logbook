@@ -1,4 +1,5 @@
 ﻿using System;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Extensions
 {
@@ -6,6 +7,8 @@ namespace Logbook.Server.Infrastructure.Extensions
     {
         public static string ToBase64UrlSafe(this byte[] self)
         {
+            Guard.NotNull(self, nameof(self));
+
             return Convert.ToBase64String(self)
                 .Replace("+", "-")
                 .Replace("/", "_")
@@ -14,6 +17,8 @@ namespace Logbook.Server.Infrastructure.Extensions
 
         public static byte[] FromBase64UrlSafe(this string self)
         {
+            Guard.NotNullOrWhiteSpace(self, nameof(self));
+
             string base64 = self
                 .Replace("-", "+")
                 .Replace("_", "/");

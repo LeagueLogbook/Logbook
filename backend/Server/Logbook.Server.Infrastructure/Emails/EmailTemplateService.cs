@@ -10,6 +10,8 @@ namespace Logbook.Server.Infrastructure.Emails
     {
         public Email GetTemplate(IEmailTemplate email)
         {
+            Guard.NotNull(email, nameof(email));
+
             var variables = email.GetVariablesToReplace();
 
             var template = this.ReadEmailTemplate(email.GetType());
@@ -22,6 +24,9 @@ namespace Logbook.Server.Infrastructure.Emails
 
         private string ReplaceVariables(string text, Dictionary<string, string> variables)
         {
+            Guard.NotNull(text, nameof(text));
+            Guard.NotNull(variables, nameof(variables));
+
             foreach (var pair in variables)
             {
                 text = text.Replace($"@@{pair.Key}@@", pair.Value);
@@ -32,6 +37,8 @@ namespace Logbook.Server.Infrastructure.Emails
 
         private Email ReadEmailTemplate(Type templateType)
         {
+            Guard.NotNull(templateType, nameof(templateType));
+
             string name = templateType.Name;
 
             if (templateType.Name.EndsWith(Constants.Email.TemplateSuffix))

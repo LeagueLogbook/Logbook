@@ -8,6 +8,7 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Authentication;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
+using Logbook.Shared;
 using Logbook.Shared.Extensions;
 using Logbook.Worker.Api.Extensions;
 
@@ -30,11 +31,12 @@ namespace Logbook.Worker.Api.Filter
         /// <param name="cancellationToken">The cancellation token.</param>
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
+            Guard.NotNull(context, nameof(context));
+
             var commandExecutor = context.ActionContext.ControllerContext.Configuration.DependencyResolver.GetService<ICommandExecutor>();
 
             var userId = await commandExecutor
-                .Execute(new AuthenticateCommand(context.Request.GetOwinContext()))
-                .WithCurrentCulture();
+                .Execute(new AuthenticateCommand(context.Request.GetOwinContext()));
 
             if (userId > 0)
             {

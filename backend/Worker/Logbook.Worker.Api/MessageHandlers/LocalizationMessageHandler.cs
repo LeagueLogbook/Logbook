@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Logbook.Localization;
+using Logbook.Shared;
 
 namespace Logbook.Worker.Api.MessageHandlers
 {
@@ -17,6 +18,8 @@ namespace Logbook.Worker.Api.MessageHandlers
         /// <param name="cancellationToken">A cancellation token to cancel operation.</param>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            Guard.NotNull(request, nameof(request));
+
             if (request.Headers.AcceptLanguage != null && request.Headers.AcceptLanguage.Count > 0)
             {
                 string language = request.Headers.AcceptLanguage.First().Value;

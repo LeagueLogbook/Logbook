@@ -143,6 +143,7 @@
     <Compile Include="Commands\Users\GetUserCommandHandler.cs" />
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\IAppConfig.cs" />
+    <Compile Include="Configuration\IAzureConfig.cs" />
     <Compile Include="Configuration\IDatabaseConfig.cs" />
     <Compile Include="Configuration\IEmailConfig.cs" />
     <Compile Include="Configuration\IEmailTemplateConfig.cs" />
@@ -178,7 +179,7 @@
     <Compile Include="Extensions\CommandScopeExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\HashingServiceExtensions.cs" />
-    <Compile Include="Extensions\IEncryptionServiceExtensions.cs" />
+    <Compile Include="Extensions\EncryptionServiceExtensions.cs" />
     <Compile Include="Extensions\JsonWebTokenServiceExtensions.cs" />
     <Compile Include="Extensions\SaltCombinerExtensions.cs" />
     <Compile Include="Extensions\CommandExecutorExtensions.cs" />

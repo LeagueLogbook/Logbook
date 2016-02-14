@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using Logbook.Server.Contracts.Encryption;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Encryption
 {
@@ -14,6 +15,8 @@ namespace Logbook.Server.Infrastructure.Encryption
 
         public byte[] ComputeSHA256Hash(byte[] data)
         {
+            Guard.NotNullOrEmpty(data, nameof(data));
+
             return this._sha256Hash.ComputeHash(data);
         }
     }

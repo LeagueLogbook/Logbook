@@ -3,6 +3,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Emails;
 using Logbook.Server.Infrastructure.Configuration;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Emails
 {
@@ -11,17 +12,22 @@ namespace Logbook.Server.Infrastructure.Emails
         #region Implementation of IEmailSender
         public async Task SendMailAsync(Email email)
         {
+            Guard.NotNull(email, nameof(email));
+
             using (var mailMessage = this.ToMailMessage(email))
             using (var client = this.CreateSmtpClient())
             {
                 await client.SendMailAsync(mailMessage);
             }
         }
+
         #endregion
 
         #region Private Methods
         private MailMessage ToMailMessage(Email email)
         {
+            Guard.NotNull(email, nameof(email));
+
             return new MailMessage(email.Sender, email.Receiver, email.Subject, email.Body);
         }
         private SmtpClient CreateSmtpClient()

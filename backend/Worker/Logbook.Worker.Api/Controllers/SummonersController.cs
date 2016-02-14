@@ -6,11 +6,12 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Server.Infrastructure.Extensions;
-using Logbook.Shared.ControllerModels;
+using Logbook.Shared;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models.Summoners;
 using Logbook.Worker.Api.Extensions;
 using Logbook.Worker.Api.Filter;
+using Logbook.Worker.Api.Models;
 
 namespace Logbook.Worker.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace Logbook.Worker.Api.Controllers
         public SummonersController(ICommandExecutor commandExecutor)
             : base(commandExecutor)
         {
+            Guard.NotNull(commandExecutor, nameof(commandExecutor));
         }
 
         [HttpGet]

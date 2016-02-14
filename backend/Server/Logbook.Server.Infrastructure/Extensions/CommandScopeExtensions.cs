@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 using Logbook.Server.Contracts.Commands;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Extensions
 {
@@ -9,6 +9,9 @@ namespace Logbook.Server.Infrastructure.Extensions
     {
         public static async Task<IList<TTarget>> MapList<TSource, TTarget>(this ICommandScope scope, IList<TSource> sources)
         {
+            Guard.NotNull(scope, nameof(scope));
+            Guard.NotNull(sources, nameof(sources));
+
             var result = new List<TTarget>();
 
             foreach (var source in sources)

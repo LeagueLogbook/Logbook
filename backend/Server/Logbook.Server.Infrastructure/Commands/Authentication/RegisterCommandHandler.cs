@@ -58,6 +58,9 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="scope">The scope.</param>
         public async Task<object> Execute(RegisterCommand command, ICommandScope scope)
         {
+            Guard.NotNull(command, nameof(command));
+            Guard.NotNull(scope, nameof(scope));
+
             var emailAddressAlreadyInUse = this._session.Query<User>()
                 .Any(f => f.EmailAddress.ToUpper() == command.EmailAddress.Trim().ToUpper());
 

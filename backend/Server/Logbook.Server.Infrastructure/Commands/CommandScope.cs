@@ -43,7 +43,7 @@ namespace Logbook.Server.Infrastructure.Commands
             object actualCommandHandler = this._container.Resolve(handlerType);
 
             var method = actualCommandHandler.GetType().GetMethod(nameof(ICommandHandler<ICommand<object>, object>.Execute));
-            var result = await ((Task<TResult>)method.Invoke(actualCommandHandler, new object[] {command, this})).WithCurrentCulture();
+            var result = await (Task<TResult>)method.Invoke(actualCommandHandler, new object[] {command, this});
             
 
             return result;
@@ -62,7 +62,7 @@ namespace Logbook.Server.Infrastructure.Commands
             var actualMapper = this._container.Resolve(mapperType);
 
             var method = actualMapper.GetType().GetMethod(nameof(IMapper<object, object>.MapAsync));
-            var result = await ((Task<TTarget>)method.Invoke(actualMapper, new object[] {source})).WithCurrentCulture();
+            var result = await (Task<TTarget>)method.Invoke(actualMapper, new object[] {source});
 
             return result;
         }

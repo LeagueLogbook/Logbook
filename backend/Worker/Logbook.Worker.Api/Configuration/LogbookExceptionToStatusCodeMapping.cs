@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared;
 
 namespace Logbook.Worker.Api.Configuration
 {
@@ -23,6 +24,8 @@ namespace Logbook.Worker.Api.Configuration
 
         public static HttpStatusCode GetStatusCode(LogbookException exception)
         {
+            Guard.NotNull(exception, nameof(exception));
+
             HttpStatusCode statusCode;
 
             if (_exceptionToStatusCodeMapping.TryGetValue(exception.GetType(), out statusCode))

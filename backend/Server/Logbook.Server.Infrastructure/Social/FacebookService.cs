@@ -14,6 +14,8 @@ namespace Logbook.Server.Infrastructure.Social
     {
         public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+
             string scope = string.Join(",", Constants.Authentication.FacebookRequiredScopes);
 
             var url = $"https://www.facebook.com/dialog/oauth" +
@@ -25,12 +27,15 @@ namespace Logbook.Server.Infrastructure.Social
             return Task.FromResult(url);
         }
 
-        public async Task<string> ExchangeCodeForTokenAsync(string redirectURl, string code)
+        public async Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+            Guard.NotNullOrWhiteSpace(code, nameof(code));
+
             var client = new HttpClient();
             var response = await client.GetAsync($"https://graph.facebook.com/oauth/access_token" +
                                                  $"?client_id={Config.Security.FacebookAppId}" +
-                                                 $"&redirect_uri={redirectURl}" +
+                                                 $"&redirect_uri={redirectUrl}" +
                                                  $"&client_secret={Config.Security.FacebookAppSecret}" +
                                                  $"&code={code}");
 
@@ -48,6 +53,8 @@ namespace Logbook.Server.Infrastructure.Social
 
         private async Task<bool> HasRequiredScopes(string token)
         {
+            Guard.NotNullOrWhiteSpace(token, nameof(token));
+
             var client = new HttpClient();
             var response = await client.GetAsync($"https://graph.facebook.com/debug_token" +
                                                  $"?input_token={token}" +
@@ -71,6 +78,8 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<FacebookUser> GetMeAsync(string token)
         {
+            Guard.NotNullOrWhiteSpace(token, nameof(token));
+
             var client = new HttpClient();
             var response = await client.GetAsync($"https://graph.facebook.com/me?fields=id,email,locale&access_token={token}");
 

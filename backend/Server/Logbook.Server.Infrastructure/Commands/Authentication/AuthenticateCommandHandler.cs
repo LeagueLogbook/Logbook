@@ -60,6 +60,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="requestContext">The request context.</param>
         private string GetToken(IOwinContext requestContext)
         {
+            Guard.NotNull(requestContext, nameof(requestContext));
+
             string tokenFromUri = this.GetTokenFromUri(requestContext);
 
             if (tokenFromUri != null)
@@ -78,6 +80,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="requestContext">The request context.</param>
         private string GetTokenFromUri(IOwinContext requestContext)
         {
+            Guard.NotNull(requestContext, nameof(requestContext));
+
             IList<string> values = requestContext.Request.Query.GetValues(Constants.Authentication.AuthorizationQueryPart);
             return values?.FirstOrDefault();
         }
@@ -87,6 +91,8 @@ namespace Logbook.Server.Infrastructure.Commands.Authentication
         /// <param name="requestContext">The request context.</param>
         private string GetTokenFromHeader(IOwinContext requestContext)
         {
+            Guard.NotNull(requestContext, nameof(requestContext));
+
             string authorizationHeader = requestContext.Request.Headers.Get("Authorization");
 
             string[] parts = authorizationHeader?.Split(' ');

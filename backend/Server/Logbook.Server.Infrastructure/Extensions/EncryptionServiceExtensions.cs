@@ -4,23 +4,37 @@ using System.Web;
 using Logbook.Server.Contracts.Encryption;
 using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Exceptions;
+using Logbook.Shared;
 
 namespace Logbook.Server.Infrastructure.Extensions
 {
-    public static class IEncryptionServiceExtensions
+    public static class EncryptionServiceExtensions
     {
         public static string Encrypt<T>(this IEncryptionService self, T payload, string password)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNull(payload, nameof(payload));
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             return self.Encrypt(payload, password).ToBase64UrlSafe();
         }
 
         public static T Decrypt<T>(this IEncryptionService self, string data, string password)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrWhiteSpace(data, nameof(data));
+            Guard.NotNullOrWhiteSpace(password, nameof(password));
+
             return self.Decrypt<T>(data.FromBase64UrlSafe(), password);
         }
 
         public static string GenerateForConfirmEmail(this IEncryptionService self, string emailAddress, string preferredLanauge, byte[] passwordSHA256Hash)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrWhiteSpace(emailAddress, nameof(emailAddress));
+            Guard.NotNullOrWhiteSpace(preferredLanauge, nameof(preferredLanauge));
+            Guard.NotNullOrEmpty(passwordSHA256Hash, nameof(passwordSHA256Hash));
+
             var payload = new ForConfirmEmail
             {
                 EmailAddress = emailAddress,
@@ -34,6 +48,9 @@ namespace Logbook.Server.Infrastructure.Extensions
 
         public static ForConfirmEmail ValidateAndDecodeForConfirmEmail(this IEncryptionService self, string data)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrWhiteSpace(data, nameof(data));
+
             var result = self.Decrypt<ForConfirmEmail>(data, Config.Security.ConfirmEmailKeyPhrase);
 
             if (DateTimeOffset.UtcNow > result.Timeout)
@@ -44,6 +61,9 @@ namespace Logbook.Server.Infrastructure.Extensions
 
         public static string GenerateForPasswordReset(this IEncryptionService self, string emailAddress)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrWhiteSpace(emailAddress, nameof(emailAddress));
+
             var payload = new ForPasswordReset
             {
                 EmailAddress = emailAddress,
@@ -55,6 +75,9 @@ namespace Logbook.Server.Infrastructure.Extensions
 
         public static string ValidateAndDecodeForPasswordReset(this IEncryptionService self, string jsonWebToken)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrWhiteSpace(jsonWebToken, nameof(jsonWebToken));
+
             var result = self.Decrypt<ForPasswordReset>(jsonWebToken, Config.Security.PasswordResetKeyPhrase);
 
             if (DateTimeOffset.UtcNow > result.Timeout)
@@ -65,6 +88,10 @@ namespace Logbook.Server.Infrastructure.Extensions
 
         public static string GenerateForTwitterLogin(this IEncryptionService self, string oauthToken, string oauthTokenSecret)
         {
+            Guard.NotNull(self, nameof(self));
+            Guard.NotNullOrWhiteSpace(oauthToken, nameof(oauthToken));
+            Guard.NotNullOrWhiteSpace(oauthTokenSecret, nameof(oauthTokenSecret));
+
             var payload = new ForTwitterLogin
             {
                 OAuthToken = oauthToken,

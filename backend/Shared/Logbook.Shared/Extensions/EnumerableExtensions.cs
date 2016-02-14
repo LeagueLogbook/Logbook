@@ -14,6 +14,9 @@ namespace Logbook.Shared.Extensions
         /// <param name="childSelector">The child selector.</param>
         public static IEnumerable<T> Traverse<T>(this IEnumerable<T> items, Func<T, IEnumerable<T>> childSelector)
         {
+            Guard.NotNull(items, nameof(items));
+            Guard.NotNull(childSelector, nameof(childSelector));
+
             var result = new HashSet<T>();
 
             var stack = new Stack<T>(items);

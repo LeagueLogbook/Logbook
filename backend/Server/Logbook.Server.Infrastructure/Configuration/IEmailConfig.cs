@@ -8,6 +8,5 @@ namespace Logbook.Server.Infrastructure.Configuration
         string SmtpUsername { get; }
         string SmtpPassword { get; }
         bool SmtpUseSsl { get; }
-        string EmailQueueName { get; }
     }
 }

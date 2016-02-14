@@ -52,5 +52,12 @@ namespace Logbook.Shared
             if (argument <= 0)
                 throw new ArgumentException("Value is equal or less than zero.", argumentName);
         }
+
+        [DebuggerStepThrough]
+        public static void NotZeroOrNegative(TimeSpan argument, string argumentName)
+        {
+            if (argument < TimeSpan.Zero)
+                throw new ArgumentException("Value is equal or less than zero.", argumentName);
+        }
     }
 }

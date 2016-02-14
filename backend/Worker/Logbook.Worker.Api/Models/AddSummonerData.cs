@@ -1,6 +1,6 @@
 ﻿using Logbook.Shared.Entities.Summoners;
 
-namespace Logbook.Shared.ControllerModels
+namespace Logbook.Worker.Api.Models
 {
     public class AddSummonerData
     {

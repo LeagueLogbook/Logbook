@@ -15,6 +15,8 @@ namespace Logbook.Server.Infrastructure.Social
     {
         public Task<string> GetLoginUrlAsync(string redirectUrl)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+
             string scope = string.Join(" ", Constants.Authentication.GoogleRequiredScopes);
 
             var url = $"https://accounts.google.com/o/oauth2/v2/auth" +
@@ -28,6 +30,9 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<string> ExchangeCodeForTokenAsync(string redirectUrl, string code)
         {
+            Guard.NotNullOrWhiteSpace(redirectUrl, nameof(redirectUrl));
+            Guard.NotNullOrWhiteSpace(code, nameof(code));
+
             var data = new Dictionary<string, string>
             {
                 ["code"] = code,
@@ -51,6 +56,8 @@ namespace Logbook.Server.Infrastructure.Social
 
         public async Task<GoogleUser> GetMeAsync(string token)
         {
+            Guard.NotNullOrWhiteSpace(token, nameof(token));
+
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
