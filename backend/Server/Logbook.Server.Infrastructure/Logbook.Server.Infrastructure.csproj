@@ -52,6 +52,10 @@
       <HintPath>..\..\packages\JWT.1.3.4\lib\3.5\JWT.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.2.0.0-beta4\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
       <Private>True</Private>
@@ -206,6 +210,7 @@
     <Compile Include="Social\GoogleService.cs" />
     <Compile Include="Social\MicrosoftService.cs" />
     <Compile Include="Social\TwitterService.cs" />
+    <Compile Include="AppInsights.cs" />
     <Compile Include="Windsor\AzureStorageInstaller.cs" />
     <Compile Include="Windsor\CommandInstaller.cs" />
     <Compile Include="Windsor\ContainerInstaller.cs" />

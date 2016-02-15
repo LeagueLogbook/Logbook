@@ -1,7 +1,12 @@
+using System;
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Logbook.Server.Infrastructure;
 using Logbook.Shared;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace Logbook.Worker.Api.MessageHandlers
 {
@@ -17,9 +22,32 @@ namespace Logbook.Worker.Api.MessageHandlers
         {
             Guard.NotNull(request, nameof(request));
 
-            HttpResponseMessage result = await base.SendAsync(request, cancellationToken);
-            
-            return result;
+            var startTime = DateTimeOffset.UtcNow;
+            var watch = Stopwatch.StartNew();
+            HttpResponseMessage result = null;
+
+            try
+            {
+
+                return result = await base.SendAsync(request, cancellationToken);
+            }
+            finally
+            {
+                watch.Stop();
+
+                var telemetry = new RequestTelemetry
+                {
+                    HttpMethod = request.Method.Method,
+                    Duration = watch.Elapsed,
+                    ResponseCode = result != null ? Enum.GetName(typeof(HttpStatusCode), result.StatusCode) : "Error",
+                    Success = result != null,
+                    StartTime = startTime,
+                    Timestamp = DateTimeOffset.UtcNow,
+                    Url = request.RequestUri
+                };
+
+                AppInsights.Client.TrackRequest(telemetry);
+            }
         }
         #endregion
     }

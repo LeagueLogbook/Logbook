@@ -9,6 +9,7 @@ using Logbook.Server.Contracts;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Contracts.Riot;
+using Logbook.Server.Infrastructure;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
 
@@ -50,6 +51,12 @@ namespace Logbook.Worker.UpdateSummoners
                     catch (Exception exception)
                     {
                         await this._updateSummonerQueue.TryAgainLaterAsync(summonerToUpdate.Value);
+
+                        var payload = new Dictionary<string, string>
+                        {
+                            ["Source"] = "Update Summoners Worker"
+                        };
+                        AppInsights.Client.TrackException(exception, payload);
                     }
                 }
             }

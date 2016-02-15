@@ -5,5 +5,6 @@ namespace Logbook.Server.Infrastructure.Configuration
         string EmailQueueName { get; }
         string SummonerUpdateQueueName { get; }
         string AzureStorageConnectionString { get; }
+        string ApplicationInsightsKey { get; }
     }
 }

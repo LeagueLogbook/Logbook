@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Http.ExceptionHandling;
 using Logbook.Server.Infrastructure;
@@ -17,7 +18,12 @@ namespace Logbook.Worker.Api.Configuration
             if (Debugger.IsAttached && Config.App.InDebugHoldOnException)
                 Debugger.Break();
 #endif
-            
+            var payload = new Dictionary<string, string>
+            {
+                ["Source"] = "Web API"
+            };
+
+            AppInsights.Client.TrackException(context.Exception, payload);
         }
     }
 }

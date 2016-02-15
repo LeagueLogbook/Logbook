@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts;
 using Logbook.Server.Contracts.Emails;
+using Logbook.Server.Infrastructure;
 using Logbook.Shared;
 
 namespace Logbook.Worker.EmailSender
@@ -44,6 +45,12 @@ namespace Logbook.Worker.EmailSender
                     catch (Exception exception)
                     {
                         await this._emailQueue.TryAgainLaterAsync(email);
+
+                        var payload = new Dictionary<string, string>
+                        {
+                            ["Source"] = "Email Sender Worker"
+                        };
+                        AppInsights.Client.TrackException(exception, payload);
                     }
                 }
             }
