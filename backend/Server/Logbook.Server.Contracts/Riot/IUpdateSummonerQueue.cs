@@ -9,5 +9,6 @@ namespace Logbook.Server.Contracts.Riot
         Task<int?> TryDequeueSummonerAsync();
 
         Task RemoveAsync(int summonerId);
+        Task TryAgainLaterAsync(int summonerId);
     }
 }

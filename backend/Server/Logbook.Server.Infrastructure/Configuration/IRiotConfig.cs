@@ -6,5 +6,6 @@ namespace Logbook.Server.Infrastructure.Configuration
         int RiotApiRateLimitPer10Seconds { get; }
         int RiotApiRateLimitPer10Minutes { get; }
         int UpdateSummonersEveryMinutes { get; }
+        int OnErrorTryToUpdateSummonerAgainAfterMinutes { get; }
     }
 }

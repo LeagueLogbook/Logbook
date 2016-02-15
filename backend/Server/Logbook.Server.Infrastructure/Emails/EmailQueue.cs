@@ -64,6 +64,18 @@ namespace Logbook.Server.Infrastructure.Emails
                 await queue.DeleteMessageAsync(message);
             }
         }
+
+        public async Task TryAgainLaterAsync(Email email)
+        {
+            Guard.NotNull(email, nameof(email));
+
+            CloudQueueMessage message;
+            if (this._dequeuedMessages.TryRemove(email, out message))
+            {
+                var queue = await this.GetQueueAsync();
+                await queue.UpdateMessageAsync(message, TimeSpan.FromSeconds(Config.Email.OnErrorTryToSendEmailAgainAfterMinutes), MessageUpdateFields.Visibility);
+            }
+        }
         #endregion
 
         #region Private Methods

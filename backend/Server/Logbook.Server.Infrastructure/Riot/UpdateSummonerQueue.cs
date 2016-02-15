@@ -61,6 +61,18 @@ namespace Logbook.Server.Infrastructure.Riot
             }
         }
 
+        public async Task TryAgainLaterAsync(int summonerId)
+        {
+            Guard.NotZeroOrNegative(summonerId, nameof(summonerId));
+
+            CloudQueueMessage message;
+            if (this._dequeuedMessages.TryRemove(summonerId, out message))
+            {
+                var queue = await this.GetQueueAsync();
+                await queue.UpdateMessageAsync(message, TimeSpan.FromSeconds(Config.Riot.OnErrorTryToUpdateSummonerAgainAfterMinutes), MessageUpdateFields.Visibility);
+            }
+        }
+
         private async Task<CloudQueue> GetQueueAsync()
         {
             if (this._queue != null)

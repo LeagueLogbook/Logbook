@@ -36,9 +36,15 @@ namespace Logbook.Worker.EmailSender
                 var email = await this._emailQueue.TryDequeueMailAsync();
                 if (email != null)
                 {
-                    await this._emailSender.SendMailAsync(email);
-
-                    await this._emailQueue.RemoveAsync(email);
+                    try
+                    {
+                        await this._emailSender.SendMailAsync(email);
+                        await this._emailQueue.RemoveAsync(email);
+                    }
+                    catch (Exception exception)
+                    {
+                        await this._emailQueue.TryAgainLaterAsync(email);
+                    }
                 }
             }
         }

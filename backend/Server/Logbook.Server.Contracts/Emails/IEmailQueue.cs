@@ -8,5 +8,6 @@ namespace Logbook.Server.Contracts.Emails
         Task<Email> TryDequeueMailAsync();
 
         Task RemoveAsync(Email email);
+        Task TryAgainLaterAsync(Email email);
     }
 }

@@ -40,10 +40,17 @@ namespace Logbook.Worker.UpdateSummoners
                 var summonerToUpdate = await this._updateSummonerQueue.TryDequeueSummonerAsync();
                 if (summonerToUpdate != null)
                 {
-                    await this._commandExecutor.Execute(new UpdateSummonerCommand(summonerToUpdate.Value));
-                    await this._updateSummonerQueue.RemoveAsync(summonerToUpdate.Value);
+                    try
+                    {
+                        await this._commandExecutor.Execute(new UpdateSummonerCommand(summonerToUpdate.Value));
+                        await this._updateSummonerQueue.RemoveAsync(summonerToUpdate.Value);
 
-                    await this._updateSummonerQueue.EnqueueSummonerAsync(summonerToUpdate.Value);
+                        await this._updateSummonerQueue.EnqueueSummonerAsync(summonerToUpdate.Value);
+                    }
+                    catch (Exception exception)
+                    {
+                        await this._updateSummonerQueue.TryAgainLaterAsync(summonerToUpdate.Value);
+                    }
                 }
             }
         }
