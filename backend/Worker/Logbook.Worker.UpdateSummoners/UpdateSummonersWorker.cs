@@ -43,6 +43,10 @@ namespace Logbook.Worker.UpdateSummoners
                 {
                     try
                     {
+                        AppInsights.GenerateAsyncAwareOperationId();
+
+                        AppInsights.Client.TrackEvent("Updating Summoner");
+
                         await this._commandExecutor.Execute(new UpdateSummonerCommand(summonerToUpdate.Value));
                         await this._updateSummonerQueue.RemoveAsync(summonerToUpdate.Value);
 

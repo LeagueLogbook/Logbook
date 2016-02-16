@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Logbook.Server.Infrastructure;
+using Logbook.Server.Infrastructure.Exceptions;
 using Logbook.Shared;
 using Microsoft.ApplicationInsights.DataContracts;
 
@@ -22,14 +23,20 @@ namespace Logbook.Worker.Api.MessageHandlers
         {
             Guard.NotNull(request, nameof(request));
 
+            AppInsights.GenerateAsyncAwareOperationId();
+
             var startTime = DateTimeOffset.UtcNow;
             var watch = Stopwatch.StartNew();
-            HttpResponseMessage result = null;
+            bool success = true;
 
             try
             {
-
-                return result = await base.SendAsync(request, cancellationToken);
+                return await base.SendAsync(request, cancellationToken);
+            }
+            catch (Exception exception) when (exception is LogbookException == false)
+            {
+                success = false;
+                throw;
             }
             finally
             {
@@ -39,10 +46,8 @@ namespace Logbook.Worker.Api.MessageHandlers
                 {
                     HttpMethod = request.Method.Method,
                     Duration = watch.Elapsed,
-                    ResponseCode = result != null ? Enum.GetName(typeof(HttpStatusCode), result.StatusCode) : "Error",
-                    Success = result != null,
+                    Success = success,
                     StartTime = startTime,
-                    Timestamp = DateTimeOffset.UtcNow,
                     Url = request.RequestUri
                 };
 

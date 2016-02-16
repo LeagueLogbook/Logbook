@@ -38,6 +38,8 @@ namespace Logbook.Server.Infrastructure.Commands
         public async Task<TResult> Execute<TResult>(ICommand<TResult> command)
         {
             Guard.NotNull(command, nameof(command));
+
+            AppInsights.Client.TrackEvent($"Executing command {command.GetType().Name} ({command.GetType().FullName})");
             
             Type handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
             object actualCommandHandler = this._container.Resolve(handlerType);
@@ -45,7 +47,6 @@ namespace Logbook.Server.Infrastructure.Commands
             var method = actualCommandHandler.GetType().GetMethod(nameof(ICommandHandler<ICommand<object>, object>.Execute));
             var result = await (Task<TResult>)method.Invoke(actualCommandHandler, new object[] {command, this});
             
-
             return result;
         }
         /// <summary>
@@ -57,6 +58,8 @@ namespace Logbook.Server.Infrastructure.Commands
         public async Task<TTarget> Map<TSource, TTarget>(TSource source)
         {
             Guard.NotNull(source, nameof(source));
+
+            AppInsights.Client.TrackEvent($"Mapping {typeof(TSource).Name} to {typeof(TTarget).Name}");
 
             Type mapperType = typeof (IMapper<,>).MakeGenericType(typeof (TSource), typeof (TTarget));
             var actualMapper = this._container.Resolve(mapperType);

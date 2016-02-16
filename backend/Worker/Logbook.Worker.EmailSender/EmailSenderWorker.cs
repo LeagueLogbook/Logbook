@@ -39,6 +39,10 @@ namespace Logbook.Worker.EmailSender
                 {
                     try
                     {
+                        AppInsights.GenerateAsyncAwareOperationId();
+
+                        AppInsights.Client.TrackEvent("Sending Email");
+
                         await this._emailSender.SendMailAsync(email);
                         await this._emailQueue.RemoveAsync(email);
                     }
