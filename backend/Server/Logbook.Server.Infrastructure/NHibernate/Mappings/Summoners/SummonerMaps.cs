@@ -15,11 +15,13 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
 
             this.Map(f => f.Region)
                 .Not.Nullable()
-                .Index("idx_Region");
+                .Index("idx_Region")
+                .UniqueKey("RiotSummonerIdentity");
 
             this.Map(f => f.RiotSummonerId)
                 .Not.Nullable()
-                .Index("idx_RiotSummonerId");
+                .Index("idx_RiotSummonerId")
+                .UniqueKey("RiotSummonerIdentity");
 
             this.Map(f => f.Level)
                 .Not.Nullable();
