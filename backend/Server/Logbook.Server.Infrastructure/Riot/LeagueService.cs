@@ -8,12 +8,19 @@ using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Shared;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models.Games;
+using Logbook.Shared.Models.MatchHistory;
 using RiotSharp;
+using RiotSharp.MatchEndpoint;
 using RiotSharp.StaticDataEndpoint;
+using BannedChampion = Logbook.Shared.Models.Games.BannedChampion;
 using GameMode = Logbook.Shared.Models.Games.GameMode;
 using GameType = Logbook.Shared.Models.Games.GameType;
+using Lane = Logbook.Shared.Entities.Summoners.Lane;
 using MapType = Logbook.Shared.Models.Games.MapType;
+using Participant = Logbook.Shared.Models.Games.Participant;
 using Region = Logbook.Shared.Entities.Summoners.Region;
+using Role = Logbook.Shared.Entities.Summoners.Role;
+using Team = Logbook.Shared.Models.Games.Team;
 
 namespace Logbook.Server.Infrastructure.Riot
 {
@@ -28,6 +35,8 @@ namespace Logbook.Server.Infrastructure.Riot
         private readonly Dictionary<GameMode, RiotSharp.GameMode> _gameModeMapping;
         private readonly Dictionary<MapType, RiotSharp.MapType> _mapTypeMapping;
         private readonly Dictionary<GameType, RiotSharp.GameType> _gameTypeMapping;
+        private readonly Dictionary<RiotSharp.MatchEndpoint.Lane, Lane> _laneMapping;
+        private readonly Dictionary<RiotSharp.MatchEndpoint.Role, Role> _roleMapping;
         #endregion
 
         #region Constructors
@@ -127,6 +136,23 @@ namespace Logbook.Server.Infrastructure.Riot
                 [GameType.Matched] = RiotSharp.GameType.MatchedGame,
                 [GameType.Tutorial] = RiotSharp.GameType.TutorialGame
             };
+            this._laneMapping = new Dictionary<RiotSharp.MatchEndpoint.Lane, Lane>
+            {
+                [RiotSharp.MatchEndpoint.Lane.Bot] = Lane.Bot,
+                [RiotSharp.MatchEndpoint.Lane.Bottom] = Lane.Bot,
+                [RiotSharp.MatchEndpoint.Lane.Jungle] = Lane.Jungle,
+                [RiotSharp.MatchEndpoint.Lane.Mid] = Lane.Mid,
+                [RiotSharp.MatchEndpoint.Lane.Middle] = Lane.Mid,
+                [RiotSharp.MatchEndpoint.Lane.Top] = Lane.Top,
+            };
+            this._roleMapping = new Dictionary<RiotSharp.MatchEndpoint.Role, Role>
+            {
+                [RiotSharp.MatchEndpoint.Role.Duo] = Role.Duo,
+                [RiotSharp.MatchEndpoint.Role.DuoCarry] = Role.DuoCarry,
+                [RiotSharp.MatchEndpoint.Role.DuoSupport] = Role.DuoSupport,
+                [RiotSharp.MatchEndpoint.Role.None] = Role.None,
+                [RiotSharp.MatchEndpoint.Role.Solo] = Role.Solo,
+            };
         }
         #endregion
 
@@ -190,6 +216,27 @@ namespace Logbook.Server.Infrastructure.Riot
             {
                 return null;
             }
+        }
+
+        public async Task<List<long>>  GetMatchHistory(Region region, long summonerId, DateTime? latestCheckedMatchTimeStamp)
+        {
+            latestCheckedMatchTimeStamp = latestCheckedMatchTimeStamp?.AddSeconds(1);
+
+            var matchList = await this._api.GetMatchListAsync(
+                this.ConvertRegion(region),
+                summonerId,
+                seasons: new List<Season>() {Season.Season2016},
+                beginTime: latestCheckedMatchTimeStamp);
+
+            return matchList.Matches
+                .Select(f => f.MatchID)
+                .ToList();
+        }
+
+        public async Task<PlayedMatch> GetMatch(Region region, long matchId)
+        {
+            MatchDetail match = await this._api.GetMatchAsync(this.ConvertRegion(region), matchId, includeTimeline: true);
+            return this.ConvertPlayedMatch(match);
         }
         #endregion
 
@@ -317,6 +364,45 @@ namespace Logbook.Server.Infrastructure.Riot
                 ProfileIconUri = this.GetProfileIconUri(summoner.ProfileIconId)
             };
         }
+
+        private PlayedMatch ConvertPlayedMatch(MatchDetail match)
+        {
+            Func<RiotSharp.MatchEndpoint.Participant, Shared.Models.MatchHistory.Participant> convertParticipant = f => new Shared.Models.MatchHistory.Participant
+            {
+                SummonerId = match.ParticipantIdentities.First(d => d.ParticipantId == f.ParticipantId).Player.SummonerId,
+                Lane = this.ConvertLane(f.Timeline.Lane),
+                Role = this.ConvertRole(f.Timeline.Role),
+                ChampionId = f.ChampionId,
+                Assists = f.Stats.Assists,
+                Kills = f.Stats.Kills,
+                Deaths = f.Stats.Deaths,
+                Creeps = f.Stats.MinionsKilled,
+                DestroyedWards = f.Stats.WardsKilled,
+                PlacedWards = f.Stats.WardsPlaced,
+            };
+            return new PlayedMatch
+            {
+                Duration = match.MatchDuration,
+                CreationDate = match.MatchCreation,
+                MatchId = match.MatchId,
+                PurpleTeam = new Shared.Models.MatchHistory.Team
+                {
+                    Winner = match.Teams.First(f => f.TeamId == 200).Winner,
+                    Participants = match.Participants
+                        .Where(f => f.TeamId == 200)
+                        .Select(convertParticipant)
+                        .ToList()
+                },
+                BlueTeam = new Shared.Models.MatchHistory.Team
+                {
+                    Winner = match.Teams.First(f => f.TeamId == 100).Winner,
+                    Participants = match.Participants
+                        .Where(f => f.TeamId == 100)
+                        .Select(convertParticipant)
+                        .ToList()
+                }
+            };
+        }
         #endregion
 
         #region Enum Conversion
@@ -367,6 +453,16 @@ namespace Logbook.Server.Infrastructure.Riot
             Guard.NotInvalidEnum(region, nameof(region));
 
             return this._regionMapping.First(f => f.Value == region).Key;
+        }
+
+        private Role ConvertRole(RiotSharp.MatchEndpoint.Role role)
+        {
+            return this._roleMapping[role];
+        }
+
+        private Lane ConvertLane(RiotSharp.MatchEndpoint.Lane lane)
+        {
+            return this._laneMapping[lane];
         }
         #endregion
     }

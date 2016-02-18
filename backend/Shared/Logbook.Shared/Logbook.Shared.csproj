@@ -54,7 +54,12 @@
     <Compile Include="Entities\Authentication\TwitterAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\User.cs" />
     <Compile Include="Entities\Summoners\AnalyzedMatchHistory.cs" />
+    <Compile Include="Entities\Summoners\ChampionStats.cs" />
+    <Compile Include="Entities\Summoners\ChampionWinrate.cs" />
+    <Compile Include="Entities\Summoners\Lane.cs" />
+    <Compile Include="Entities\Summoners\Participant.cs" />
     <Compile Include="Entities\Summoners\Region.cs" />
+    <Compile Include="Entities\Summoners\Role.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Models\Authentication\UserModel.cs" />
     <Compile Include="Models\Games\BannedChampion.cs" />
@@ -68,6 +73,9 @@
     <Compile Include="Entities\Summoners\Summoner.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Models\Authentication\JsonWebTokenModel.cs" />
+    <Compile Include="Models\MatchHistory\Participant.cs" />
+    <Compile Include="Models\MatchHistory\PlayedMatch.cs" />
+    <Compile Include="Models\MatchHistory\Team.cs" />
     <Compile Include="Models\Summoners\SummonerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
