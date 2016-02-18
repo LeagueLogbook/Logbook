@@ -16,5 +16,6 @@ namespace Logbook.Shared.Entities.Summoners
         public virtual int Level { get; set; }
         public virtual string ProfileIconUri { get; set; }
         public virtual IList<User> WatchedByUsers { get; set; } 
+        public virtual AnalyzedMatchHistory AnalyzedMatchHistory { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using Logbook.Server.Infrastructure.NHibernate.Extensions;
+using Logbook.Server.Infrastructure.NHibernate.UserTypes;
 using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
@@ -40,6 +41,10 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
                 .Cascade.None()
                 .Inverse()
                 .LazyLoad();
+
+            this.Map(f => f.AnalyzedMatchHistory)
+                .CustomType<CompressedJson<AnalyzedMatchHistory>>()
+                .Nullable();
         }
     }
 }

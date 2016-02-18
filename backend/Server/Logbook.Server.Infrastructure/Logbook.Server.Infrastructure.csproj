@@ -203,6 +203,7 @@
     <Compile Include="NHibernate\Mappings\Authentication\TwitterAuthenticationKindMaps.cs" />
     <Compile Include="NHibernate\Mappings\Authentication\UserMaps.cs" />
     <Compile Include="NHibernate\Mappings\Summoners\SummonerMaps.cs" />
+    <Compile Include="NHibernate\UserTypes\CompressedJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Riot\LeagueService.cs" />
     <Compile Include="Riot\UpdateSummonerQueue.cs" />
