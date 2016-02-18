@@ -11,14 +11,16 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
     {
         private readonly ISession _session;
         private readonly IUpdateSummonerQueue _updateSummonerQueue;
+        private readonly IAnalyzeSummonerMatchHistoryQueue _analyzeSummonerMatchHistoryQueue;
 
-        public AddNewSummonerCommandHandler(ISession session, IUpdateSummonerQueue updateSummonerQueue)
+        public AddNewSummonerCommandHandler(ISession session, IUpdateSummonerQueue updateSummonerQueue, IAnalyzeSummonerMatchHistoryQueue analyzeSummonerMatchHistoryQueue)
         {
             Guard.NotNull(session, nameof(session));
             Guard.NotNull(updateSummonerQueue, nameof(updateSummonerQueue));
 
             this._session = session;
             this._updateSummonerQueue = updateSummonerQueue;
+            this._analyzeSummonerMatchHistoryQueue = analyzeSummonerMatchHistoryQueue;
         }
 
         public async Task<object> Execute(AddNewSummonerCommand command, ICommandScope scope)
@@ -28,6 +30,7 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
 
             this._session.SaveOrUpdate(command.Summoner);
             await this._updateSummonerQueue.EnqueueSummonerAsync(command.Summoner.Id);
+            await this._analyzeSummonerMatchHistoryQueue.EnqueueSummonerAsync(command.Summoner.Id);
 
             return new object();
         }

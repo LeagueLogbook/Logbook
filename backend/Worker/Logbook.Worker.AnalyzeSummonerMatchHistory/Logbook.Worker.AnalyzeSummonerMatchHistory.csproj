@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9D11CEF6-475F-4DAB-8738-199EF91FC14F}</ProjectGuid>
+    <ProjectGuid>{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logbook.Azure.Worker</RootNamespace>
-    <AssemblyName>Logbook.Azure.Worker</AssemblyName>
+    <RootNamespace>Logbook.Worker.AnalyzeSummonerMatchHistory</RootNamespace>
+    <AssemblyName>Logbook.Worker.AnalyzeSummonerMatchHistory</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <RoleType>Worker</RoleType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,14 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AppConfigFacility, Version=0.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WindsorAppConfigFacility.0.1.0.1\lib\net45\AppConfigFacility.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="AppConfigFacility.Azure, Version=0.1.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\WindsorAppConfigFacility.Azure.0.1.0.1\lib\net45\AppConfigFacility.Azure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Castle.Core.3.3.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
@@ -64,14 +54,6 @@
       <HintPath>..\..\packages\Microsoft.ApplicationInsights.2.0.0-beta4\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.AspNet.WebApi.Extensions.Compression.Server, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Extensions.Compression.Server.2.0.1\lib\net45\Microsoft.AspNet.WebApi.Extensions.Compression.Server.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.WebApi.Extensions.Compression.Server.Owin, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Extensions.Compression.Server.Owin.2.0.2\lib\net45\Microsoft.AspNet.WebApi.Extensions.Compression.Server.Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
       <Private>True</Private>
@@ -91,28 +73,6 @@
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Host.HttpListener.2.0.2\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Hosting, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Hosting.2.0.2\lib\net45\Microsoft.Owin.Hosting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=2.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=6.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WindowsAzure.Storage.6.2.2-preview\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
@@ -136,15 +96,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions.Compression.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Extensions.Compression.Server.2.0.1\lib\net45\System.Net.Http.Extensions.Compression.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Reactive.Core, Version=2.2.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
       <Private>True</Private>
@@ -161,28 +112,17 @@
       <HintPath>..\..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalyzeSummonerMatchHistoryWorker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Windsor\ConfigInstaller.cs" />
-    <Compile Include="WorkerRole.cs" />
+    <Compile Include="Windsor\WorkerInstaller.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -190,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\Logbook.Server.Contracts\Logbook.Server.Contracts.csproj">
-      <Project>{3481b019-5905-4247-8d3d-3cd9b0b39fc0}</Project>
+      <Project>{3481B019-5905-4247-8D3D-3CD9B0B39FC0}</Project>
       <Name>Logbook.Server.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\Logbook.Server.Infrastructure\Logbook.Server.Infrastructure.csproj">
@@ -205,22 +145,6 @@
       <Project>{5f503260-9e39-4c39-9e08-f3c883229b1c}</Project>
       <Name>Logbook.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Worker\Logbook.Worker.AnalyzeSummonerMatchHistory\Logbook.Worker.AnalyzeSummonerMatchHistory.csproj">
-      <Project>{9feb9e8f-8a31-4252-bf00-2dec9c984e74}</Project>
-      <Name>Logbook.Worker.AnalyzeSummonerMatchHistory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Worker\Logbook.Worker.Api\Logbook.Worker.Api.csproj">
-      <Project>{23e49a75-e2d8-4c1f-87d9-366237afb849}</Project>
-      <Name>Logbook.Worker.Api</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Worker\Logbook.Worker.EmailSender\Logbook.Worker.EmailSender.csproj">
-      <Project>{6680E422-EC00-485F-845E-5DF57079830D}</Project>
-      <Name>Logbook.Worker.EmailSender</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Worker\Logbook.Worker.UpdateSummoners\Logbook.Worker.UpdateSummoners.csproj">
-      <Project>{235a9f4b-2954-4634-bce6-d7280a590054}</Project>
-      <Name>Logbook.Worker.UpdateSummoners</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -230,10 +154,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <PropertyGroup>
-    <!-- Setting AutoUnifyAssemblyReferences to false will allow the ResolveAssemblyReferences task to 
-    create warnings when detecting version missmatches among references.
-    -->
-    <AutoUnifyAssemblyReferences>false</AutoUnifyAssemblyReferences>
-  </PropertyGroup>
 </Project>

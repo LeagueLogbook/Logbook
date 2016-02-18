@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.EmailSender"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.UpdateSummoners", "Worker\Logbook.Worker.UpdateSummoners\Logbook.Worker.UpdateSummoners.csproj", "{235A9F4B-2954-4634-BCE6-D7280A590054}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logbook.Worker.AnalyzeSummonerMatchHistory", "Worker\Logbook.Worker.AnalyzeSummonerMatchHistory\Logbook.Worker.AnalyzeSummonerMatchHistory.csproj", "{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{235A9F4B-2954-4634-BCE6-D7280A590054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{235A9F4B-2954-4634-BCE6-D7280A590054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{235A9F4B-2954-4634-BCE6-D7280A590054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +100,6 @@ Global
 		{23E49A75-E2D8-4C1F-87D9-366237AFB849} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
 		{6680E422-EC00-485F-845E-5DF57079830D} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
 		{235A9F4B-2954-4634-BCE6-D7280A590054} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
+		{9FEB9E8F-8A31-4252-BF00-2DEC9C984E74} = {7E2293F6-0A41-4A46-BD8C-DE4F8684F11F}
 	EndGlobalSection
 EndGlobal
