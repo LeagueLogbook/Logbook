@@ -112,8 +112,8 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RiotSharp, Version=2.4.0.22179, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RiotSharp.2.4.0\lib\portable-net45+win+wpa81\RiotSharp.dll</HintPath>
+    <Reference Include="RiotSharp, Version=2.4.1.22107, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Xemio.RiotSharp.2.4.1\lib\portable-net45+win+wpa81\RiotSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
