@@ -35,7 +35,7 @@ namespace Logbook.Worker.Api.Controllers
             {
                 var games = new Dictionary<SummonerModel, CurrentGame>();
                 
-                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var summoners = await scope.Execute(new GetUserSummonersCommand(this.CurrentUserId));
 
                 foreach (var summoner in summoners)
                 {

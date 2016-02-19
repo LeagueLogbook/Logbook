@@ -13,6 +13,8 @@ namespace Logbook.Server.Contracts.Riot
 
         Task<Summoner> GetSummonerAsync(Region region, string name);
 
+        Task<IList<Summoner>> GetSummonersAsync(Region region, IList<long> riotSummonerIds);
+
         Task<CurrentGame> GetCurrentGameAsync(Region region, long riotSummonerId);
 
         Task<List<long>> GetMatchHistory(Region region, long summonerId, DateTime? latestCheckedMatchTimeStamp);

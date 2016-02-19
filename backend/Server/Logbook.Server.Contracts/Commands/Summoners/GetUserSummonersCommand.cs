@@ -4,9 +4,9 @@ using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Server.Contracts.Commands.Summoners
 {
-    public class GetSummonersCommand : ICommand<IList<Summoner>>
+    public class GetUserSummonersCommand : ICommand<IList<Summoner>>
     {
-        public GetSummonersCommand(int userId)
+        public GetUserSummonersCommand(int userId)
         {
             Guard.NotZeroOrNegative(userId, nameof(userId));
 

@@ -30,7 +30,7 @@ namespace Logbook.Worker.Api.Controllers
         {
             var result = await this.CommandExecutor.Batch(async scope =>
             {
-                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var summoners = await scope.Execute(new GetUserSummonersCommand(this.CurrentUserId));
                 var models = await scope.MapList<Summoner, SummonerModel>(summoners);
 
                 return models;
@@ -50,7 +50,7 @@ namespace Logbook.Worker.Api.Controllers
             var result = await this.CommandExecutor.Batch(async scope =>
             {
                 await scope.Execute(new AddSummonerCommand(this.CurrentUserId, data.Region, data.SummonerName));
-                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var summoners = await scope.Execute(new GetUserSummonersCommand(this.CurrentUserId));
                 var models = await scope.MapList<Summoner, SummonerModel>(summoners);
 
                 return models;
@@ -71,7 +71,7 @@ namespace Logbook.Worker.Api.Controllers
             var result = await this.CommandExecutor.Batch(async scope =>
             {
                 await scope.Execute(new RemoveSummonerCommand(this.CurrentUserId, data.Region, data.SummonerId));
-                var summoners = await scope.Execute(new GetSummonersCommand(this.CurrentUserId));
+                var summoners = await scope.Execute(new GetUserSummonersCommand(this.CurrentUserId));
                 var models = await scope.MapList<Summoner, SummonerModel>(summoners);
 
                 return models;

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts;
@@ -10,9 +8,7 @@ using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Contracts.Riot;
 using Logbook.Server.Infrastructure;
 using Logbook.Server.Infrastructure.Extensions;
-using Logbook.Shared.Entities.Summoners;
-using NHibernate;
-using NHibernate.Linq;
+using Logbook.Shared;
 
 namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 {
@@ -20,14 +16,16 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
     {
         private readonly IAnalyzeSummonerMatchHistoryQueue _queue;
         private readonly ILeagueService _leagueService;
-        private readonly ISessionFactory _sessionFactory;
         private readonly ICommandExecutor _commandExecutor;
 
-        public AnalyzeSummonerMatchHistoryWorker(IAnalyzeSummonerMatchHistoryQueue queue, ILeagueService leagueService, ISessionFactory sessionFactory, ICommandExecutor commandExecutor)
+        public AnalyzeSummonerMatchHistoryWorker(IAnalyzeSummonerMatchHistoryQueue queue, ILeagueService leagueService, ICommandExecutor commandExecutor)
         {
+            Guard.NotNull(queue, nameof(queue));
+            Guard.NotNull(leagueService, nameof(leagueService));
+            Guard.NotNull(commandExecutor, nameof(commandExecutor));
+
             this._queue = queue;
             this._leagueService = leagueService;
-            this._sessionFactory = sessionFactory;
             this._commandExecutor = commandExecutor;
         }
 
@@ -47,7 +45,7 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 
                     AppInsights.Client.TrackEvent("Analyzing Summoner Match History");
 
-                    await this.AnalyzeSummonerMatchHistory(summonerToAnalyze);
+                    await this.AnalyzeSummonerMatchHistory(summonerToAnalyze.Value);
 
                     await this._queue.RemoveAsync(summonerToAnalyze.Value);
                     await this._queue.EnqueueSummonerAsync(summonerToAnalyze.Value);
@@ -55,11 +53,11 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
             }
         }
 
-        private async Task AnalyzeSummonerMatchHistory(int? summonerToAnalyze)
+        private async Task AnalyzeSummonerMatchHistory(int summonerToAnalyze)
         {
-            using (var session = this._sessionFactory.OpenSession())
+            try
             {
-                var summoner = session.Load<Summoner>(summonerToAnalyze);
+                var summoner = await this._commandExecutor.Execute(new GetSummonerCommand(summonerToAnalyze));
 
                 var matchIdHistory = await this._leagueService.GetMatchHistory(summoner.Region, summoner.RiotSummonerId, summoner.LatestAnalyzedMatchTimeStamp);
 
@@ -75,16 +73,13 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
                         .Concat(match.PurpleTeam.Participants.Select(f => f.SummonerId))
                         .ToList();
 
-                    var existingSummoners = session.Query<Summoner>()
-                        .Where(f => f.Region == summoner.Region && summonerIds.Contains(f.RiotSummonerId))
-                        .ToList();
-
-                    foreach (var nonExistingSummonerId in summonerIds.Where(f => existingSummoners.Any(d => d.RiotSummonerId == f) == false))
-                    {
-                        var nonExistingSummoner = await this._leagueService.GetSummonerAsync(summoner.Region, nonExistingSummonerId);
-                        await this._commandExecutor.Execute(new AddNewSummonerCommand(nonExistingSummoner));
-                    }
+                    await this._commandExecutor.Execute(new AddMissingSummonersCommand(summoner.Region, summonerIds));
+                    await this._commandExecutor.Execute(new UpdateAnalyzedMatchHistoryCommand(summonerToAnalyze, match.CreationDate, summoner.AnalyzedMatchHistory));
                 }
+            }
+            catch (Exception exception)
+            {
+                AppInsights.Client.TrackException(exception);
             }
         }
     }

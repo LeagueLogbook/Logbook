@@ -198,6 +198,15 @@ namespace Logbook.Server.Infrastructure.Riot
             }
         }
 
+        public async Task<IList<Summoner>> GetSummonersAsync(Region region, IList<long> riotSummonerIds)
+        {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotNullOrEmpty(riotSummonerIds, nameof(riotSummonerIds));
+
+            var summoners = await this._api.GetSummonersAsync(this.ConvertRegion(region), riotSummonerIds.Cast<int>().ToList());
+            return summoners.Select(this.ConvertSummoner).ToList();
+        }
+
         public async Task<CurrentGame> GetCurrentGameAsync(Region region, long riotSummonerId)
         {
             Guard.NotInvalidEnum(region, nameof(region));
@@ -220,6 +229,9 @@ namespace Logbook.Server.Infrastructure.Riot
 
         public async Task<List<long>>  GetMatchHistory(Region region, long summonerId, DateTime? latestCheckedMatchTimeStamp)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotZeroOrNegative(summonerId, nameof(summonerId));
+
             latestCheckedMatchTimeStamp = latestCheckedMatchTimeStamp?.AddSeconds(1);
 
             var matchList = await this._api.GetMatchListAsync(
@@ -235,6 +247,9 @@ namespace Logbook.Server.Infrastructure.Riot
 
         public async Task<PlayedMatch> GetMatch(Region region, long matchId)
         {
+            Guard.NotInvalidEnum(region, nameof(region));
+            Guard.NotZeroOrNegative(matchId , nameof(matchId));
+
             MatchDetail match = await this._api.GetMatchAsync(this.ConvertRegion(region), matchId, includeTimeline: true);
             return this.ConvertPlayedMatch(match);
         }

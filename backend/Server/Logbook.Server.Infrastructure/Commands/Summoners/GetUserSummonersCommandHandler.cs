@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts.Commands;
@@ -12,18 +13,18 @@ using NHibernate.Linq;
 
 namespace Logbook.Server.Infrastructure.Commands.Summoners
 {
-    public class GetSummonersCommandHandler : ICommandHandler<GetSummonersCommand, IList<Summoner>>
+    public class GetUserSummonersCommandHandler : ICommandHandler<GetUserSummonersCommand, IList<Summoner>>
     {
         private readonly ISession _session;
 
-        public GetSummonersCommandHandler(ISession session)
+        public GetUserSummonersCommandHandler(ISession session)
         {
             Guard.NotNull(session, nameof(session));
 
             this._session = session;
         }
 
-        public Task<IList<Summoner>> Execute(GetSummonersCommand command, ICommandScope scope)
+        public Task<IList<Summoner>> Execute(GetUserSummonersCommand command, ICommandScope scope)
         {
             Guard.NotNull(command, nameof(command));
             Guard.NotNull(scope, nameof(scope));

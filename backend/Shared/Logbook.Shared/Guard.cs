@@ -59,5 +59,15 @@ namespace Logbook.Shared
             if (argument < TimeSpan.Zero)
                 throw new ArgumentException("Value is equal or less than zero.", argumentName);
         }
+
+        [DebuggerStepThrough]
+        public static void NotInvalidDateTime(DateTime? argument, string argumentName)
+        {
+            if (argument == null)
+                throw new ArgumentNullException(argumentName);
+
+            if (argument <= new DateTime(1900, 1, 1))
+                throw new ArgumentException("Value is before 1900.", argumentName);
+        }
     }
 }
