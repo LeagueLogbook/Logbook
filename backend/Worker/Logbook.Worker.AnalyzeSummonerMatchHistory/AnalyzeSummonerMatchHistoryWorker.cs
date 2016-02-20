@@ -49,7 +49,7 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
                     AppInsights.Client.TrackEvent("Analyzing Summoner Match History");
 
                     await this.AnalyzeSummonerMatchHistory(summonerToAnalyze.Value);
-
+                    
                     await this._queue.RemoveAsync(summonerToAnalyze.Value);
                     await this._queue.EnqueueSummonerAsync(summonerToAnalyze.Value);
                 }
@@ -60,6 +60,8 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
         {
             try
             {
+                AppInsights.Client.TrackEvent($"Analyzing match history of summoner {summonerToAnalyze}");
+
                 Stopwatch watch = null;
 
                 var summoner = await this._commandExecutor.Execute(new GetSummonerCommand(summonerToAnalyze));
@@ -68,15 +70,17 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 
                 foreach (var matchId in matchIdHistory)
                 {
-                    if (watch == null || 
+                    if (watch == null ||
                         watch.Elapsed > TimeSpan.FromMinutes(Config.Riot.RequestMoreTimeToAnalyzeMatchHistoryInMinutes))
                     {
                         await this._queue.RequestMoreTimeToProcess(summonerToAnalyze, TimeSpan.FromMinutes(Config.Riot.RequestMoreTimeToAnalyzeMatchHistoryInMinutes));
                         watch = Stopwatch.StartNew();
                     }
 
+                    AppInsights.Client.TrackEvent($"Analyzing match {matchId}");
+
                     var match = await this._leagueService.GetMatch(summoner.Region, matchId);
-                    
+
                     var summonerIds = match.BlueTeam.Participants
                         .Select(f => f.SummonerId)
                         .Concat(match.PurpleTeam.Participants.Select(f => f.SummonerId))
@@ -89,6 +93,10 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
             catch (Exception exception)
             {
                 AppInsights.Client.TrackException(exception);
+            }
+            finally
+            {
+                AppInsights.Client.TrackEvent($"Finished anlyzing match history of summoner {summonerToAnalyze}");
             }
         }
     }
