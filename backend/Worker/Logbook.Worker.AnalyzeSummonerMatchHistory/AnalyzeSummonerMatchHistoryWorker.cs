@@ -80,13 +80,6 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
                     AppInsights.Client.TrackEvent($"Analyzing match {matchId}");
 
                     var match = await this._leagueService.GetMatch(summoner.Region, matchId);
-
-                    var summonerIds = match.BlueTeam.Participants
-                        .Select(f => f.SummonerId)
-                        .Concat(match.PurpleTeam.Participants.Select(f => f.SummonerId))
-                        .ToList();
-
-                    await this._commandExecutor.Execute(new AddMissingSummonersCommand(summoner.Region, summonerIds));
                     await this._commandExecutor.Execute(new UpdateAnalyzedMatchHistoryCommand(summonerToAnalyze, match.CreationDate, new AnalyzedMatchHistory()));
                 }
             }
