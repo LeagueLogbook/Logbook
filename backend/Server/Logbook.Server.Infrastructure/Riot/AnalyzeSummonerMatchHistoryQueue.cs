@@ -42,10 +42,24 @@ namespace Logbook.Server.Infrastructure.Riot
             if (message == null)
                 return null;
 
+            await queue.UpdateMessageAsync(message, TimeSpan.FromMinutes(30), MessageUpdateFields.Visibility);
+
             var summonerId = JsonConvert.DeserializeObject<int>(message.AsString);
             this._dequeuedMessages.TryAdd(summonerId, message);
 
             return summonerId;
+        }
+
+        public async Task RequestMoreTimeToProcess(int summonerId, TimeSpan moreTime)
+        {
+            Guard.NotZeroOrNegative(summonerId, nameof(summonerId));
+
+            CloudQueueMessage message;
+            if (this._dequeuedMessages.TryGetValue(summonerId, out message))
+            {
+                var queue = await this.GetQueueAsync();
+                await queue.UpdateMessageAsync(message, moreTime, MessageUpdateFields.Visibility);
+            }
         }
 
         public async Task RemoveAsync(int summonerId)

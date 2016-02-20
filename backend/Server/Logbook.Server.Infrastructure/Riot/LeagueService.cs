@@ -203,7 +203,7 @@ namespace Logbook.Server.Infrastructure.Riot
             Guard.NotInvalidEnum(region, nameof(region));
             Guard.NotNullOrEmpty(riotSummonerIds, nameof(riotSummonerIds));
 
-            var summoners = await this._api.GetSummonersAsync(this.ConvertRegion(region), riotSummonerIds.Cast<int>().ToList());
+            var summoners = await this._api.GetSummonersAsync(this.ConvertRegion(region), riotSummonerIds.Select(f => (int)f).ToList());
             return summoners.Select(this.ConvertSummoner).ToList();
         }
 
@@ -242,6 +242,7 @@ namespace Logbook.Server.Infrastructure.Riot
 
             return matchList.Matches
                 .Select(f => f.MatchID)
+                .OrderBy(f => f)
                 .ToList();
         }
 
@@ -285,7 +286,7 @@ namespace Logbook.Server.Infrastructure.Riot
         }
         private string GetProfileIconUri(long id)
         {
-            Guard.NotZeroOrNegative(id, nameof(id));
+            //Guard.NotZeroOrNegative(id, nameof(id));
 
             return $"http://ddragon.leagueoflegends.com/cdn/6.3.1/img/profileicon/{id}.png";
         }

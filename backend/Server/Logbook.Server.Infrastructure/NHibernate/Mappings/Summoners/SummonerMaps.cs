@@ -42,6 +42,9 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
                 .Inverse()
                 .LazyLoad();
 
+            this.Map(f => f.AnalyzedMatches)
+                .Not.Nullable();
+
             this.Map(f => f.LatestAnalyzedMatchTimeStamp)
                 .Nullable();
 

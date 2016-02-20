@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Logbook.Server.Contracts.Riot
 {
@@ -6,6 +7,7 @@ namespace Logbook.Server.Contracts.Riot
     {
         Task EnqueueSummonerAsync(int summonerId);
         Task<int?> TryDequeueSummonerAsync();
+        Task RequestMoreTimeToProcess(int summonerId, TimeSpan moreTime);
 
         Task RemoveAsync(int summonerId);
         Task TryAgainLaterAsync(int summonerId);

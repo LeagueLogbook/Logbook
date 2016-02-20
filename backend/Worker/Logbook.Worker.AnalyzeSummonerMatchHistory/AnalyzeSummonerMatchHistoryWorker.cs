@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,8 +8,10 @@ using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Commands.Summoners;
 using Logbook.Server.Contracts.Riot;
 using Logbook.Server.Infrastructure;
+using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
+using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 {
@@ -57,24 +60,30 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
         {
             try
             {
+                Stopwatch watch = null;
+
                 var summoner = await this._commandExecutor.Execute(new GetSummonerCommand(summonerToAnalyze));
 
                 var matchIdHistory = await this._leagueService.GetMatchHistory(summoner.Region, summoner.RiotSummonerId, summoner.LatestAnalyzedMatchTimeStamp);
 
                 foreach (var matchId in matchIdHistory)
                 {
+                    if (watch == null || 
+                        watch.Elapsed > TimeSpan.FromMinutes(Config.Riot.RequestMoreTimeToAnalyzeMatchHistoryInMinutes))
+                    {
+                        await this._queue.RequestMoreTimeToProcess(summonerToAnalyze, TimeSpan.FromMinutes(Config.Riot.RequestMoreTimeToAnalyzeMatchHistoryInMinutes));
+                        watch = Stopwatch.StartNew();
+                    }
+
                     var match = await this._leagueService.GetMatch(summoner.Region, matchId);
-
-                    if (match.CreationDate > summoner.LatestAnalyzedMatchTimeStamp)
-                        summoner.LatestAnalyzedMatchTimeStamp = match.CreationDate;
-
+                    
                     var summonerIds = match.BlueTeam.Participants
                         .Select(f => f.SummonerId)
                         .Concat(match.PurpleTeam.Participants.Select(f => f.SummonerId))
                         .ToList();
 
                     await this._commandExecutor.Execute(new AddMissingSummonersCommand(summoner.Region, summonerIds));
-                    await this._commandExecutor.Execute(new UpdateAnalyzedMatchHistoryCommand(summonerToAnalyze, match.CreationDate, summoner.AnalyzedMatchHistory));
+                    await this._commandExecutor.Execute(new UpdateAnalyzedMatchHistoryCommand(summonerToAnalyze, match.CreationDate, new AnalyzedMatchHistory()));
                 }
             }
             catch (Exception exception)

@@ -9,5 +9,6 @@ namespace Logbook.Server.Infrastructure.Configuration
         int OnErrorTryToUpdateSummonerAgainAfterMinutes { get; }
         int AnalyzeSummonerMatchHistoryEveryMinutes { get; }
         int OnErrorTryToAnalyzeSummonerMatchHistoryAgainAfterMinutes { get; }
+        int RequestMoreTimeToAnalyzeMatchHistoryInMinutes { get; set; }
     }
 }

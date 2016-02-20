@@ -36,10 +36,13 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
 
             var missingSummonerIds = command.RiotSummonerIds.Except(existingSummonerIds).ToList();
 
-            var summoners = await this._leagueService.GetSummonersAsync(command.Region, missingSummonerIds);
-            foreach (var summoner in summoners)
+            if (missingSummonerIds.Any())
             {
-                await scope.Execute(new AddNewSummonerCommand(summoner));
+                var summoners = await this._leagueService.GetSummonersAsync(command.Region, missingSummonerIds);
+                foreach (var summoner in summoners)
+                {
+                    await scope.Execute(new AddNewSummonerCommand(summoner));
+                }
             }
 
             return new object();

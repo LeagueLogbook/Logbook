@@ -27,6 +27,7 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
 
             summoner.LatestAnalyzedMatchTimeStamp = command.LatestAnalyzedMatchTimeStamp;
             summoner.AnalyzedMatchHistory = command.AnalyzedMatchHistory;
+            summoner.AnalyzedMatches++;
 
             return Task.FromResult(new object());
         }
