@@ -15,4 +15,4 @@ namespace Logbook.Shared.Models.MatchHistory
         public long PlacedWards { get; set; }
         public long DestroyedWards { get; set; }
     }
-}
+}   

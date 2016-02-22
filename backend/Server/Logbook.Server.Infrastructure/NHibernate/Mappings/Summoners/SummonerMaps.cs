@@ -1,7 +1,9 @@
-﻿using FluentNHibernate.Mapping;
+﻿using System.Collections.Generic;
+using FluentNHibernate.Mapping;
 using Logbook.Server.Infrastructure.NHibernate.Extensions;
 using Logbook.Server.Infrastructure.NHibernate.UserTypes;
 using Logbook.Shared.Entities.Summoners;
+using NHibernate.Type;
 
 namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
 {
@@ -41,15 +43,13 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
                 .Cascade.None()
                 .Inverse()
                 .LazyLoad();
-
-            this.Map(f => f.AnalyzedMatches)
-                .Not.Nullable();
-
-            this.Map(f => f.LatestAnalyzedMatchTimeStamp)
+            
+            this.Map(f => f.LatestMatchTimeStamp)
+                .CustomType<TimestampType>()
                 .Nullable();
 
-            this.Map(f => f.AnalyzedMatchHistory)
-                .CustomType<CompressedJson<AnalyzedMatchHistory>>()
+            this.Map(f => f.MatchIds)
+                .CustomType<CompressedJson<ISet<long>>>()
                 .Nullable();
         }
     }

@@ -48,19 +48,15 @@ namespace Logbook.Worker.UpdateSummoners
                         AppInsights.Client.TrackEvent("Updating Summoner");
 
                         await this._commandExecutor.Execute(new UpdateSummonerCommand(summonerToUpdate.Value));
-                        await this._updateSummonerQueue.RemoveAsync(summonerToUpdate.Value);
 
                         await this._updateSummonerQueue.EnqueueSummonerAsync(summonerToUpdate.Value);
+                        await this._updateSummonerQueue.RemoveAsync(summonerToUpdate.Value);
                     }
                     catch (Exception exception)
                     {
                         await this._updateSummonerQueue.TryAgainLaterAsync(summonerToUpdate.Value);
-
-                        var payload = new Dictionary<string, string>
-                        {
-                            ["Source"] = "Update Summoners Worker"
-                        };
-                        AppInsights.Client.TrackException(exception, payload);
+                        
+                        AppInsights.Client.TrackException(exception);
                     }
                 }
             }

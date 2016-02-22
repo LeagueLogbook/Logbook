@@ -7,5 +7,6 @@ namespace Logbook.Server.Infrastructure.Configuration
         string AnalyzeSummonerMatchHistoryQueueName { get; }
         string AzureStorageConnectionString { get; }
         string ApplicationInsightsKey { get; }
+        string MatchTableName { get; set; }
     }
 }

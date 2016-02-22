@@ -49,12 +49,8 @@ namespace Logbook.Worker.EmailSender
                     catch (Exception exception)
                     {
                         await this._emailQueue.TryAgainLaterAsync(email);
-
-                        var payload = new Dictionary<string, string>
-                        {
-                            ["Source"] = "Email Sender Worker"
-                        };
-                        AppInsights.Client.TrackException(exception, payload);
+                        
+                        AppInsights.Client.TrackException(exception);
                     }
                 }
             }

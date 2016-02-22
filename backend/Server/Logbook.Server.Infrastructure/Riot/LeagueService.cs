@@ -240,6 +240,9 @@ namespace Logbook.Server.Infrastructure.Riot
                 seasons: new List<Season>() {Season.Season2016},
                 beginTime: latestCheckedMatchTimeStamp);
 
+            if (matchList.Matches == null)
+                return new List<long>();
+
             return matchList.Matches
                 .Select(f => f.MatchID)
                 .OrderBy(f => f)
@@ -416,7 +419,8 @@ namespace Logbook.Server.Infrastructure.Riot
                         .Where(f => f.TeamId == 100)
                         .Select(convertParticipant)
                         .ToList()
-                }
+                },
+                Region = this.ConvertRegion(match.Region)
             };
         }
         #endregion

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Logbook.Server.Contracts;
@@ -11,7 +10,6 @@ using Logbook.Server.Infrastructure;
 using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
-using Logbook.Shared.Entities.Summoners;
 
 namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 {
@@ -50,8 +48,8 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 
                     await this.AnalyzeSummonerMatchHistory(summonerToAnalyze.Value);
                     
-                    await this._queue.RemoveAsync(summonerToAnalyze.Value);
                     await this._queue.EnqueueSummonerAsync(summonerToAnalyze.Value);
+                    await this._queue.RemoveAsync(summonerToAnalyze.Value);
                 }
             }
         }
@@ -66,7 +64,7 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
 
                 var summoner = await this._commandExecutor.Execute(new GetSummonerCommand(summonerToAnalyze));
 
-                var matchIdHistory = await this._leagueService.GetMatchHistory(summoner.Region, summoner.RiotSummonerId, summoner.LatestAnalyzedMatchTimeStamp);
+                var matchIdHistory = await this._leagueService.GetMatchHistory(summoner.Region, summoner.RiotSummonerId, summoner.LatestMatchTimeStamp);
 
                 foreach (var matchId in matchIdHistory)
                 {
@@ -80,7 +78,7 @@ namespace Logbook.Worker.AnalyzeSummonerMatchHistory
                     AppInsights.Client.TrackEvent($"Analyzing match {matchId}");
 
                     var match = await this._leagueService.GetMatch(summoner.Region, matchId);
-                    await this._commandExecutor.Execute(new UpdateAnalyzedMatchHistoryCommand(summonerToAnalyze, match.CreationDate, new AnalyzedMatchHistory()));
+                    await this._commandExecutor.Execute(new AddMatchCommand(summoner.Id, match));
                 }
             }
             catch (Exception exception)

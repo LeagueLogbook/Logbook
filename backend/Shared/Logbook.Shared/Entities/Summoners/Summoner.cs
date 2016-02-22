@@ -9,6 +9,7 @@ namespace Logbook.Shared.Entities.Summoners
         public Summoner()
         {
             this.WatchedByUsers = new List<User>();
+            this.MatchIds = new HashSet<long>();
         }
 
         public virtual Region Region { get; set; }
@@ -17,8 +18,7 @@ namespace Logbook.Shared.Entities.Summoners
         public virtual int Level { get; set; }
         public virtual string ProfileIconUri { get; set; }
         public virtual IList<User> WatchedByUsers { get; set; } 
-        public virtual int AnalyzedMatches { get; set; }
-        public virtual DateTime? LatestAnalyzedMatchTimeStamp { get; set; }
-        public virtual AnalyzedMatchHistory AnalyzedMatchHistory { get; set; }
+        public virtual DateTime? LatestMatchTimeStamp { get; set; }
+        public virtual ISet<long> MatchIds { get; set; }
     }
 }
