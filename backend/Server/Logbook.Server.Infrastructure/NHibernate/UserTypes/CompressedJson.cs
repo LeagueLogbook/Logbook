@@ -84,32 +84,31 @@ namespace Logbook.Server.Infrastructure.NHibernate.UserTypes
 
         private byte[] Compress(string json)
         {
-            return Encoding.UTF8.GetBytes(json);
-            //using (var inputStream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            //using (var outputStream = new MemoryStream())
-            //{   
-            //    using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
-            //    {
-            //        inputStream.CopyTo(gzipStream);
-            //    }
+            byte[] jsonData = Encoding.UTF8.GetBytes(json);
 
-            //    return outputStream.ToArray();
-            //}
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(outputStream, CompressionMode.Compress))
+                {
+                    gzipStream.Write(jsonData, 0, jsonData.Length);
+                }
+
+                return outputStream.ToArray();
+            }
         }
 
         private string Decompress(byte[] data)
         {
-            return Encoding.UTF8.GetString(data);
-            //using (var inputStream = new MemoryStream(data))
-            //using (var outputStream = new MemoryStream())
-            //{
-            //    using (var gzipStream = new GZipStream(inputStream, CompressionMode.Decompress))
-            //    {
-            //        gzipStream.CopyTo(outputStream);
-            //    }
+            using (var inputStream = new MemoryStream(data))
+            using (var outputStream = new MemoryStream())
+            {
+                using (var gzipStream = new GZipStream(inputStream, CompressionMode.Decompress))
+                {
+                    gzipStream.CopyTo(outputStream);
+                }
 
-            //    return Encoding.UTF8.GetString(outputStream.ToArray());
-            //}
+                return Encoding.UTF8.GetString(outputStream.ToArray());
+            }
         }
     }
 }
