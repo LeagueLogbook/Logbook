@@ -13,6 +13,7 @@ System.config({
     "helper": "dist/helper/*",
     "attributes": "dist/attributes/*",
     "components": "dist/components/*",
+    "converters": "dist/converters/*",
     "api": "dist/api/*",
     "api/models": "dist/api/models/*",
     "github:*": "jspm_packages/github/*",

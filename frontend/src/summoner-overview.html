@@ -1,6 +1,7 @@
 <template>
     
     <require from="components/add-summoner"></require>
+    <require from="converters/summoner-profile-icon-id-to-uri"></require>
         
     <div class="ui container">
     
@@ -15,7 +16,7 @@
             <div class="ui divided items">
                 <div class="item" repeat.for="summoner of summoners">
                     <div class="ui tiny circular image">
-                        <img src.bind="summoner.profileIconUri">
+                        <img src="${summoner.profileIconId | summonerProfileIconIdToUri}">
                     </div>
                     <div class="content">
                         <div class="ui right floated">               
