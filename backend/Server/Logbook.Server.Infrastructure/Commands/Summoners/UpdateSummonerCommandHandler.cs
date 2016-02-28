@@ -32,7 +32,7 @@ namespace Logbook.Server.Infrastructure.Commands.Summoners
 
             summoner.Name = riotSummoner.Name;
             summoner.Level = riotSummoner.Level;
-            summoner.ProfileIconUri = riotSummoner.ProfileIconUri;
+            summoner.ProfileIconId = riotSummoner.ProfileIconId;
 
             return new object();
         }

@@ -277,24 +277,7 @@ namespace Logbook.Server.Infrastructure.Riot
             return this._cachedSummonerSpells.GetOrAdd(region, f => this._staticApi.GetSummonerSpells(this.ConvertRegion(f), SummonerSpellData.image));
         }
         #endregion
-
-        #region Uris
-        private string GetSummonerSpellImageUri(Region region, long id)
-        {
-            Guard.NotInvalidEnum(region, nameof(region));
-            Guard.NotZeroOrNegative(id, nameof(id));
-
-            var name = this.GetSummonerSpells(region).SummonerSpells.FirstOrDefault(f => f.Value.Id == id).Value?.Image?.Full;
-            return $"http://ddragon.leagueoflegends.com/cdn/6.3.1/img/spell/{name}";
-        }
-        private string GetProfileIconUri(long id)
-        {
-            //Guard.NotZeroOrNegative(id, nameof(id));
-
-            return $"http://ddragon.leagueoflegends.com/cdn/6.3.1/img/profileicon/{id}.png";
-        }
-        #endregion
-
+        
         #region Class Conversion
         private CurrentGame ConvertCurrentGame(RiotSharp.CurrentGameEndpoint.CurrentGame currentGame, Region region)
         {
@@ -357,15 +340,13 @@ namespace Logbook.Server.Infrastructure.Riot
             {
                 IsBot = participant.Bot,
                 SummonerId = participant.SummonerId,
-                ProfileIconUri = this.GetProfileIconUri(participant.ProfileIconId),
+                ProfileIconId = (int)participant.ProfileIconId,
                 SummonerName = participant.SummonerName,
                 ChampionId = participant.ChampionId,
                 ChampionName = this.GetChampionList(region).Champions.FirstOrDefault(f => f.Value.Id == participant.ChampionId).Value?.Name,
                 SummonerSpell1Id = participant.SummonuerSpell1,
-                SummonerSpell1IconUri = this.GetSummonerSpellImageUri(region, participant.SummonuerSpell1),
                 SummonerSpell1Name = this.GetSummonerSpells(region).SummonerSpells.FirstOrDefault(f => f.Value.Id == participant.SummonuerSpell1).Value?.Name,
                 SummonerSpell2Id = participant.SummonerSpell2,
-                SummonerSpell2IconUri = this.GetSummonerSpellImageUri(region, participant.SummonerSpell2),
                 SummonerSpell2Name = this.GetSummonerSpells(region).SummonerSpells.FirstOrDefault(f => f.Value.Id == participant.SummonerSpell2).Value?.Name,
             };
         }
@@ -380,7 +361,7 @@ namespace Logbook.Server.Infrastructure.Riot
                 Name = summoner.Name,
                 Region = this.ConvertRegion(summoner.Region),
                 Level = (int)summoner.Level,
-                ProfileIconUri = this.GetProfileIconUri(summoner.ProfileIconId)
+                ProfileIconId = summoner.ProfileIconId,
             };
         }
 

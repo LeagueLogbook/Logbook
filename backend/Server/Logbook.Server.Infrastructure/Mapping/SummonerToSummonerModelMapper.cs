@@ -19,7 +19,7 @@ namespace Logbook.Server.Infrastructure.Mapping
                 Region = source.Region,
                 Name = source.Name,
                 Level = source.Level,
-                ProfileIconUri = source.ProfileIconUri
+                ProfileIconId = source.ProfileIconId
             };
 
             return Task.FromResult(result);

@@ -8,6 +8,6 @@ namespace Logbook.Shared.Models.Summoners
         public Region Region { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
-        public string ProfileIconUri { get; set; }
+        public int ProfileIconId { get; set; }
     }
 }

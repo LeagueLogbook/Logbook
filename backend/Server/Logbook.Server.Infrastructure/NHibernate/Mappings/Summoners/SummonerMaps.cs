@@ -32,9 +32,8 @@ namespace Logbook.Server.Infrastructure.NHibernate.Mappings.Summoners
             this.Map(f => f.Name)
                 .Not.Nullable();
 
-            this.Map(f => f.ProfileIconUri)
-                .MaxLength()
-                .Nullable();
+            this.Map(f => f.ProfileIconId)
+                .Not.Nullable();
 
             this.HasManyToMany(f => f.WatchedByUsers)
                 .Table("UsersToWatchedSummoners")

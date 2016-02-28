@@ -16,7 +16,7 @@ namespace Logbook.Shared.Entities.Summoners
         public virtual long RiotSummonerId { get; set; }
         public virtual string Name { get; set; }
         public virtual int Level { get; set; }
-        public virtual string ProfileIconUri { get; set; }
+        public virtual int ProfileIconId { get; set; }
         public virtual IList<User> WatchedByUsers { get; set; } 
         public virtual DateTime? LatestMatchTimeStamp { get; set; }
         public virtual ISet<long> MatchIds { get; set; }
