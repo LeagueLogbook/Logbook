@@ -5,6 +5,6 @@ export class Summoner {
     public region: string;
     public name: string;
     public level: number;
-    public profileIconUri: string;    
+    public profileIconId: string;    
 }
 
