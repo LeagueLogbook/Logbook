@@ -6,17 +6,17 @@ using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Shared;
 using Logbook.Shared.Entities.Summoners;
 using Logbook.Shared.Models.MatchHistory;
-using Microsoft.WindowsAzure.Storage.Table;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 
 namespace Logbook.Server.Infrastructure.Riot
 {
     public class MatchStorage : IMatchStorage
     {
-        private readonly CloudTableClient _client;
-        private CloudTable _table;
+        private readonly CloudBlobClient _client;
+        private CloudBlobContainer _container;
 
-        public MatchStorage(CloudTableClient client)
+        public MatchStorage(CloudBlobClient client)
         {
             Guard.NotNull(client, nameof(client));
 
@@ -26,14 +26,17 @@ namespace Logbook.Server.Infrastructure.Riot
         public async Task SaveMatchAsync(PlayedMatch match)
         {
             Guard.NotNull(match, nameof(match));
+            
+            var container = await this.GetContainerAsync();
 
-            var entity = new PlayedMatchTableEntity(match.Region.ToString(), match.MatchId.ToString())
-            {
-                PlayedMatchAsJson = JsonConvert.SerializeObject(match)
-            };
+            var blobId = this.GenerateBlobId(match.Region, match.MatchId);
+            var blob = container.GetBlockBlobReference(blobId);
 
-            var table = await this.GetTableAsync();
-            await table.ExecuteAsync(TableOperation.InsertOrReplace(entity));
+            if (await blob.ExistsAsync())
+                return;
+
+            string json = JsonConvert.SerializeObject(match);
+            await blob.UploadTextAsync(json);
         }
 
         public async Task<IList<PlayedMatch>> GetMatchesAsync(Region region, IList<long> matchIds)
@@ -41,50 +44,36 @@ namespace Logbook.Server.Infrastructure.Riot
             Guard.NotInvalidEnum(region, nameof(region));
             Guard.NotNullOrEmpty(matchIds, nameof(matchIds));
 
-            var table = await this.GetTableAsync();
+            var container = await this.GetContainerAsync();
+            
+            var tasks = matchIds
+                .Select(f => this.GenerateBlobId(region, f))
+                .Select(f => container.GetBlockBlobReference(f))
+                .Select(f => f.DownloadTextAsync())
+                .ToList();
 
-            var batch = new TableBatchOperation();
-            foreach (var matchId in matchIds)
-            {
-                batch.Add(TableOperation.Retrieve<PlayedMatchTableEntity>(region.ToString(), matchId.ToString()));
-            }
+            await Task.WhenAll(tasks);
 
-            var result = await table.ExecuteBatchAsync(batch);
-
-            return result
+            return tasks
                 .Select(f => f.Result)
-                .Cast<PlayedMatchTableEntity>()
-                .Select(f => f.PlayedMatchAsJson)
                 .Select(JsonConvert.DeserializeObject<PlayedMatch>)
                 .ToList();
         }
 
         #region Private Methods
-        private async Task<CloudTable> GetTableAsync()
+        private string GenerateBlobId(Region region, long matchId)
         {
-            if (this._table != null)
-                return this._table;
-
-            this._table = this._client.GetTableReference(Config.Azure.MatchTableName);
-            await this._table.CreateIfNotExistsAsync();
-
-            return this._table;
+            return $"{region}/{matchId}";
         }
-        #endregion
-
-        #region Internal
-        private class PlayedMatchTableEntity : TableEntity
+        private async Task<CloudBlobContainer> GetContainerAsync()
         {
-            public PlayedMatchTableEntity(string partitionKey, string rowKey)
-                : base(partitionKey, rowKey)
-            {
-            }
+            if (this._container != null)
+                return this._container;
 
-            public PlayedMatchTableEntity()
-            {
-            }
-
-            public string PlayedMatchAsJson { get; set; }
+            this._container = this._client.GetContainerReference(Config.Azure.MatchContainerName);
+            await this._container.CreateIfNotExistsAsync();
+            
+            return this._container;
         }
         #endregion
     }

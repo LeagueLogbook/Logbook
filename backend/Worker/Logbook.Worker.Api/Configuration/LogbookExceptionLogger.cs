@@ -22,12 +22,7 @@ namespace Logbook.Worker.Api.Configuration
 
             if (context.Exception is LogbookException == false)
             {
-                var payload = new Dictionary<string, string>
-                {
-                    ["Source"] = "Web API"
-                };
-
-                AppInsights.Client.TrackException(context.Exception, payload);
+                AppInsights.Client.TrackException(context.Exception);
             }
         }
     }

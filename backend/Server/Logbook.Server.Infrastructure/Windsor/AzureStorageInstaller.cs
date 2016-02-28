@@ -3,6 +3,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Logbook.Server.Infrastructure.Configuration;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Microsoft.WindowsAzure.Storage.Table;
 
@@ -14,7 +15,8 @@ namespace Logbook.Server.Infrastructure.Windsor
         {
             container.Register(
                 Component.For<CloudQueueClient>().UsingFactoryMethod((kernel, context) => this.CreateQueueClient()).LifestyleSingleton(),
-                Component.For<CloudTableClient>().UsingFactoryMethod((kernel, context) => this.CreateTableClient()).LifestyleSingleton());
+                Component.For<CloudTableClient>().UsingFactoryMethod((kernel, context) => this.CreateTableClient()).LifestyleSingleton(),
+                Component.For<CloudBlobClient>().UsingFactoryMethod((kernel, context) => this.CreateBlobClient()).LifestyleSingleton());
         }
 
         private CloudStorageAccount GetStorageAccount()
@@ -30,6 +32,11 @@ namespace Logbook.Server.Infrastructure.Windsor
         private CloudTableClient CreateTableClient()
         {
             return this.GetStorageAccount().CreateCloudTableClient();
+        }
+
+        private CloudBlobClient CreateBlobClient()
+        {
+            return this.GetStorageAccount().CreateCloudBlobClient();
         }
     }
 }
