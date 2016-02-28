@@ -41,9 +41,7 @@ namespace Logbook.Server.Infrastructure.Riot
 
             if (message == null)
                 return null;
-
-            await queue.UpdateMessageAsync(message, TimeSpan.FromMinutes(30), MessageUpdateFields.Visibility);
-
+            
             var summonerId = JsonConvert.DeserializeObject<int>(message.AsString);
             this._dequeuedMessages.TryAdd(summonerId, message);
 
