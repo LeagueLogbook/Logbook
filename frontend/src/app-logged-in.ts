@@ -11,8 +11,15 @@ export class AppLoggedIn {
     public configureRouter(config: RouterConfiguration, router: Router) : void {
         config.title = "Aurelia";
         config.map([
+            {
+                route: ["", "current-games"],
+                name: "current-games",
+                moduleId: "current-games",
+                nav: true,
+                title: "Current games",
+            },
             { 
-                route: ["", "summoners"], 
+                route: "summoners", 
                 name: "summoners",      
                 moduleId: "summoner-overview",      
                 nav: true, 
