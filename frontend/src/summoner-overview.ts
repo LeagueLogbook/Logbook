@@ -23,7 +23,7 @@ export class SummonerOverview {
     }
     
     public async deleteSummoner(summoner: Summoner): Promise<void> {
-        let region = Region.get(summoner.region);        
+        let region = Region.getById(summoner.region);        
         this.summoners = await this.summonersService.deleteSummoner(region, summoner.id);
     }
 }

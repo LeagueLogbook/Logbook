@@ -17,15 +17,11 @@ export class AddSummoner {
         this.selectedRegionShortName = this.regions[0].shortName;
         this.summonerName = "";
     }
-    
-    public test(): void {
-        alert(this.selectedRegionShortName);
-    }
         
     public async addSummoner(): Promise<void> {
         let data : IAddSummonerData = {
             summonerName: this.summonerName,
-            region: Region.get(this.selectedRegionShortName),  
+            region: Region.getByShortName(this.selectedRegionShortName),  
         };
         
         if (this.onAddSummoner) {
