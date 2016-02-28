@@ -106,6 +106,8 @@ namespace Logbook.Server.Infrastructure.Riot
                 [GameQueueType.BilgewaterAram5x5] = RiotSharp.CurrentGameEndpoint.Converters.GameQueueType.BilgewaterAram5x5,
                 [GameQueueType.KingPoro5x5] = RiotSharp.CurrentGameEndpoint.Converters.GameQueueType.KingPoro5x5,
                 [GameQueueType.Bilgewater5x5] = RiotSharp.CurrentGameEndpoint.Converters.GameQueueType.Bilgewater5x5,
+                [GameQueueType.TeamBuilderDraftRanked] = RiotSharp.CurrentGameEndpoint.Converters.GameQueueType.TeamBuilderDraftRanked,
+                [GameQueueType.TeamBuilderDraftUnranked] = RiotSharp.CurrentGameEndpoint.Converters.GameQueueType.TeamBuilderDraftUnranked,
             };
             this._gameModeMapping = new Dictionary<GameMode, RiotSharp.GameMode>
             {

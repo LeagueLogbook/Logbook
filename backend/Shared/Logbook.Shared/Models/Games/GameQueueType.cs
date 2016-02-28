@@ -35,5 +35,7 @@
         BilgewaterAram5x5,
         KingPoro5x5,
         Bilgewater5x5,
+        TeamBuilderDraftUnranked,
+        TeamBuilderDraftRanked,
     }
 }
