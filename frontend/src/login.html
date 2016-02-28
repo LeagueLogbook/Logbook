@@ -1,6 +1,6 @@
 <template>
     
-    <require from="attributes/command"></require>
+    <require from="attributes/button-command"></require>
     <require from="components/command-error"></require>
     
     <div class="ui stackable grid container">
@@ -52,6 +52,11 @@
                     <i class="twitter icon"></i>
                     Twitter                            
                 </button>
+                
+                <command-error command.bind="loginMicrosoftCommand" margin-top="true"></command-error>
+                <command-error command.bind="loginFacebookCommand" margin-top="true"></command-error>
+                <command-error command.bind="loginGoogleCommand" margin-top="true"></command-error>
+                <command-error command.bind="loginTwitterCommand" margin-top="true"></command-error>
             </div>          
         </div>
                 
@@ -77,6 +82,8 @@
                 <button class="fluid ui primary button" button-command.bind="registerCommand">
                     Register        
                 </button>
+                
+                <command-error command.bind="registerCommand" margin-top="true"></command-error>
             </form>
         </div>
     </div>

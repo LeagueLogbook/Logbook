@@ -59,48 +59,23 @@ export class Login {
     }
     
     private async register() : Promise<void> {
-        try {            
-            await this.authService.register(this.registerEmailAddress, this.registerPassword);   
-        }
-        catch (error) {
-            alert(error);
-        }
+        await this.authService.register(this.registerEmailAddress, this.registerPassword);
     }
     
     private async loginMicrosoft() : Promise<void> {
-        try {
-            await this.authService.loginMicrosoft();
-            this.browserService.reload();
-        }
-        catch (error) {
-            alert(error);
-        }
+        await this.authService.loginMicrosoft();
+        this.browserService.reload();
     }
     private async loginTwitter() : Promise<void> {
-        try {
-            await this.authService.loginTwitter();
-            this.browserService.reload();            
-        }
-        catch (error) {
-            alert(error);
-        }
+        await this.authService.loginTwitter();
+        this.browserService.reload();            
     }
     private async loginFacebook() : Promise<void> {
-        try {
-            await this.authService.loginFacebook();
-            this.browserService.reload();            
-        }
-        catch (error) {
-            alert(error);
-        }
+        await this.authService.loginFacebook();
+        this.browserService.reload();            
     }
     private async loginGoogle() : Promise<void> {
-        try {
-            await this.authService.loginGoogle();
-            this.browserService.reload();   
-        }
-        catch (error) {
-            alert(error);
-        }
+        await this.authService.loginGoogle();
+        this.browserService.reload();
     }
 }
