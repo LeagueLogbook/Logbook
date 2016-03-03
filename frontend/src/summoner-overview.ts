@@ -2,9 +2,9 @@
 
 import {autoinject} from "aurelia-framework";
 import {SummonersService} from "services/summoners-service";
-import {Summoner} from "api/models/summoner";
+import {Summoner} from "api/models/summoners/summoner";
 import {IAddSummonerData} from "components/add-summoner";
-import {Region} from "api/models/region";
+import {Region} from "api/entities/summoners/region";
 
 @autoinject()
 export class SummonerOverview {

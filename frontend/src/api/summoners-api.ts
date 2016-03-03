@@ -1,10 +1,10 @@
 "use strict";
 
-import {Summoner} from "api/models/summoner";
+import {Summoner} from "api/models/summoners/summoner";
 import {autoinject} from "aurelia-framework";
 import {HttpClient} from "aurelia-http-client";
 import config from "config";
-import {JsonWebToken} from "api/models/json-web-token";
+import {JsonWebTokenModel} from "api/models/authentication/json-web-token-model";
 
 @autoinject()
 export class SummonersApi {
@@ -14,7 +14,7 @@ export class SummonersApi {
             .withHeader("Content-Type", "application/json"));
     }
     
-    public getSummoners(token: JsonWebToken): Promise<Summoner[]> {
+    public getSummoners(token: JsonWebTokenModel): Promise<Summoner[]> {
         return this.httpClient
             .createRequest("Summoners")
             .asGet()
@@ -24,7 +24,7 @@ export class SummonersApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public addSummoner(region: string, name: string, token: JsonWebToken): Promise<Summoner[]> {
+    public addSummoner(region: string, name: string, token: JsonWebTokenModel): Promise<Summoner[]> {
         let body = {
             region: region,
             summonerName: name,
@@ -40,7 +40,7 @@ export class SummonersApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public deleteSummoner(region: string, summonerId: number, token: JsonWebToken): Promise<Summoner[]> {
+    public deleteSummoner(region: string, summonerId: number, token: JsonWebTokenModel): Promise<Summoner[]> {
         let body = {
             region: region,
             summonerId: summonerId,

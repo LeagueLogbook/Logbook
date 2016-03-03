@@ -13,6 +13,7 @@ using Logbook.Server.Contracts.Social;
 using Logbook.Server.Infrastructure.Configuration;
 using Logbook.Server.Infrastructure.Extensions;
 using Logbook.Shared;
+using Logbook.Shared.Models.Authentication;
 using Newtonsoft.Json.Linq;
 
 namespace Logbook.Server.Infrastructure.Social

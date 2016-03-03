@@ -4,8 +4,8 @@ import {autoinject} from "aurelia-framework";
 import {HttpClient} from "aurelia-http-client";
 import config from "config";
 import * as crypto from "crypto-js";
-import {JsonWebToken} from "api/models/json-web-token";
-import {TwitterLoginUrl} from "api/models/twitter-login-url";
+import {JsonWebTokenModel} from "api/models/authentication/json-web-token-model";
+import {TwitterLoginUrl} from "api/models/authentication/twitter-login-url";
 
 @autoinject()
 export class AuthenticationApi {
@@ -32,7 +32,7 @@ export class AuthenticationApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public loginLogbook(emailAddress: string, password: string) : Promise<JsonWebToken> {
+    public loginLogbook(emailAddress: string, password: string) : Promise<JsonWebTokenModel> {
         let body = {
             emailAddress: emailAddress,
             passwordSHA256Hash: crypto.SHA256(password).toString(crypto.enc.Base64),
@@ -56,7 +56,7 @@ export class AuthenticationApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public loginMicrosoft(code: string, redirectUrl: string) : Promise<JsonWebToken> {
+    public loginMicrosoft(code: string, redirectUrl: string) : Promise<JsonWebTokenModel> {
         let content = {
             code: code,
             redirectUrl: redirectUrl,
@@ -80,7 +80,7 @@ export class AuthenticationApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public loginFacebook(code: string, redirectUrl: string) : Promise<JsonWebToken> {
+    public loginFacebook(code: string, redirectUrl: string) : Promise<JsonWebTokenModel> {
         let content = {
             code: code,
             redirectUrl: redirectUrl,
@@ -104,7 +104,7 @@ export class AuthenticationApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public loginGoogle(code: string, redirectUrl: string) : Promise<JsonWebToken> {
+    public loginGoogle(code: string, redirectUrl: string) : Promise<JsonWebTokenModel> {
         let content = {
             code: code,
             redirectUrl: redirectUrl,
@@ -128,7 +128,7 @@ export class AuthenticationApi {
             .catch(response => Promise.reject(response.content.message));
     }
     
-    public loginTwitter(oauthVerifier: string, payload: string) : Promise<JsonWebToken> {
+    public loginTwitter(oauthVerifier: string, payload: string) : Promise<JsonWebTokenModel> {
         let content = {
             oauthVerifier: oauthVerifier,
             payload: payload,

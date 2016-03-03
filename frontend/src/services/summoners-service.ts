@@ -3,8 +3,8 @@
 import {autoinject} from "aurelia-framework";
 import {LogbookApi} from "api/logbook-api";
 import {AuthService} from "services/auth-service";
-import {Summoner} from "api/models/summoner";
-import {Region} from "api/models/region";
+import {Summoner} from "api/models/summoners/summoner";
+import {Region} from "api/entities/summoners/region";
 
 @autoinject()
 export class SummonersService {

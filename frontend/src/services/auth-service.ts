@@ -2,7 +2,7 @@
 
 import {autoinject} from "aurelia-framework";
 import {LogbookApi} from "api/logbook-api";
-import {JsonWebToken} from "api/models/json-web-token";
+import {JsonWebTokenModel} from "api/models/authentication/json-web-token-model";
 import {StorageService} from "services/storage-service";
 import {LanguageService} from "services/language-service";
 import {OAuthHelper} from "helper/oauth-helper";
@@ -13,10 +13,10 @@ import * as jwt from "jwt-simple";
 @autoinject()
 export class AuthService {
     
-    public get token() : JsonWebToken {
+    public get token() : JsonWebTokenModel {
         return this.storageService.getItem("auth_token");
     }
-    public set token(token: JsonWebToken) {
+    public set token(token: JsonWebTokenModel) {
         this.storageService.setItem("auth_token", token);
     }    
     

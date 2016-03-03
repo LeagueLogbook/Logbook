@@ -1,6 +1,6 @@
 "use strict";
 
-import {Region} from "api/models/region";
+import {Region} from "api/entities/summoners/region";
 import {bindable} from "aurelia-framework";
 
 export class AddSummoner {   

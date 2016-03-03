@@ -1,4 +1,4 @@
-namespace Logbook.Server.Contracts.Social
+namespace Logbook.Shared.Models.Authentication
 {
     public class TwitterLoginUrl
     {

@@ -53,6 +53,8 @@
     <Compile Include="Entities\Authentication\LogbookAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\TwitterAuthenticationKind.cs" />
     <Compile Include="Entities\Authentication\User.cs" />
+    <Compile Include="Models\Authentication\TwitterLoginUrl.cs" />
+    <Compile Include="Models\Authentication\TwitterToken.cs" />
     <Compile Include="Models\MatchHistory\Lane.cs" />
     <Compile Include="Entities\Summoners\Region.cs" />
     <Compile Include="Models\MatchHistory\Role.cs" />

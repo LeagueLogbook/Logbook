@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Logbook.Shared.Models.Authentication;
 
 namespace Logbook.Server.Contracts.Social
 {

@@ -1,6 +1,6 @@
 "use strict";
 
-import {Team} from "api/models/team";
+import {Team} from "api/models/games/team";
 
 export class CurrentGame {
     public gameId: number;
