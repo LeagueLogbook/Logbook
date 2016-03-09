@@ -29,12 +29,7 @@ export class CurrentGames {
     }
         
     private async refresh(): Promise<void> {
-        try {
-            let games = await this.logbookApi.currentGamesApi.getCurrentGames(this.authService.token);
-            this.currentGames = games;   
-        }        
-        catch (error) {
-            alert(error);
-        }
+        let games = await this.logbookApi.currentGamesApi.getCurrentGames(this.authService.token);
+        this.currentGames = games;
     }
 }
