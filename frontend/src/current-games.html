@@ -1,3 +1,17 @@
 <template>
-    Hi!
+    
+    <require from="attributes/button-command"></require>
+    
+    <div class="ui container">            
+        <button button-command.bind="refreshCommand" class="ui fluid basic right labeled icon button">
+            <i class="refresh icon"></i>    
+            Refresh        
+        </button>
+        
+        <div class="ui divided items">
+            <div class="item" repeat.for="game of currentGames">
+                ${game.summoner.name}
+            </div>
+        </div>
+    </div>
 </template>

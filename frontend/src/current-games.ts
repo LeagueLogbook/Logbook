@@ -1,16 +1,40 @@
 "use strict";
 
+import {autoinject} from "aurelia-framework";
+import {LogbookApi} from "api/logbook-api";
+import {AuthService} from "services/auth-service";
+import {SummonerCurrentGame} from "api/models/games/summoner-current-game";
+import {Timer} from "helper/timer";
+import {Command} from "helper/command";
+
+@autoinject()
 export class CurrentGames {
-    private _timeout: number;
+    
+    public currentGames: SummonerCurrentGame[];
+    
+    public refreshCommand: Command;
+    
+    private _timer: Timer;
+    
+    public constructor(private logbookApi: LogbookApi, private authService: AuthService) {
+        this._timer = new Timer(10 * 1000, () => this.refreshCommand.execute());        
+        this.refreshCommand = new Command(() => this.refresh());
+    }
     
     public activate(): void {
-        this._timeout = setTimeout(() => this.onTick(), 10 * 1000);
+        this._timer.start();
     }
     public deactivate(): void {
-        clearTimeout(this._timeout);
+        this._timer.stop();
     }
-    
-    private onTick(): void {
-        alert("Hoi");
+        
+    private async refresh(): Promise<void> {
+        try {
+            let games = await this.logbookApi.currentGamesApi.getCurrentGames(this.authService.token);
+            this.currentGames = games;   
+        }        
+        catch (error) {
+            alert(error);
+        }
     }
 }
