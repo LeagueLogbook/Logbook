@@ -15,6 +15,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
         }
 
         public string EmailAddress { get; }
+        [Secure]
         public IOwinContext OwinContext { get; }
     }
 }

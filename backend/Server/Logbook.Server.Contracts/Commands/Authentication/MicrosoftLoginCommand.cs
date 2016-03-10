@@ -16,6 +16,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
             this.RedirectUrl = redirectUrl;
         }
 
+        [Secure]
         public string Code { get; }
         public string RedirectUrl { get; }   
     }

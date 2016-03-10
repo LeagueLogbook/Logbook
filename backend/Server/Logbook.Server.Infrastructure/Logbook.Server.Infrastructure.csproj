@@ -195,6 +195,7 @@
     <Compile Include="Extensions\SecretGeneratorExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FailureResilientWorkerRunner.cs" />
+    <Compile Include="JsonSerialization\CommandSerializer.cs" />
     <Compile Include="Mapping\SummonerToSummonerModelMapper.cs" />
     <Compile Include="Mapping\UserToUserModelMapper.cs" />
     <Compile Include="NHibernate\Extensions\PropertyPartExtensions.cs" />

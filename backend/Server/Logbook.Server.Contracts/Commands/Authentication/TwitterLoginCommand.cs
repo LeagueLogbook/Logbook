@@ -16,7 +16,9 @@ namespace Logbook.Server.Contracts.Commands.Authentication
             this.Payload = payload;
         }
 
+        [Secure]
         public string OAuthVerifier { get; }
+        [Secure]
         public string Payload { get; }
     }
 }

@@ -12,6 +12,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
             this.Token = token;
         }
 
+        [Secure]
         public string Token { get; } 
     }
 }

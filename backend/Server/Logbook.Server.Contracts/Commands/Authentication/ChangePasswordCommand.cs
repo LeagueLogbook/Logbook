@@ -15,6 +15,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
         }
 
         public User User { get; }
+        [Secure]
         public byte[] NewPasswordSHA256Hash { get; }
     }
 }

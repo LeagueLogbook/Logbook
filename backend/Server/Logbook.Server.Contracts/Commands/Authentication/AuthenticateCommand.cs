@@ -12,6 +12,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
             this.Context = context;
         }
 
+        [Secure]
         public IOwinContext Context { get; }
     }
 }

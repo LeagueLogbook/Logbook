@@ -18,6 +18,7 @@ namespace Logbook.Server.Contracts.Commands.Authentication
         }
 
         public string EmailAddress { get; }
+        [Secure]
         public byte[] PasswordSHA256Hash { get; }
     }
 }

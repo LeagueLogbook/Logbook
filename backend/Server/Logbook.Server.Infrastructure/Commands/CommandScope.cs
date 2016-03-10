@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Castle.Windsor;
 using JetBrains.Annotations;
 using Logbook.Server.Contracts.Commands;
 using Logbook.Server.Contracts.Mapping;
+using Logbook.Server.Infrastructure.JsonSerialization;
 using Logbook.Shared;
 using Logbook.Shared.Extensions;
+using Newtonsoft.Json;
 
 namespace Logbook.Server.Infrastructure.Commands
 {
@@ -39,7 +42,12 @@ namespace Logbook.Server.Infrastructure.Commands
         {
             Guard.NotNull(command, nameof(command));
 
-            AppInsights.Client.TrackEvent($"Executing command {command.GetType().Name} ({command.GetType().FullName})");
+            var properties = new Dictionary<string, string>
+            {
+                ["Parameters"] = CommandSerializer.ToJson(command),
+            };
+
+            AppInsights.Client.TrackEvent($"Executing command {command.GetType().Name} ({command.GetType().FullName})", properties);
             
             Type handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
             object actualCommandHandler = this._container.Resolve(handlerType);
